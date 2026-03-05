@@ -79,11 +79,11 @@ export function renderFeedList(container, items, selectedId, onSelect) {
 
   container.innerHTML = html;
 
-  container.querySelectorAll(".feed-card").forEach((button) => {
+  container.querySelectorAll(".feed-card").forEach((button, index) => {
     button.addEventListener("click", () => {
       const nextId = button.getAttribute("data-item-id");
       if (nextId) {
-        onSelect(nextId);
+        onSelect(nextId, items[index] || null, index);
       }
     });
   });

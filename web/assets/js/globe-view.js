@@ -39,6 +39,8 @@ const DEFAULT_START_HUB_NAME = "US-E";
 const DEFAULT_END_HUB_NAME = "US-W";
 const MIN_START_CONFIDENCE = 2.05;
 const MIN_SECONDARY_CONFIDENCE = 0.92;
+const FOCUS_DURATION_MS = 900;
+const FOCUS_DURATION_REDUCED_MS = 220;
 
 const HUBS = [
   { name: "US-E", lat: 40.7128, lon: -74.006, keywords: ["UNITED STATES", "USA", "U.S.", "US", "WASHINGTON", "NEW YORK", "WALL STREET", "S&P", "DOW", "TREASURY", "FED", "FOMC", "USD", "NFP", "CPI", "美國", "美国", "紐約", "纽约", "華盛頓", "华盛顿", "美聯儲", "美联储"] },
@@ -105,6 +107,10 @@ function getHubByName(name) {
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
+}
+
+function easeOutCubic(t) {
+  return 1 - (1 - t) ** 3;
 }
 
 function hashString(value) {
@@ -343,12 +349,14 @@ class GlobeRenderer {
     this.regionVisuals = [];
     this.markerHalos = [];
     this.regionBuckets = new Map();
+    this.itemRegionById = new Map();
+    this.focusAnimation = null;
 
     this.reduceMotionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
     this.reduceMotion = this.reduceMotionMedia.matches;
     this.handleReducedMotionChange = (event) => {
       this.reduceMotion = event.matches;
-      if (this.controls) {
+      if (this.controls && !this.focusAnimation) {
         this.controls.autoRotate = !this.reduceMotion;
       }
     };
@@ -646,6 +654,81 @@ class GlobeRenderer {
     this.animationId = 0;
   }
 
+  focusOnItem(item, filteredIndex = -1) {
+    if (!item) {
+      return false;
+    }
+
+    let hub = null;
+    if (item.id && this.itemRegionById.has(item.id)) {
+      hub = this.itemRegionById.get(item.id);
+    }
+
+    if (!hub) {
+      const fallbackIndex = Number.isFinite(filteredIndex) && filteredIndex >= 0 ? filteredIndex : 0;
+      hub = inferHubPair(item, fallbackIndex).startHub;
+    }
+
+    if (!hub) {
+      return false;
+    }
+
+    this.focusOnHub(hub);
+    return true;
+  }
+
+  focusOnHub(hub) {
+    if (!hub) {
+      return;
+    }
+
+    const localVector = latLonToVector3(hub.lat, hub.lon, 1).normalize();
+    const currentQuat = this.globeGroup.quaternion.clone();
+    const currentWorldVector = localVector.clone().applyQuaternion(currentQuat).normalize();
+    const cameraDirection = this.camera.position.clone().normalize();
+
+    if (currentWorldVector.dot(cameraDirection) > 0.9992) {
+      return;
+    }
+
+    const deltaQuat = new THREE.Quaternion().setFromUnitVectors(currentWorldVector, cameraDirection);
+    const targetQuat = deltaQuat.multiply(currentQuat.clone()).normalize();
+    const shouldResumeAutoRotate = this.controls.autoRotate;
+
+    this.controls.autoRotate = false;
+    this.focusAnimation = {
+      startedAt: performance.now(),
+      durationMs: this.reduceMotion ? FOCUS_DURATION_REDUCED_MS : FOCUS_DURATION_MS,
+      fromQuat: currentQuat,
+      toQuat: targetQuat,
+      shouldResumeAutoRotate,
+    };
+  }
+
+  updateFocusAnimation(ts) {
+    if (!this.focusAnimation) {
+      return;
+    }
+
+    const progress = clamp(
+      (ts - this.focusAnimation.startedAt) / this.focusAnimation.durationMs,
+      0,
+      1,
+    );
+    const eased = easeOutCubic(progress);
+
+    this.globeGroup.quaternion.copy(this.focusAnimation.fromQuat);
+    this.globeGroup.quaternion.slerp(this.focusAnimation.toQuat, eased);
+
+    if (progress >= 1) {
+      const shouldResume = this.focusAnimation.shouldResumeAutoRotate;
+      this.focusAnimation = null;
+      if (!this.reduceMotion && shouldResume) {
+        this.controls.autoRotate = true;
+      }
+    }
+  }
+
   frame(ts) {
     if (!this.lastTs) {
       this.lastTs = ts;
@@ -655,6 +738,7 @@ class GlobeRenderer {
     this.lastTs = ts;
 
     this.controls.update();
+    this.updateFocusAnimation(ts);
     this.animatePulses(ts * 0.001, dt);
     this.renderer.render(this.scene, this.camera);
 
@@ -679,6 +763,16 @@ class GlobeRenderer {
     this.visibleCount = list.length;
     this.criticalCount = list.filter((item) => item.priority === "critical").length;
     this.warningCount = list.filter((item) => item.priority === "warning").length;
+
+    this.itemRegionById = new Map();
+    for (let i = 0; i < list.length; i += 1) {
+      const item = list[i];
+      if (!item?.id) {
+        continue;
+      }
+      const pair = inferHubPair(item, i);
+      this.itemRegionById.set(item.id, pair.startHub);
+    }
 
     this.signalSaturation = clamp(0.38 + list.length / 140, 0.38, 1);
     this.rebuildSignals(list);
@@ -1044,6 +1138,7 @@ export function createGlobeRenderer(canvas, summaryElement, options = {}) {
       stop() {},
       destroy() {},
       setSignals() {},
+      focusOnItem() {},
     };
   }
 
@@ -1052,6 +1147,7 @@ export function createGlobeRenderer(canvas, summaryElement, options = {}) {
     destroyed: false,
     shouldStart: false,
     queuedSignals: [],
+    queuedFocus: null,
   };
 
   const wrapper = {
@@ -1072,6 +1168,10 @@ export function createGlobeRenderer(canvas, summaryElement, options = {}) {
       state.queuedSignals = Array.isArray(items) ? items : [];
       state.instance?.setSignals(state.queuedSignals);
     },
+    focusOnItem(item, filteredIndex = -1) {
+      state.queuedFocus = item ? { item, filteredIndex } : null;
+      state.instance?.focusOnItem(item, filteredIndex);
+    },
   };
 
   (async () => {
@@ -1086,6 +1186,10 @@ export function createGlobeRenderer(canvas, summaryElement, options = {}) {
 
       if (state.queuedSignals.length) {
         instance.setSignals(state.queuedSignals);
+      }
+
+      if (state.queuedFocus?.item) {
+        instance.focusOnItem(state.queuedFocus.item, state.queuedFocus.filteredIndex);
       }
 
       if (state.shouldStart) {

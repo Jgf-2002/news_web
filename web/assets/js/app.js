@@ -16,7 +16,7 @@ import {
 } from "./renderers.js";
 import { createGlobeRenderer } from "./globe-view.js";
 
-const REFRESH_INTERVAL_MS = 60_000;
+const REFRESH_INTERVAL_MS = 10_000;
 
 const elements = {
   sourceFilter: document.getElementById("source-filter"),
@@ -42,7 +42,11 @@ const globe = createGlobeRenderer(elements.globeCanvas, elements.globeSummary, {
     if (!item?.id) {
       return;
     }
-    selectItem(item.id, true);
+    selectItem(item.id, {
+      openOnMobile: true,
+      focusGlobe: false,
+      selectedItem: item,
+    });
     showToast("Signal selected from globe");
   },
 });
@@ -79,8 +83,23 @@ function showToast(message) {
   }, 1800);
 }
 
-function selectItem(itemId, openOnMobile = false) {
+function selectItem(itemId, options = {}) {
+  const {
+    openOnMobile = false,
+    focusGlobe = false,
+    selectedItem = null,
+    filteredIndex = -1,
+  } = options;
+
   setSelectedId(itemId);
+
+  if (focusGlobe) {
+    const item = selectedItem || getState().items.find((row) => row.id === itemId) || null;
+    if (item) {
+      globe.focusOnItem(item, filteredIndex);
+    }
+  }
+
   if (openOnMobile && isMobileViewport()) {
     openDrawer();
   }
@@ -96,7 +115,14 @@ function syncView() {
     return;
   }
 
-  renderFeedList(elements.feedList, filteredItems, selectedItem?.id || null, selectItem);
+  renderFeedList(elements.feedList, filteredItems, selectedItem?.id || null, (itemId, item, index) => {
+    selectItem(itemId, {
+      openOnMobile: isMobileViewport(),
+      focusGlobe: true,
+      selectedItem: item,
+      filteredIndex: index,
+    });
+  });
   renderDetail(elements.detailView, selectedItem);
   renderDetail(elements.mobileDetailView, selectedItem);
   renderMetrics(elements.metricsGrid, filteredItems);
@@ -107,14 +133,18 @@ function syncView() {
   elements.liveIndicator.textContent = filteredItems.length > 0 ? "Live" : "Idle";
 }
 
-async function loadAndRender() {
+async function loadAndRender({ silent = false } = {}) {
   try {
     const payload = await fetchFeedPayload();
     setData(payload.items, payload.generatedAt);
-    showToast(`Loaded ${payload.items.length} signals`);
+    if (!silent) {
+      showToast(`Loaded ${payload.items.length} signals`);
+    }
   } catch (error) {
     console.error(error);
-    showToast("Data load failed");
+    if (!silent) {
+      showToast("Data load failed");
+    }
   }
 }
 
@@ -154,7 +184,7 @@ function bindEvents() {
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) {
       globe.start();
-      loadAndRender();
+      loadAndRender({ silent: true });
     } else {
       globe.stop();
     }
@@ -170,7 +200,7 @@ function init() {
   bindEvents();
   globe.start();
   loadAndRender();
-  window.setInterval(loadAndRender, REFRESH_INTERVAL_MS);
+  window.setInterval(() => loadAndRender({ silent: true }), REFRESH_INTERVAL_MS);
 }
 
 init();
