@@ -82,7 +82,6 @@ const UI_TEXT = {
 
 const elements = {
   brandTitle: document.getElementById("brand-title"),
-  sourceFilter: document.getElementById("source-filter"),
   priorityFilter: document.getElementById("priority-filter"),
   languageToggle: document.getElementById("language-toggle"),
   languageToggleText: document.getElementById("language-toggle-text"),
@@ -104,7 +103,6 @@ const elements = {
   drawer: document.getElementById("mobile-detail-drawer"),
   drawerCloseButton: document.getElementById("mobile-close-detail"),
   toast: document.getElementById("toast"),
-  labelSource: document.getElementById("label-source"),
   labelPriority: document.getElementById("label-priority"),
   labelSearch: document.getElementById("label-search"),
   leadModal: document.getElementById("lead-modal"),
@@ -291,9 +289,6 @@ function applyLanguageUi(language) {
   if (elements.brandTitle) {
     elements.brandTitle.textContent = copy.brandTitle;
   }
-  if (elements.labelSource) {
-    elements.labelSource.textContent = copy.source;
-  }
   if (elements.labelPriority) {
     elements.labelPriority.textContent = copy.priority;
   }
@@ -307,7 +302,6 @@ function applyLanguageUi(language) {
     elements.clearRegionButton.textContent = copy.clearRegion;
   }
 
-  setOptionText(elements.sourceFilter, "all", language === "en" ? "All" : "\u5168\u90e8");
   setOptionText(elements.priorityFilter, "all", language === "en" ? "All" : "\u5168\u90e8");
   setOptionText(elements.priorityFilter, "critical", language === "en" ? "Critical" : "\u7d27\u6025");
   setOptionText(elements.priorityFilter, "warning", language === "en" ? "Warning" : "\u8b66\u544a");
@@ -453,10 +447,6 @@ async function loadAndRender({ silent = false } = {}) {
 }
 
 function bindEvents() {
-  elements.sourceFilter.addEventListener("change", (event) => {
-    setFilter("source", event.target.value);
-  });
-
   elements.priorityFilter.addEventListener("change", (event) => {
     setFilter("priority", event.target.value);
   });

@@ -3,7 +3,6 @@ const state = {
   selectedId: null,
   generatedAt: "",
   filters: {
-    source: "all",
     priority: "all",
     language: "zh",
     query: "",
@@ -13,6 +12,7 @@ const state = {
 const listeners = new Set();
 const CJK_CHAR = /[\u3400-\u9FFF]/;
 const LATIN_CHAR = /[A-Za-z]/;
+const MAX_ITEM_AGE_MS = 5 * 24 * 60 * 60 * 1000;
 
 function collapseSpaces(text) {
   return String(text || "")
@@ -126,6 +126,14 @@ function normalizeItem(item) {
   };
 }
 
+function isRecentItem(item, nowMs = Date.now()) {
+  const publishedAt = item?.published_at ? Date.parse(item.published_at) : Number.NaN;
+  if (Number.isNaN(publishedAt)) {
+    return false;
+  }
+  return nowMs - publishedAt <= MAX_ITEM_AGE_MS;
+}
+
 function localizeText(item, language) {
   const titleLang = item?._lang?.title || { zh: "", en: "", raw: "" };
   const contentLang = item?._lang?.content || { zh: "", en: "", raw: "" };
@@ -177,7 +185,9 @@ export function getState() {
 }
 
 export function setData(items, generatedAt) {
-  state.items = Array.isArray(items) ? items.map((item) => normalizeItem(item)) : [];
+  const nowMs = Date.now();
+  const normalized = Array.isArray(items) ? items.map((item) => normalizeItem(item)) : [];
+  state.items = normalized.filter((item) => isRecentItem(item, nowMs));
   state.generatedAt = generatedAt || "";
 
   if (!state.selectedId || !state.items.some((item) => item.id === state.selectedId)) {
@@ -201,15 +211,11 @@ export function setFilter(name, value) {
 }
 
 export function getFilteredItems() {
-  const sourceFilter = state.filters.source;
   const priorityFilter = state.filters.priority;
   const languageFilter = state.filters.language === "en" ? "en" : "zh";
   const query = state.filters.query.trim().toLowerCase();
 
   return state.items.reduce((acc, item) => {
-    if (sourceFilter !== "all" && item.source !== sourceFilter) {
-      return acc;
-    }
     if (priorityFilter !== "all" && item.priority !== priorityFilter) {
       return acc;
     }

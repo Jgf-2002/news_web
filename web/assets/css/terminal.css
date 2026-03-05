@@ -112,7 +112,7 @@ a {
 
 .top-controls {
   display: grid;
-  grid-template-columns: 112px 112px minmax(220px, 1fr) auto auto;
+  grid-template-columns: 112px minmax(240px, 1fr) auto auto;
   gap: 8px;
   align-items: end;
 }
@@ -758,7 +758,7 @@ a {
   }
 
   .top-controls {
-    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    grid-template-columns: minmax(120px, 1fr) minmax(220px, 2fr);
   }
 
   .search-group {
