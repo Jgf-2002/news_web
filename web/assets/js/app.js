@@ -4,7 +4,6 @@ import {
   setData,
   setFilter,
   setSelectedId,
-  getState,
   getFilteredItems,
   getSelectedItem,
 } from "./state-store.js";
@@ -45,12 +44,13 @@ const globe = createGlobeRenderer(elements.globeCanvas, elements.globeSummary, {
     selectItem(item.id, {
       openOnMobile: true,
       focusGlobe: false,
-      selectedItem: item,
     });
     showToast("Signal selected from globe");
   },
 });
 let toastTimer = null;
+let lastRenderedSelectedId = null;
+let pendingForceFocusId = null;
 
 function isMobileViewport() {
   return window.matchMedia("(max-width: 920px)").matches;
@@ -87,18 +87,13 @@ function selectItem(itemId, options = {}) {
   const {
     openOnMobile = false,
     focusGlobe = false,
-    selectedItem = null,
-    filteredIndex = -1,
   } = options;
 
-  setSelectedId(itemId);
-
   if (focusGlobe) {
-    const item = selectedItem || getState().items.find((row) => row.id === itemId) || null;
-    if (item) {
-      globe.focusOnItem(item, filteredIndex);
-    }
+    pendingForceFocusId = itemId;
   }
+
+  setSelectedId(itemId);
 
   if (openOnMobile && isMobileViewport()) {
     openDrawer();
@@ -115,18 +110,28 @@ function syncView() {
     return;
   }
 
-  renderFeedList(elements.feedList, filteredItems, selectedItem?.id || null, (itemId, item, index) => {
+  renderFeedList(elements.feedList, filteredItems, selectedItem?.id || null, (itemId) => {
     selectItem(itemId, {
       openOnMobile: isMobileViewport(),
       focusGlobe: true,
-      selectedItem: item,
-      filteredIndex: index,
     });
   });
   renderDetail(elements.detailView, selectedItem);
   renderDetail(elements.mobileDetailView, selectedItem);
   renderMetrics(elements.metricsGrid, filteredItems);
   globe.setSignals(filteredItems);
+
+  const selectedId = selectedItem?.id || null;
+  const selectedChanged = selectedId !== lastRenderedSelectedId;
+  const shouldForceFocus = Boolean(selectedId && pendingForceFocusId === selectedId);
+  if (selectedId && (selectedChanged || shouldForceFocus)) {
+    const selectedIndex = filteredItems.findIndex((item) => item.id === selectedId);
+    globe.focusOnItem(selectedItem, selectedIndex);
+  }
+  if (shouldForceFocus) {
+    pendingForceFocusId = null;
+  }
+  lastRenderedSelectedId = selectedId;
 
   elements.feedCount.textContent = `${filteredItems.length} items`;
   elements.generatedAt.textContent = formatGeneratedAt(state.generatedAt);

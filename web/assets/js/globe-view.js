@@ -39,8 +39,9 @@ const DEFAULT_START_HUB_NAME = "US-E";
 const DEFAULT_END_HUB_NAME = "US-W";
 const MIN_START_CONFIDENCE = 2.05;
 const MIN_SECONDARY_CONFIDENCE = 0.92;
-const FOCUS_DURATION_MS = 900;
-const FOCUS_DURATION_REDUCED_MS = 220;
+const FOCUS_DURATION_MS = 1200;
+const FOCUS_DURATION_REDUCED_MS = 280;
+const FOCUS_AUTO_ROTATE_RESUME_DELAY_MS = 1700;
 
 const HUBS = [
   { name: "US-E", lat: 40.7128, lon: -74.006, keywords: ["UNITED STATES", "USA", "U.S.", "US", "WASHINGTON", "NEW YORK", "WALL STREET", "S&P", "DOW", "TREASURY", "FED", "FOMC", "USD", "NFP", "CPI", "美國", "美国", "紐約", "纽约", "華盛頓", "华盛顿", "美聯儲", "美联储"] },
@@ -351,12 +352,13 @@ class GlobeRenderer {
     this.regionBuckets = new Map();
     this.itemRegionById = new Map();
     this.focusAnimation = null;
+    this.focusResumeAtTs = 0;
 
     this.reduceMotionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
     this.reduceMotion = this.reduceMotionMedia.matches;
     this.handleReducedMotionChange = (event) => {
       this.reduceMotion = event.matches;
-      if (this.controls && !this.focusAnimation) {
+      if (this.controls && !this.focusAnimation && !this.focusResumeAtTs) {
         this.controls.autoRotate = !this.reduceMotion;
       }
     };
@@ -687,7 +689,7 @@ class GlobeRenderer {
     const currentWorldVector = localVector.clone().applyQuaternion(currentQuat).normalize();
     const cameraDirection = this.camera.position.clone().normalize();
 
-    if (currentWorldVector.dot(cameraDirection) > 0.9992) {
+    if (currentWorldVector.dot(cameraDirection) > 0.99995) {
       return;
     }
 
@@ -695,6 +697,7 @@ class GlobeRenderer {
     const targetQuat = deltaQuat.multiply(currentQuat.clone()).normalize();
     const shouldResumeAutoRotate = this.controls.autoRotate;
 
+    this.focusResumeAtTs = 0;
     this.controls.autoRotate = false;
     this.focusAnimation = {
       startedAt: performance.now(),
@@ -724,7 +727,10 @@ class GlobeRenderer {
       const shouldResume = this.focusAnimation.shouldResumeAutoRotate;
       this.focusAnimation = null;
       if (!this.reduceMotion && shouldResume) {
-        this.controls.autoRotate = true;
+        this.controls.autoRotate = false;
+        this.focusResumeAtTs = ts + FOCUS_AUTO_ROTATE_RESUME_DELAY_MS;
+      } else {
+        this.focusResumeAtTs = 0;
       }
     }
   }
@@ -736,6 +742,13 @@ class GlobeRenderer {
 
     const dt = clamp((ts - this.lastTs) / 1000, 0, 0.05);
     this.lastTs = ts;
+
+    if (this.focusResumeAtTs && !this.focusAnimation && ts >= this.focusResumeAtTs) {
+      this.focusResumeAtTs = 0;
+      if (!this.reduceMotion) {
+        this.controls.autoRotate = true;
+      }
+    }
 
     this.controls.update();
     this.updateFocusAnimation(ts);
