@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-04T09:43:05Z",
+  "generated_at": "2026-03-05T09:06:36Z",
   "source_dir": "C:\\Cloud_code\\newsai",
   "inputs": {
     "last_message": {
@@ -11,8 +11,8 @@
     "translation_cache": {
       "exists": true,
       "path": "C:\\Cloud_code\\newsai\\translation_cache.json",
-      "size_bytes": 4235379,
-      "modified_at": "2026-03-04T09:40:35Z"
+      "size_bytes": 4737386,
+      "modified_at": "2026-03-05T09:05:14Z"
     },
     "bloomberg_hashes": {
       "exists": true,
@@ -22,13 +22,13 @@
     }
   },
   "outputs": {
-    "x_last_message": "data\\raw\\x_last_message.json",
-    "translation_cache_tail": "data\\raw\\translation_cache_tail.json",
-    "bloomberg_hash_tail": "data\\raw\\bloomberg_hash_tail.json"
+    "x_last_message": "C:\\Cloud_code\\news_web\\data\\raw\\x_last_message.json",
+    "translation_cache_tail": "C:\\Cloud_code\\news_web\\data\\raw\\translation_cache_tail.json",
+    "bloomberg_hash_tail": "C:\\Cloud_code\\news_web\\data\\raw\\bloomberg_hash_tail.json"
   },
   "counts": {
-    "translation_tail": 140,
-    "run_newsent_tail": 0,
+    "translation_tail": 1033,
+    "run_newsent_tail": 893,
     "bloomberg_hash_tail": 140
   }
 }

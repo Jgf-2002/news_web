@@ -63,6 +63,25 @@ const HUBS = [
   { name: "AUS", lat: -33.8688, lon: 151.2093, keywords: ["AUSTRALIA", "SYDNEY", "MELBOURNE", "ASX", "RBA", "AUD", "NZD", "RBNZ", "澳洲", "澳大利亞", "澳大利亚", "悉尼"] },
 ];
 
+const HUB_PRESENTATION = {
+  "US-E": { labelEn: "US East", labelZh: "美国东部", nicknameEn: "Wall Street Core", nicknameZh: "华尔街核心" },
+  "US-W": { labelEn: "US West", labelZh: "美国西部", nicknameEn: "Silicon Surge", nicknameZh: "硅谷引擎" },
+  CAN: { labelEn: "Canada", labelZh: "加拿大", nicknameEn: "Maple Macro", nicknameZh: "枫叶宏观站" },
+  UK: { labelEn: "United Kingdom", labelZh: "英国", nicknameEn: "Sterling Tower", nicknameZh: "英镑之塔" },
+  EU: { labelEn: "Eurozone", labelZh: "欧元区", nicknameEn: "Euro Pulse", nicknameZh: "欧陆脉冲" },
+  RUS: { labelEn: "Russia", labelZh: "俄罗斯", nicknameEn: "Eurasia Edge", nicknameZh: "欧亚边锋" },
+  ME: { labelEn: "Middle East", labelZh: "中东", nicknameEn: "Energy Gate", nicknameZh: "能源门" },
+  TUR: { labelEn: "Turkey", labelZh: "土耳其", nicknameEn: "Bosporus Bridge", nicknameZh: "博斯普鲁斯桥" },
+  IND: { labelEn: "India", labelZh: "印度", nicknameEn: "Rupee Hub", nicknameZh: "卢比节点" },
+  SEA: { labelEn: "Southeast Asia", labelZh: "东南亚", nicknameEn: "ASEAN Switch", nicknameZh: "东盟枢纽" },
+  IDN: { labelEn: "Indonesia", labelZh: "印尼", nicknameEn: "Java Flow", nicknameZh: "爪哇流" },
+  HKG: { labelEn: "Hong Kong & China", labelZh: "香港与中国", nicknameEn: "Dragon Gateway", nicknameZh: "龙门枢纽" },
+  TYO: { labelEn: "Japan", labelZh: "日本", nicknameEn: "Tokyo Axis", nicknameZh: "东京轴心" },
+  SEO: { labelEn: "South Korea", labelZh: "韩国", nicknameEn: "K-Alpha Node", nicknameZh: "韩流节点" },
+  LATAM: { labelEn: "Latin America", labelZh: "拉丁美洲", nicknameEn: "LatAm Flow", nicknameZh: "拉美波段" },
+  AUS: { labelEn: "Australia", labelZh: "澳大利亚", nicknameEn: "Pacific Desk", nicknameZh: "太平洋交易台" },
+};
+
 const PLANET_TEXTURES = {
   map: [
     "./assets/textures/earth_atmos_2048.jpg",
@@ -105,6 +124,28 @@ const CURRENCY_TO_HUB = {
 
 function getHubByName(name) {
   return HUBS.find((hub) => hub.name === name) || null;
+}
+
+function getHubPresentationByName(hubName) {
+  const fallback = {
+    labelEn: hubName || "Unknown",
+    labelZh: hubName || "未知区域",
+    nicknameEn: "Signal Node",
+    nicknameZh: "信号节点",
+  };
+  return HUB_PRESENTATION[hubName] || fallback;
+}
+
+export function getHubDisplayInfo(hubName, language = "zh") {
+  const base = getHubPresentationByName(hubName);
+  return {
+    label: language === "en" ? base.labelEn : base.labelZh,
+    nickname: language === "en" ? base.nicknameEn : base.nicknameZh,
+    labelEn: base.labelEn,
+    labelZh: base.labelZh,
+    nicknameEn: base.nicknameEn,
+    nicknameZh: base.nicknameZh,
+  };
 }
 
 function clamp(value, min, max) {
@@ -255,6 +296,11 @@ function inferHubPair(item, index) {
   return { startHub, endHub: defaultEnd };
 }
 
+export function inferPrimaryHub(item, index = 0) {
+  const pair = inferHubPair(item, index);
+  return pair.startHub;
+}
+
 function priorityHue(priority) {
   if (priority === "critical") {
     return 0.01;
@@ -351,7 +397,11 @@ class GlobeRenderer {
     this.regionVisuals = [];
     this.markerHalos = [];
     this.regionBuckets = new Map();
+    this.fullRegionBuckets = new Map();
     this.itemRegionById = new Map();
+    this.regionCoreByName = new Map();
+    this.selectedItemId = null;
+    this.selectedRegionName = null;
     this.focusAnimation = null;
     this.focusResumeAtTs = 0;
 
@@ -657,25 +707,87 @@ class GlobeRenderer {
     this.animationId = 0;
   }
 
+  resolveHubForItem(item, filteredIndex = -1) {
+    if (!item) {
+      return null;
+    }
+
+    if (item.id && this.itemRegionById.has(item.id)) {
+      return this.itemRegionById.get(item.id);
+    }
+
+    const fallbackIndex = Number.isFinite(filteredIndex) && filteredIndex >= 0 ? filteredIndex : 0;
+    return inferHubPair(item, fallbackIndex).startHub;
+  }
+
+  setSelectedItemId(itemId) {
+    this.selectedItemId = itemId || null;
+    this.applySelectionVisuals();
+  }
+
+  setHighlightedRegion(regionName) {
+    this.selectedRegionName = regionName || null;
+    this.applySelectionVisuals();
+  }
+
+  getRegionBundleForItem(item, filteredIndex = -1) {
+    const hub = this.resolveHubForItem(item, filteredIndex);
+    if (!hub) {
+      return null;
+    }
+    const items = this.fullRegionBuckets.get(hub.name) || [];
+    return { hub, items: [...items] };
+  }
+
+  applySelectionVisuals() {
+    for (let i = 0; i < this.interactiveMarkers.length; i += 1) {
+      const marker = this.interactiveMarkers[i];
+      const selected = Boolean(this.selectedItemId && marker?.userData?.itemId === this.selectedItemId);
+      marker.scale.setScalar(selected ? 1.88 : 1);
+      if (marker.material) {
+        marker.material.opacity = selected ? 1 : 0.9;
+      }
+    }
+
+    for (let i = 0; i < this.markerHalos.length; i += 1) {
+      const halo = this.markerHalos[i];
+      const selected = Boolean(this.selectedItemId && halo?.userData?.itemId === this.selectedItemId);
+      halo.userData.selectionBoost = selected ? 0.64 : 0;
+      if (halo.material) {
+        halo.material.opacity = selected ? 0.36 : 0.24;
+      }
+    }
+
+    for (let i = 0; i < this.regionVisuals.length; i += 1) {
+      const hotspot = this.regionVisuals[i];
+      const isSelectedRegion = hotspot?.userData?.regionName === this.selectedRegionName;
+      hotspot.userData.highlightBoost = isSelectedRegion ? 0.3 : 0;
+    }
+
+    this.regionCoreByName.forEach((core, regionName) => {
+      const isSelectedRegion = regionName === this.selectedRegionName;
+      const baseScale = core.userData.baseScale || 1;
+      const baseOpacity = core.userData.baseOpacity || 0.2;
+      core.scale.setScalar(isSelectedRegion ? baseScale * 1.7 : baseScale);
+      if (core.material) {
+        core.material.opacity = isSelectedRegion ? 1 : baseOpacity;
+      }
+    });
+  }
+
   focusOnItem(item, filteredIndex = -1) {
     if (!item) {
       return false;
     }
 
-    let hub = null;
-    if (item.id && this.itemRegionById.has(item.id)) {
-      hub = this.itemRegionById.get(item.id);
-    }
-
-    if (!hub) {
-      const fallbackIndex = Number.isFinite(filteredIndex) && filteredIndex >= 0 ? filteredIndex : 0;
-      hub = inferHubPair(item, fallbackIndex).startHub;
-    }
+    const hub = this.resolveHubForItem(item, filteredIndex);
 
     if (!hub) {
       return false;
     }
 
+    this.setHighlightedRegion(hub.name);
+    this.setSelectedItemId(item.id || null);
     this.focusOnHub(hub);
     return true;
   }
@@ -780,6 +892,11 @@ class GlobeRenderer {
     this.warningCount = list.filter((item) => item.priority === "warning").length;
 
     this.itemRegionById = new Map();
+    this.fullRegionBuckets = new Map();
+    for (let i = 0; i < HUBS.length; i += 1) {
+      this.fullRegionBuckets.set(HUBS[i].name, []);
+    }
+
     for (let i = 0; i < list.length; i += 1) {
       const item = list[i];
       if (!item?.id) {
@@ -787,10 +904,12 @@ class GlobeRenderer {
       }
       const pair = inferHubPair(item, i);
       this.itemRegionById.set(item.id, pair.startHub);
+      this.fullRegionBuckets.get(pair.startHub.name)?.push(item);
     }
 
     this.signalSaturation = clamp(0.38 + list.length / 140, 0.38, 1);
     this.rebuildSignals(list);
+    this.applySelectionVisuals();
     this.updateColorIntensity();
     this.updateSummary();
   }
@@ -883,6 +1002,7 @@ class GlobeRenderer {
       const markerMesh = new THREE.Mesh(markerGeometry.clone(), markerMaterial);
       markerMesh.position.copy(markerPosition);
       markerMesh.userData.item = item;
+      markerMesh.userData.itemId = item.id || null;
       markerMesh.userData.region = startHub.name;
       this.markerGroup.add(markerMesh);
       this.interactiveMarkers.push(markerMesh);
@@ -901,6 +1021,8 @@ class GlobeRenderer {
       halo.position.copy(markerPosition);
       halo.userData.phase = (hash % 628) / 100;
       halo.userData.baseScale = haloScale;
+      halo.userData.itemId = item.id || null;
+      halo.userData.selectionBoost = 0;
       this.markerGroup.add(halo);
       this.markerHalos.push(halo);
 
@@ -977,6 +1099,8 @@ class GlobeRenderer {
       hotspot.userData.phase = i * 0.39;
       hotspot.userData.baseScale = baseScale;
       hotspot.userData.intensity = intensity;
+      hotspot.userData.regionName = hub.name;
+      hotspot.userData.highlightBoost = 0;
       this.regionGroup.add(hotspot);
       this.regionVisuals.push(hotspot);
 
@@ -988,7 +1112,11 @@ class GlobeRenderer {
       });
       const core = new THREE.Mesh(coreGeometry, coreMaterial);
       core.position.copy(position);
+      core.userData.regionName = hub.name;
+      core.userData.baseScale = 1;
+      core.userData.baseOpacity = count > 0 ? 0.8 : 0.18;
       this.regionGroup.add(core);
+      this.regionCoreByName.set(hub.name, core);
 
       const hitMaterial = new THREE.MeshBasicMaterial({
         transparent: true,
@@ -1011,6 +1139,7 @@ class GlobeRenderer {
     this.markerHalos = [];
     this.pulses = [];
     this.regionBuckets = new Map();
+    this.regionCoreByName = new Map();
 
     while (this.markerGroup.children.length > 0) {
       const child = this.markerGroup.children.pop();
@@ -1055,8 +1184,9 @@ class GlobeRenderer {
       const halo = this.markerHalos[i];
       const phase = halo.userData.phase || 0;
       const baseScale = halo.userData.baseScale || 0.16;
-      const pulse = 1 + Math.sin(timeSec * 2.2 + phase) * 0.18;
-      halo.scale.setScalar(baseScale * pulse);
+      const selectionBoost = halo.userData.selectionBoost || 0;
+      const pulse = 1 + Math.sin(timeSec * 2.2 + phase) * (0.18 + selectionBoost * 0.24);
+      halo.scale.setScalar(baseScale * pulse * (1 + selectionBoost));
     }
 
     for (let i = 0; i < this.regionVisuals.length; i += 1) {
@@ -1067,9 +1197,14 @@ class GlobeRenderer {
       const phase = hotspot.userData.phase || 0;
       const baseScale = hotspot.userData.baseScale || 0.16;
       const intensity = hotspot.userData.intensity || 0;
-      const pulse = 1 + Math.sin(timeSec * 1.9 + phase) * (0.08 + intensity * 0.08);
-      hotspot.scale.setScalar(baseScale * pulse);
-      hotspot.material.opacity = 0.03 + intensity * 0.21 + Math.sin(timeSec * 1.6 + phase) * 0.012;
+      const highlightBoost = hotspot.userData.highlightBoost || 0;
+      const pulse = 1 + Math.sin(timeSec * 1.9 + phase) * (0.08 + intensity * 0.08 + highlightBoost * 0.08);
+      hotspot.scale.setScalar(baseScale * pulse * (1 + highlightBoost * 0.7));
+      hotspot.material.opacity =
+        0.03 +
+        intensity * 0.21 +
+        highlightBoost * 0.2 +
+        Math.sin(timeSec * 1.6 + phase) * 0.012;
     }
 
     for (let i = 0; i < this.pulses.length; i += 1) {
@@ -1154,6 +1289,9 @@ export function createGlobeRenderer(canvas, summaryElement, options = {}) {
       destroy() {},
       setSignals() {},
       focusOnItem() {},
+      setSelectedItemId() {},
+      setHighlightedRegion() {},
+      getRegionBundleForItem() { return null; },
     };
   }
 
@@ -1163,6 +1301,24 @@ export function createGlobeRenderer(canvas, summaryElement, options = {}) {
     shouldStart: false,
     queuedSignals: [],
     queuedFocus: null,
+    queuedSelectedId: null,
+    queuedRegionName: null,
+  };
+
+  const getFallbackRegionBundle = (item, filteredIndex = -1) => {
+    if (!item) {
+      return null;
+    }
+    const index = Number.isFinite(filteredIndex) && filteredIndex >= 0 ? filteredIndex : 0;
+    const hub = inferHubPair(item, index).startHub;
+    if (!hub) {
+      return null;
+    }
+    const items = (state.queuedSignals || []).filter((signal, signalIndex) => {
+      const signalHub = inferHubPair(signal, signalIndex).startHub;
+      return signalHub?.name === hub.name;
+    });
+    return { hub, items };
   };
 
   const wrapper = {
@@ -1187,6 +1343,20 @@ export function createGlobeRenderer(canvas, summaryElement, options = {}) {
       state.queuedFocus = item ? { item, filteredIndex } : null;
       state.instance?.focusOnItem(item, filteredIndex);
     },
+    setSelectedItemId(itemId) {
+      state.queuedSelectedId = itemId || null;
+      state.instance?.setSelectedItemId(state.queuedSelectedId);
+    },
+    setHighlightedRegion(regionName) {
+      state.queuedRegionName = regionName || null;
+      state.instance?.setHighlightedRegion(state.queuedRegionName);
+    },
+    getRegionBundleForItem(item, filteredIndex = -1) {
+      if (state.instance) {
+        return state.instance.getRegionBundleForItem(item, filteredIndex);
+      }
+      return getFallbackRegionBundle(item, filteredIndex);
+    },
   };
 
   (async () => {
@@ -1205,6 +1375,14 @@ export function createGlobeRenderer(canvas, summaryElement, options = {}) {
 
       if (state.queuedFocus?.item) {
         instance.focusOnItem(state.queuedFocus.item, state.queuedFocus.filteredIndex);
+      }
+
+      if (state.queuedSelectedId) {
+        instance.setSelectedItemId(state.queuedSelectedId);
+      }
+
+      if (state.queuedRegionName) {
+        instance.setHighlightedRegion(state.queuedRegionName);
       }
 
       if (state.shouldStart) {

@@ -36,7 +36,7 @@
 
       <form class="top-controls" aria-label="Feed filters" onsubmit="return false;">
         <label class="control-group" for="source-filter">
-          <span>Source</span>
+          <span id="label-source">Source</span>
           <select id="source-filter" aria-label="Filter by source">
             <option value="all">All</option>
             <option value="x">X</option>
@@ -45,7 +45,7 @@
         </label>
 
         <label class="control-group" for="priority-filter">
-          <span>Priority</span>
+          <span id="label-priority">Priority</span>
           <select id="priority-filter" aria-label="Filter by priority">
             <option value="all">All</option>
             <option value="critical">Critical</option>
@@ -54,12 +54,21 @@
           </select>
         </label>
 
+        <label class="control-group" for="language-filter">
+          <span id="label-language">Language</span>
+          <select id="language-filter" aria-label="Filter by language">
+            <option value="zh">中文</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+
         <label class="control-group search-group" for="search-input">
-          <span>Search</span>
+          <span id="label-search">Search</span>
           <input id="search-input" type="search" placeholder="keyword, symbol" autocomplete="off" />
         </label>
 
         <button id="refresh-btn" class="action-btn" type="button">Refresh</button>
+        <a id="contact-btn" class="action-btn action-btn-cta" href="https://paristrader-terminal.streamlit.app/" target="_blank" rel="noopener noreferrer">Contact</a>
       </form>
 
       <div class="status-strip" aria-live="polite">
@@ -88,6 +97,7 @@
             <p class="globe-kicker">Global Signal Field</p>
             <p id="globe-summary" class="globe-summary">Waiting for feed data</p>
           </div>
+          <aside id="region-popover" class="region-popover" hidden></aside>
         </section>
         <article id="detail-view" class="detail-view" tabindex="-1"></article>
       </section>
@@ -111,6 +121,20 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="lead-modal" class="lead-modal" aria-hidden="true">
+    <div id="lead-modal-backdrop" class="lead-modal-backdrop"></div>
+    <section class="lead-modal-card" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title">
+      <button id="lead-modal-close-x" class="lead-modal-close" type="button" aria-label="Close promotion">×</button>
+      <p class="lead-kicker">Signal Upgrade</p>
+      <h2 id="lead-modal-title">Need deeper market context?</h2>
+      <p id="lead-modal-text" class="lead-modal-text">Open ParisTrader Terminal for full workflow, deeper analytics and faster decision support.</p>
+      <div class="lead-modal-actions">
+        <a id="lead-modal-open" class="action-btn action-btn-cta" href="https://paristrader-terminal.streamlit.app/" target="_blank" rel="noopener noreferrer">Open Terminal</a>
+        <button id="lead-modal-close" class="action-btn" type="button">Later</button>
+      </div>
+    </section>
+  </div>
 
   <script type="module" src="./assets/js/app.js"></script>
 </body>
