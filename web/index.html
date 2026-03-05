@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News Terminal Web</title>
+  <meta name="description" content="Real-time terminal-style news page powered by local news pipeline." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/css/terminal.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./assets/vendor/three.module.js",
+        "three/addons/": "./assets/vendor/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div class="app-shell">
+    <header class="topbar" role="banner">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="16" rx="3" ry="3"></rect>
+          <path d="M7 9l3 3-3 3M12 15h5"></path>
+        </svg>
+        <div>
+          <p class="brand-kicker">News Terminal</p>
+          <h1 class="brand-title">Signal Monitor</h1>
+        </div>
+      </div>
+
+      <form class="top-controls" aria-label="Feed filters" onsubmit="return false;">
+        <label class="control-group" for="source-filter">
+          <span>Source</span>
+          <select id="source-filter" aria-label="Filter by source">
+            <option value="all">All</option>
+            <option value="x">X</option>
+            <option value="wire">Wire</option>
+          </select>
+        </label>
+
+        <label class="control-group" for="priority-filter">
+          <span>Priority</span>
+          <select id="priority-filter" aria-label="Filter by priority">
+            <option value="all">All</option>
+            <option value="critical">Critical</option>
+            <option value="warning">Warning</option>
+            <option value="info">Info</option>
+          </select>
+        </label>
+
+        <label class="control-group search-group" for="search-input">
+          <span>Search</span>
+          <input id="search-input" type="search" placeholder="keyword, symbol" autocomplete="off" />
+        </label>
+
+        <button id="refresh-btn" class="action-btn" type="button">Refresh</button>
+      </form>
+
+      <div class="status-strip" aria-live="polite">
+        <span id="live-indicator" class="live-indicator">Live</span>
+        <span id="generated-at" class="generated-at">Data pending</span>
+      </div>
+    </header>
+
+    <main id="main-content" class="layout-grid">
+      <section class="panel feed-panel" aria-label="News feed panel">
+        <div class="panel-head">
+          <h2>Live Feed</h2>
+          <span id="feed-count" class="panel-meta">0 items</span>
+        </div>
+        <div id="feed-list" class="feed-list" role="listbox" aria-label="Latest signals"></div>
+      </section>
+
+      <section class="panel detail-panel" aria-label="Signal detail panel">
+        <div class="panel-head">
+          <h2>Signal Detail</h2>
+          <span class="panel-meta">Snapshot</span>
+        </div>
+        <section class="globe-stage" aria-label="Global signal globe">
+          <canvas id="globe-canvas" class="globe-canvas" role="application" tabindex="0" aria-label="Rotating globe. Drag to rotate, click signal nodes to view news."></canvas>
+          <div class="globe-overlay">
+            <p class="globe-kicker">Global Signal Field</p>
+            <p id="globe-summary" class="globe-summary">Waiting for feed data</p>
+          </div>
+        </section>
+        <article id="detail-view" class="detail-view" tabindex="-1"></article>
+      </section>
+
+      <aside class="panel metrics-panel" aria-label="Metrics panel">
+        <div class="panel-head">
+          <h2>Market Pulse</h2>
+          <span class="panel-meta">Computed</span>
+        </div>
+        <div id="metrics-grid" class="metrics-grid"></div>
+      </aside>
+    </main>
+  </div>
+
+  <div id="mobile-detail-drawer" class="mobile-drawer" aria-hidden="true">
+    <div class="mobile-drawer-head">
+      <h2>Signal Detail</h2>
+      <button id="mobile-close-detail" class="action-btn" type="button" aria-label="Close detail panel">Close</button>
+    </div>
+    <article id="mobile-detail-view" class="detail-view"></article>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="./assets/js/app.js"></script>
+</body>
+</html>
