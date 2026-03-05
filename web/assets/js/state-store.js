@@ -14,6 +14,24 @@ const listeners = new Set();
 const CJK_CHAR = /[\u3400-\u9FFF]/;
 const LATIN_CHAR = /[A-Za-z]/;
 
+function collapseSpaces(text) {
+  return String(text || "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function hasEnglishText(text) {
+  return /[A-Za-z]{3,}/.test(text || "");
+}
+
+function hasChineseText(text) {
+  return CJK_CHAR.test(text || "");
+}
+
+function sanitizeEnglish(text) {
+  return collapseSpaces(String(text || "").replace(/[\u3400-\u9FFF]/g, " "));
+}
+
 function classifySegment(segment) {
   let cjkCount = 0;
   let latinCount = 0;
@@ -31,36 +49,38 @@ function classifySegment(segment) {
   if (cjkCount === 0 && latinCount === 0) {
     return "neutral";
   }
-
   if (cjkCount >= Math.max(2, latinCount * 1.3)) {
     return "zh";
   }
-
   if (latinCount >= Math.max(2, cjkCount * 1.3)) {
     return "en";
   }
-
   return "mixed";
 }
 
+function extractEnglishFromMixed(segment) {
+  const withoutChinese = segment.replace(/[\u3400-\u9FFF]/g, " ");
+  return collapseSpaces(withoutChinese);
+}
+
+function extractChineseFromMixed(segment) {
+  const withoutLatin = segment.replace(/[A-Za-z]/g, " ");
+  return collapseSpaces(withoutLatin);
+}
+
 function splitBilingualText(value) {
-  const raw = String(value || "").trim();
+  const raw = collapseSpaces(value);
   if (!raw) {
     return { zh: "", en: "", raw: "" };
   }
 
-  const segments = raw
+  const segments = String(value || "")
     .split(/\r?\n+/)
-    .map((row) => row.trim())
+    .map((row) => collapseSpaces(row))
     .filter(Boolean);
-
-  if (!segments.length) {
-    return { zh: "", en: "", raw };
-  }
 
   const zhParts = [];
   const enParts = [];
-  const mixedParts = [];
 
   segments.forEach((segment) => {
     const kind = classifySegment(segment);
@@ -72,33 +92,25 @@ function splitBilingualText(value) {
       enParts.push(segment);
       return;
     }
-    mixedParts.push(segment);
+    if (kind === "mixed") {
+      const zhMixed = extractChineseFromMixed(segment);
+      const enMixed = extractEnglishFromMixed(segment);
+      if (hasChineseText(zhMixed)) {
+        zhParts.push(zhMixed);
+      }
+      if (hasEnglishText(enMixed)) {
+        enParts.push(enMixed);
+      }
+    }
   });
 
-  if (mixedParts.length > 0) {
-    const mixedText = mixedParts.join(" ");
-    const hasZh = CJK_CHAR.test(mixedText);
-    const hasEn = LATIN_CHAR.test(mixedText);
-
-    if (!zhParts.length && hasZh) {
-      zhParts.push(mixedText);
-    }
-    if (!enParts.length && hasEn) {
-      enParts.push(mixedText);
-    }
-  }
-
-  if (!zhParts.length && CJK_CHAR.test(raw)) {
+  if (!zhParts.length && hasChineseText(raw)) {
     zhParts.push(raw);
   }
 
-  if (!enParts.length && LATIN_CHAR.test(raw)) {
-    enParts.push(raw);
-  }
-
   return {
-    zh: zhParts.join(" ").trim(),
-    en: enParts.join(" ").trim(),
+    zh: collapseSpaces(zhParts.join(" ")),
+    en: collapseSpaces(enParts.join(" ")),
     raw,
   };
 }
@@ -117,15 +129,31 @@ function normalizeItem(item) {
 function localizeText(item, language) {
   const titleLang = item?._lang?.title || { zh: "", en: "", raw: "" };
   const contentLang = item?._lang?.content || { zh: "", en: "", raw: "" };
+  const localizedTitle = language === "en" ? titleLang.en : titleLang.zh;
+  const localizedContent = language === "en" ? contentLang.en : contentLang.zh;
 
-  const localizedTitle = language === "en" ? (titleLang.en || "") : (titleLang.zh || "");
-  const localizedContent = language === "en" ? (contentLang.en || "") : (contentLang.zh || "");
-  const fallbackTitle = localizedContent || titleLang.raw || contentLang.raw || "";
+  if (language === "en") {
+    const title = sanitizeEnglish(localizedTitle || "");
+    const content = sanitizeEnglish(localizedContent || "");
+    if (!hasEnglishText(title) && !hasEnglishText(content)) {
+      return { title: "", content: "", hasLocalized: false };
+    }
+    const fallbackTitle = title || content.slice(0, 120);
+    return {
+      title: fallbackTitle,
+      content,
+      hasLocalized: true,
+    };
+  }
+
+  const title = collapseSpaces(localizedTitle || "");
+  const content = collapseSpaces(localizedContent || "");
+  const fallbackTitle = title || content || titleLang.raw || contentLang.raw || "";
 
   return {
-    title: localizedTitle || fallbackTitle,
-    content: localizedContent,
-    hasLocalized: Boolean(localizedTitle || localizedContent),
+    title: fallbackTitle,
+    content: content || fallbackTitle,
+    hasLocalized: Boolean(title || content || fallbackTitle),
   };
 }
 

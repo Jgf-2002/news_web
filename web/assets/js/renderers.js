@@ -24,27 +24,23 @@ const UI_COPY = {
     dataPending: "Data pending",
     src: "SRC",
     sent: "SENT",
-    regionSignals: "signals",
-    regionNoData: "No region data available.",
   },
   zh: {
-    unknown: "未知",
-    noMatch: "当前筛选条件下没有对应新闻。",
-    selectHint: "请选择一条新闻查看详情。",
-    source: "来源",
-    sentiment: "情绪",
-    published: "发布时间",
-    openLink: "打开原始链接",
-    totalSignals: "新闻总数",
-    bySource: "来源分布",
-    byPriority: "优先级分布",
-    topSymbols: "高频关键词",
-    updatedPrefix: "更新于",
-    dataPending: "等待数据",
-    src: "来源",
-    sent: "情绪",
-    regionSignals: "条新闻",
-    regionNoData: "当前区域暂无可显示新闻。",
+    unknown: "\u672a\u77e5",
+    noMatch: "\u5f53\u524d\u7b5b\u9009\u6761\u4ef6\u4e0b\u6ca1\u6709\u5bf9\u5e94\u65b0\u95fb\u3002",
+    selectHint: "\u8bf7\u9009\u62e9\u4e00\u6761\u65b0\u95fb\u67e5\u770b\u8be6\u60c5\u3002",
+    source: "\u6765\u6e90",
+    sentiment: "\u60c5\u7eea",
+    published: "\u53d1\u5e03\u65f6\u95f4",
+    openLink: "\u6253\u5f00\u539f\u59cb\u94fe\u63a5",
+    totalSignals: "\u65b0\u95fb\u603b\u6570",
+    bySource: "\u6765\u6e90\u5206\u5e03",
+    byPriority: "\u4f18\u5148\u7ea7\u5206\u5e03",
+    topSymbols: "\u9ad8\u9891\u5173\u952e\u8bcd",
+    updatedPrefix: "\u66f4\u65b0\u4e8e",
+    dataPending: "\u7b49\u5f85\u6570\u636e",
+    src: "\u6765\u6e90",
+    sent: "\u60c5\u7eea",
   },
 };
 
@@ -246,41 +242,6 @@ export function renderMetrics(container, items, language = "zh") {
       <p class="metric-label">${escapeHtml(copy.topSymbols)}</p>
       <ul class="metric-list">${symbolsHtml}</ul>
     </section>
-  `;
-}
-
-export function renderRegionPopover(container, regionData, language = "zh") {
-  if (!container) {
-    return;
-  }
-
-  const copy = getCopy(language);
-  if (!regionData) {
-    container.hidden = true;
-    container.innerHTML = "";
-    return;
-  }
-
-  const items = Array.isArray(regionData.items) ? regionData.items.slice(0, 6) : [];
-  const itemHtml = items.length
-    ? items
-        .map((item) => `
-          <li>
-            <p class="region-item-title">${escapeHtml(item.title || copy.unknown)}</p>
-            <p class="region-item-meta">${escapeHtml(item.source || "N/A")} | ${escapeHtml(formatUtc(item.published_at, language))}</p>
-          </li>
-        `)
-        .join("")
-    : `<li><p class="region-item-title">${escapeHtml(copy.regionNoData)}</p></li>`;
-
-  container.hidden = false;
-  container.innerHTML = `
-    <div class="region-head">
-      <p class="region-title">${escapeHtml(regionData.label || copy.unknown)}</p>
-      <span class="region-meta">${escapeHtml(String(regionData.count || 0))} ${escapeHtml(copy.regionSignals)}</span>
-    </div>
-    <p class="region-nickname">${escapeHtml(regionData.nickname || "")}</p>
-    <ul class="region-items">${itemHtml}</ul>
   `;
 }
 

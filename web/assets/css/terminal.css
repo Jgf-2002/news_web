@@ -253,6 +253,30 @@ a {
   font-size: 11px;
 }
 
+.panel-head-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-filter-clear {
+  border: 1px solid rgba(96, 165, 250, 0.44);
+  border-radius: 999px;
+  padding: 3px 9px;
+  background: rgba(30, 64, 175, 0.2);
+  color: #bfdbfe;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.panel-filter-clear:hover {
+  border-color: rgba(125, 211, 252, 0.8);
+  background: rgba(30, 64, 175, 0.36);
+}
+
 .feed-list {
   max-height: calc(100vh - 215px);
   overflow-y: auto;
@@ -410,78 +434,6 @@ a {
   text-align: right;
 }
 
-.region-popover {
-  position: absolute;
-  left: 22px;
-  bottom: 20px;
-  width: min(380px, calc(100% - 44px));
-  max-height: 62%;
-  overflow-y: auto;
-  border: 1px solid rgba(125, 169, 223, 0.44);
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(7, 17, 30, 0.94), rgba(7, 9, 16, 0.93));
-  box-shadow: var(--shadow-pop);
-  padding: 10px 12px 12px;
-}
-
-.region-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.region-title {
-  margin: 0;
-  font-size: 14px;
-  color: #dbeafe;
-  font-family: "JetBrains Mono", monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.region-nickname {
-  margin: 4px 0 0;
-  color: #60a5fa;
-  font-size: 12px;
-  font-family: "JetBrains Mono", monospace;
-}
-
-.region-meta {
-  color: #7f8796;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
-}
-
-.region-items {
-  margin: 10px 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 6px;
-}
-
-.region-items li {
-  border: 1px solid rgba(39, 39, 54, 0.85);
-  border-radius: 9px;
-  padding: 7px 8px;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.region-item-title {
-  margin: 0;
-  color: #e2e8f0;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.region-item-meta {
-  margin-top: 4px;
-  color: #93a6bf;
-  font-size: 10px;
-  font-family: "JetBrains Mono", monospace;
-  letter-spacing: 0.04em;
-}
 
 .detail-view {
   min-height: 220px;
@@ -783,14 +735,6 @@ a {
 
   .globe-canvas {
     height: 390px;
-  }
-
-  .region-popover {
-    left: 14px;
-    right: 14px;
-    width: auto;
-    bottom: 14px;
-    max-height: 50%;
   }
 
   .detail-view {

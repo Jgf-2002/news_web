@@ -80,8 +80,11 @@
     <main id="main-content" class="layout-grid">
       <section class="panel feed-panel" aria-label="News feed panel">
         <div class="panel-head">
-          <h2>Live Feed</h2>
-          <span id="feed-count" class="panel-meta">0 items</span>
+          <h2 id="feed-title">Live Feed</h2>
+          <div class="panel-head-actions">
+            <button id="clear-region-filter" class="panel-filter-clear" type="button" hidden>All Regions</button>
+            <span id="feed-count" class="panel-meta">0 items</span>
+          </div>
         </div>
         <div id="feed-list" class="feed-list" role="listbox" aria-label="Latest signals"></div>
       </section>
@@ -97,7 +100,6 @@
             <p class="globe-kicker">Global Signal Field</p>
             <p id="globe-summary" class="globe-summary">Waiting for feed data</p>
           </div>
-          <aside id="region-popover" class="region-popover" hidden></aside>
         </section>
         <article id="detail-view" class="detail-view" tabindex="-1"></article>
       </section>

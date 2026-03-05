@@ -12,7 +12,6 @@ import {
   renderFeedList,
   renderDetail,
   renderMetrics,
-  renderRegionPopover,
   formatGeneratedAt,
 } from "./renderers.js";
 import {
@@ -35,37 +34,45 @@ const UI_TEXT = {
     searchPlaceholder: "keyword, symbol",
     refresh: "Refresh",
     contact: "Contact",
-    feedCount: (n) => `${n} items`,
+    feedTitle: "Live Feed",
+    clearRegion: "All Regions",
+    feedCount: (count) => `${count} items`,
+    feedCountRegion: (count, region) => `${count} items | ${region}`,
     live: "Live",
     idle: "Idle",
-    loadedSignals: (n) => `Loaded ${n} signals`,
+    loadedSignals: (count) => `Loaded ${count} signals`,
     loadFailed: "Data load failed",
     selectedFromGlobe: "Signal selected from globe",
     focusedRegion: "Focused on selected region",
+    regionFilterOn: (label) => `Region filter: ${label}`,
     leadTitle: "Need deeper market context?",
     leadText: "Open ParisTrader Terminal for full workflow, deeper analytics and faster decision support.",
     leadOpen: "Open Terminal",
     leadLater: "Later",
   },
   zh: {
-    source: "来源",
-    priority: "优先级",
-    language: "语言",
-    search: "搜索",
-    searchPlaceholder: "关键词、代码",
-    refresh: "刷新",
-    contact: "联系我",
-    feedCount: (n) => `${n} 条`,
-    live: "实时",
-    idle: "空闲",
-    loadedSignals: (n) => `已加载 ${n} 条新闻`,
-    loadFailed: "数据加载失败",
-    selectedFromGlobe: "已从地球视图选中新闻",
-    focusedRegion: "已定位到对应区域",
-    leadTitle: "需要更深层的市场上下文？",
-    leadText: "打开 ParisTrader Terminal，获取更完整流程、更深分析与更快决策支持。",
-    leadOpen: "打开终端",
-    leadLater: "稍后",
+    source: "\u6765\u6e90",
+    priority: "\u4f18\u5148\u7ea7",
+    language: "\u8bed\u8a00",
+    search: "\u641c\u7d22",
+    searchPlaceholder: "\u5173\u952e\u8bcd\u3001\u4ee3\u7801",
+    refresh: "\u5237\u65b0",
+    contact: "\u8054\u7cfb\u6211",
+    feedTitle: "\u5b9e\u65f6\u65b0\u95fb",
+    clearRegion: "\u8fd4\u56de\u5168\u90e8",
+    feedCount: (count) => `${count} \u6761`,
+    feedCountRegion: (count, region) => `${count} \u6761 | ${region}`,
+    live: "\u5b9e\u65f6",
+    idle: "\u7a7a\u95f2",
+    loadedSignals: (count) => `\u5df2\u52a0\u8f7d ${count} \u6761\u65b0\u95fb`,
+    loadFailed: "\u6570\u636e\u52a0\u8f7d\u5931\u8d25",
+    selectedFromGlobe: "\u5df2\u4ece\u5730\u56fe\u9009\u4e2d\u65b0\u95fb",
+    focusedRegion: "\u5df2\u5b9a\u4f4d\u5230\u5bf9\u5e94\u533a\u57df",
+    regionFilterOn: (label) => `\u5df2\u5207\u6362\u5230 ${label} \u533a\u57df\u65b0\u95fb`,
+    leadTitle: "\u9700\u8981\u66f4\u6df1\u5c42\u7684\u5e02\u573a\u4e0a\u4e0b\u6587\uff1f",
+    leadText: "\u6253\u5f00 ParisTrader Terminal\uff0c\u83b7\u53d6\u66f4\u5b8c\u6574\u6d41\u7a0b\u3001\u66f4\u6df1\u5206\u6790\u4e0e\u66f4\u5feb\u51b3\u7b56\u652f\u6301\u3002",
+    leadOpen: "\u6253\u5f00\u7ec8\u7aef",
+    leadLater: "\u7a0d\u540e",
   },
 };
 
@@ -76,6 +83,8 @@ const elements = {
   searchInput: document.getElementById("search-input"),
   refreshButton: document.getElementById("refresh-btn"),
   contactButton: document.getElementById("contact-btn"),
+  feedTitle: document.getElementById("feed-title"),
+  clearRegionButton: document.getElementById("clear-region-filter"),
   feedList: document.getElementById("feed-list"),
   detailView: document.getElementById("detail-view"),
   mobileDetailView: document.getElementById("mobile-detail-view"),
@@ -85,7 +94,6 @@ const elements = {
   liveIndicator: document.getElementById("live-indicator"),
   globeCanvas: document.getElementById("globe-canvas"),
   globeSummary: document.getElementById("globe-summary"),
-  regionPopover: document.getElementById("region-popover"),
   drawer: document.getElementById("mobile-detail-drawer"),
   drawerCloseButton: document.getElementById("mobile-close-detail"),
   toast: document.getElementById("toast"),
@@ -102,19 +110,7 @@ const elements = {
   leadModalOpen: document.getElementById("lead-modal-open"),
 };
 
-const globe = createGlobeRenderer(elements.globeCanvas, elements.globeSummary, {
-  onSelect: (item) => {
-    if (!item?.id) {
-      return;
-    }
-    selectItem(item.id, {
-      openOnMobile: true,
-      focusGlobe: false,
-    });
-    showToast(getText("selectedFromGlobe"));
-  },
-});
-
+let activeRegionName = null;
 let toastTimer = null;
 let leadModalTimer = null;
 let lastRenderedSelectedId = null;
@@ -125,11 +121,38 @@ function getLanguage() {
 }
 
 function getText(key, ...args) {
-  const language = getLanguage();
-  const dictionary = UI_TEXT[language];
+  const dictionary = UI_TEXT[getLanguage()];
   const value = dictionary[key];
   return typeof value === "function" ? value(...args) : value;
 }
+
+function getRegionLabel(regionName, language = getLanguage()) {
+  if (!regionName) {
+    return "";
+  }
+  return getHubDisplayInfo(regionName, language).label || regionName;
+}
+
+const globe = createGlobeRenderer(elements.globeCanvas, elements.globeSummary, {
+  onSelect: (selection) => {
+    const item = selection?.item || null;
+    if (!item?.id) {
+      return;
+    }
+
+    if (selection?.regionName) {
+      activeRegionName = selection.regionName;
+      showToast(getText("regionFilterOn", getRegionLabel(activeRegionName)));
+    } else {
+      showToast(getText("selectedFromGlobe"));
+    }
+
+    selectItem(item.id, {
+      openOnMobile: true,
+      focusGlobe: false,
+    });
+  },
+});
 
 function isMobileViewport() {
   return window.matchMedia("(max-width: 920px)").matches;
@@ -179,8 +202,7 @@ function markLeadModalSeen() {
 }
 
 function shouldAutoShowLeadModal() {
-  const lastSeen = readLeadModalLastSeen();
-  return Date.now() - lastSeen >= LEAD_MODAL_COOLDOWN_MS;
+  return Date.now() - readLeadModalLastSeen() >= LEAD_MODAL_COOLDOWN_MS;
 }
 
 function openLeadModal() {
@@ -225,47 +247,53 @@ function setOptionText(select, value, label) {
 }
 
 function applyLanguageUi(language) {
-  const dictionary = language === "en" ? UI_TEXT.en : UI_TEXT.zh;
+  const copy = UI_TEXT[language];
 
   if (elements.labelSource) {
-    elements.labelSource.textContent = dictionary.source;
+    elements.labelSource.textContent = copy.source;
   }
   if (elements.labelPriority) {
-    elements.labelPriority.textContent = dictionary.priority;
+    elements.labelPriority.textContent = copy.priority;
   }
   if (elements.labelLanguage) {
-    elements.labelLanguage.textContent = dictionary.language;
+    elements.labelLanguage.textContent = copy.language;
   }
   if (elements.labelSearch) {
-    elements.labelSearch.textContent = dictionary.search;
+    elements.labelSearch.textContent = copy.search;
+  }
+  if (elements.feedTitle) {
+    elements.feedTitle.textContent = copy.feedTitle;
+  }
+  if (elements.clearRegionButton) {
+    elements.clearRegionButton.textContent = copy.clearRegion;
   }
 
-  setOptionText(elements.sourceFilter, "all", language === "en" ? "All" : "全部");
-  setOptionText(elements.priorityFilter, "all", language === "en" ? "All" : "全部");
-  setOptionText(elements.priorityFilter, "critical", language === "en" ? "Critical" : "紧急");
-  setOptionText(elements.priorityFilter, "warning", language === "en" ? "Warning" : "警告");
-  setOptionText(elements.priorityFilter, "info", language === "en" ? "Info" : "信息");
+  setOptionText(elements.sourceFilter, "all", language === "en" ? "All" : "\u5168\u90e8");
+  setOptionText(elements.priorityFilter, "all", language === "en" ? "All" : "\u5168\u90e8");
+  setOptionText(elements.priorityFilter, "critical", language === "en" ? "Critical" : "\u7d27\u6025");
+  setOptionText(elements.priorityFilter, "warning", language === "en" ? "Warning" : "\u8b66\u544a");
+  setOptionText(elements.priorityFilter, "info", language === "en" ? "Info" : "\u4fe1\u606f");
 
   if (elements.searchInput) {
-    elements.searchInput.placeholder = dictionary.searchPlaceholder;
+    elements.searchInput.placeholder = copy.searchPlaceholder;
   }
   if (elements.refreshButton) {
-    elements.refreshButton.textContent = dictionary.refresh;
+    elements.refreshButton.textContent = copy.refresh;
   }
   if (elements.contactButton) {
-    elements.contactButton.textContent = dictionary.contact;
+    elements.contactButton.textContent = copy.contact;
   }
   if (elements.leadModalTitle) {
-    elements.leadModalTitle.textContent = dictionary.leadTitle;
+    elements.leadModalTitle.textContent = copy.leadTitle;
   }
   if (elements.leadModalText) {
-    elements.leadModalText.textContent = dictionary.leadText;
+    elements.leadModalText.textContent = copy.leadText;
   }
   if (elements.leadModalOpen) {
-    elements.leadModalOpen.textContent = dictionary.leadOpen;
+    elements.leadModalOpen.textContent = copy.leadOpen;
   }
   if (elements.leadModalClose) {
-    elements.leadModalClose.textContent = dictionary.leadLater;
+    elements.leadModalClose.textContent = copy.leadLater;
   }
 
   if (elements.languageFilter && elements.languageFilter.value !== language) {
@@ -275,7 +303,6 @@ function applyLanguageUi(language) {
 
 function selectItem(itemId, options = {}) {
   const { openOnMobile = false, focusGlobe = false } = options;
-
   if (focusGlobe) {
     pendingForceFocusId = itemId;
   }
@@ -287,33 +314,17 @@ function selectItem(itemId, options = {}) {
   }
 }
 
-function buildRegionViewData(selectedItem, filteredItems, language) {
-  if (!selectedItem) {
-    return null;
+function resolveRegionScopedItems(allItems) {
+  if (!activeRegionName) {
+    return allItems;
   }
 
-  const selectedIndex = Math.max(0, filteredItems.findIndex((item) => item.id === selectedItem.id));
-  const regionBundle = globe.getRegionBundleForItem(selectedItem, selectedIndex);
-  const inferredHub = regionBundle?.hub || inferPrimaryHub(selectedItem, selectedIndex);
-  if (!inferredHub) {
-    return null;
+  const regionItems = allItems.filter((item, index) => inferPrimaryHub(item, index)?.name === activeRegionName);
+  if (regionItems.length === 0) {
+    activeRegionName = null;
+    return allItems;
   }
-
-  const hubName = inferredHub.name;
-  const fallbackItems = filteredItems.filter((item, index) => inferPrimaryHub(item, index)?.name === hubName);
-  const regionItems = Array.isArray(regionBundle?.items) && regionBundle.items.length
-    ? regionBundle.items
-    : fallbackItems;
-
-  const display = getHubDisplayInfo(hubName, language);
-
-  return {
-    hubName,
-    label: display.label,
-    nickname: display.nickname,
-    count: regionItems.length,
-    items: regionItems,
-  };
+  return regionItems;
 }
 
 function syncView() {
@@ -321,8 +332,9 @@ function syncView() {
   const language = state.filters.language === "en" ? "en" : "zh";
   applyLanguageUi(language);
 
-  const filteredItems = getFilteredItems();
-  const selectedItem = getSelectedItem(filteredItems);
+  const allItems = getFilteredItems();
+  const visibleItems = resolveRegionScopedItems(allItems);
+  const selectedItem = getSelectedItem(visibleItems);
 
   if (selectedItem && selectedItem.id !== state.selectedId) {
     setSelectedId(selectedItem.id);
@@ -331,7 +343,7 @@ function syncView() {
 
   renderFeedList(
     elements.feedList,
-    filteredItems,
+    visibleItems,
     selectedItem?.id || null,
     (itemId) => {
       selectItem(itemId, {
@@ -343,26 +355,20 @@ function syncView() {
   );
   renderDetail(elements.detailView, selectedItem, language);
   renderDetail(elements.mobileDetailView, selectedItem, language);
-  renderMetrics(elements.metricsGrid, filteredItems, language);
-  globe.setSignals(filteredItems);
+  renderMetrics(elements.metricsGrid, visibleItems, language);
+  globe.setSignals(allItems);
 
   const selectedId = selectedItem?.id || null;
   globe.setSelectedItemId(selectedId);
 
-  let regionViewData = null;
-  if (selectedItem) {
-    regionViewData = buildRegionViewData(selectedItem, filteredItems, language);
-    globe.setHighlightedRegion(regionViewData?.hubName || null);
-  } else {
-    globe.setHighlightedRegion(null);
-  }
-
-  renderRegionPopover(elements.regionPopover, regionViewData, language);
+  const selectedIndex = selectedItem ? Math.max(0, allItems.findIndex((item) => item.id === selectedItem.id)) : -1;
+  const selectedHub = selectedItem ? inferPrimaryHub(selectedItem, selectedIndex) : null;
+  const highlightRegion = activeRegionName || selectedHub?.name || null;
+  globe.setHighlightedRegion(highlightRegion);
 
   const selectedChanged = selectedId !== lastRenderedSelectedId;
   const shouldForceFocus = Boolean(selectedId && pendingForceFocusId === selectedId);
-  if (selectedId && (selectedChanged || shouldForceFocus)) {
-    const selectedIndex = filteredItems.findIndex((item) => item.id === selectedId);
+  if (selectedItem && (selectedChanged || shouldForceFocus)) {
     globe.focusOnItem(selectedItem, selectedIndex);
     if (shouldForceFocus) {
       showToast(getText("focusedRegion"));
@@ -373,9 +379,18 @@ function syncView() {
   }
   lastRenderedSelectedId = selectedId;
 
-  elements.feedCount.textContent = getText("feedCount", filteredItems.length);
+  if (elements.clearRegionButton) {
+    elements.clearRegionButton.hidden = !activeRegionName;
+  }
+
+  if (activeRegionName) {
+    elements.feedCount.textContent = getText("feedCountRegion", visibleItems.length, getRegionLabel(activeRegionName, language));
+  } else {
+    elements.feedCount.textContent = getText("feedCount", visibleItems.length);
+  }
+
   elements.generatedAt.textContent = formatGeneratedAt(state.generatedAt, language);
-  elements.liveIndicator.textContent = filteredItems.length > 0 ? getText("live") : getText("idle");
+  elements.liveIndicator.textContent = visibleItems.length > 0 ? getText("live") : getText("idle");
 }
 
 async function loadAndRender({ silent = false } = {}) {
@@ -412,6 +427,12 @@ function bindEvents() {
 
   elements.refreshButton.addEventListener("click", () => {
     loadAndRender();
+  });
+
+  elements.clearRegionButton?.addEventListener("click", () => {
+    activeRegionName = null;
+    showToast(getText("clearRegion"));
+    setSelectedId(getState().selectedId);
   });
 
   elements.contactButton.addEventListener("click", () => {

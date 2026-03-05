@@ -395,6 +395,7 @@ class GlobeRenderer {
     this.interactiveMarkers = [];
     this.interactiveRegions = [];
     this.regionVisuals = [];
+    this.regionPatches = [];
     this.markerHalos = [];
     this.regionBuckets = new Map();
     this.fullRegionBuckets = new Map();
@@ -640,7 +641,7 @@ class GlobeRenderer {
 
       if (distance < 6 && elapsed < 360) {
         const picked = this.pickSignal(event);
-        if (picked && picked.id) {
+        if (picked?.item?.id) {
           this.onSelect(picked);
         }
       }
@@ -762,6 +763,12 @@ class GlobeRenderer {
       const hotspot = this.regionVisuals[i];
       const isSelectedRegion = hotspot?.userData?.regionName === this.selectedRegionName;
       hotspot.userData.highlightBoost = isSelectedRegion ? 0.3 : 0;
+    }
+
+    for (let i = 0; i < this.regionPatches.length; i += 1) {
+      const patch = this.regionPatches[i];
+      const isSelectedRegion = patch?.userData?.regionName === this.selectedRegionName;
+      patch.userData.highlightBoost = isSelectedRegion ? 0.5 : 0;
     }
 
     this.regionCoreByName.forEach((core, regionName) => {
@@ -1068,6 +1075,7 @@ class GlobeRenderer {
     const maxCount = Math.max(1, ...counts);
     const baseColor = new THREE.Color(0x7da9df);
     const hotspotGeometry = new THREE.SphereGeometry(0.018, 12, 12);
+    const patchGeometry = new THREE.CircleGeometry(0.17, 44);
     const hitGeometry = new THREE.SphereGeometry(0.075, 10, 10);
 
     for (let i = 0; i < HUBS.length; i += 1) {
@@ -1104,6 +1112,32 @@ class GlobeRenderer {
       this.regionGroup.add(hotspot);
       this.regionVisuals.push(hotspot);
 
+      const patchMaterial = new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.06 + intensity * 0.16,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        side: THREE.DoubleSide,
+      });
+      const patch = new THREE.Mesh(patchGeometry.clone(), patchMaterial);
+      const patchNormal = position.clone().normalize();
+      const patchLift = EARTH_RADIUS * 1.003;
+      patch.position.copy(patchNormal.clone().multiplyScalar(patchLift));
+      patch.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), patchNormal);
+      const patchScale = 0.84 + intensity * 0.48;
+      patch.scale.setScalar(patchScale);
+      patch.userData.phase = i * 0.31;
+      patch.userData.intensity = intensity;
+      patch.userData.baseScale = patchScale;
+      patch.userData.baseLift = patchLift;
+      patch.userData.baseOpacity = 0.06 + intensity * 0.16;
+      patch.userData.regionName = hub.name;
+      patch.userData.normal = patchNormal;
+      patch.userData.highlightBoost = 0;
+      this.regionGroup.add(patch);
+      this.regionPatches.push(patch);
+
       const coreGeometry = new THREE.SphereGeometry(0.006 + intensity * 0.005, 10, 10);
       const coreMaterial = new THREE.MeshBasicMaterial({
         color: count > 0 ? color : baseColor,
@@ -1136,6 +1170,7 @@ class GlobeRenderer {
     this.interactiveMarkers = [];
     this.interactiveRegions = [];
     this.regionVisuals = [];
+    this.regionPatches = [];
     this.markerHalos = [];
     this.pulses = [];
     this.regionBuckets = new Map();
@@ -1207,6 +1242,32 @@ class GlobeRenderer {
         Math.sin(timeSec * 1.6 + phase) * 0.012;
     }
 
+    for (let i = 0; i < this.regionPatches.length; i += 1) {
+      const patch = this.regionPatches[i];
+      if (!patch) {
+        continue;
+      }
+      const phase = patch.userData.phase || 0;
+      const intensity = patch.userData.intensity || 0;
+      const baseScale = patch.userData.baseScale || 1;
+      const baseLift = patch.userData.baseLift || (EARTH_RADIUS * 1.003);
+      const baseOpacity = patch.userData.baseOpacity || 0.1;
+      const normal = patch.userData.normal;
+      const highlightBoost = patch.userData.highlightBoost || 0;
+
+      if (normal) {
+        const liftWave = Math.sin(timeSec * 1.42 + phase) * (0.008 + highlightBoost * 0.02);
+        patch.position.copy(normal.clone().multiplyScalar(baseLift + liftWave));
+      }
+
+      const scaleWave = 1 + Math.sin(timeSec * 1.75 + phase) * (0.06 + intensity * 0.05 + highlightBoost * 0.12);
+      patch.scale.setScalar(baseScale * scaleWave * (1 + highlightBoost * 0.35));
+      patch.material.opacity =
+        baseOpacity +
+        highlightBoost * 0.22 +
+        Math.sin(timeSec * 1.32 + phase) * 0.022;
+    }
+
     for (let i = 0; i < this.pulses.length; i += 1) {
       const pulse = this.pulses[i];
       const points = pulse.points;
@@ -1229,8 +1290,16 @@ class GlobeRenderer {
   pickSignal(event) {
     const intersects = this.raycastMarkers(event);
     if (intersects.length) {
-      const item = intersects[0].object?.userData?.item;
-      return item || null;
+      const object = intersects[0].object;
+      const item = object?.userData?.item;
+      if (!item) {
+        return null;
+      }
+      return {
+        item,
+        regionName: object?.userData?.region || null,
+        source: "marker",
+      };
     }
 
     const regionIntersects = this.raycastRegions(event);
@@ -1238,12 +1307,17 @@ class GlobeRenderer {
       return null;
     }
 
-    const regionItems = regionIntersects[0].object?.userData?.items;
+    const regionObj = regionIntersects[0].object;
+    const regionItems = regionObj?.userData?.items;
     if (!Array.isArray(regionItems) || regionItems.length === 0) {
       return null;
     }
 
-    return regionItems[0] || null;
+    return {
+      item: regionItems[0] || null,
+      regionName: regionObj?.userData?.region || null,
+      source: "region",
+    };
   }
 
   isHoveringMarker(event) {
