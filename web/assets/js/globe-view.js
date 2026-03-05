@@ -42,6 +42,7 @@ const MIN_SECONDARY_CONFIDENCE = 0.92;
 const FOCUS_DURATION_MS = 1200;
 const FOCUS_DURATION_REDUCED_MS = 280;
 const FOCUS_AUTO_ROTATE_RESUME_DELAY_MS = 1700;
+const IDLE_AUTO_ROTATE_SPEED = 0.22;
 
 const HUBS = [
   { name: "US-E", lat: 40.7128, lon: -74.006, keywords: ["UNITED STATES", "USA", "U.S.", "US", "WASHINGTON", "NEW YORK", "WALL STREET", "S&P", "DOW", "TREASURY", "FED", "FOMC", "USD", "NFP", "CPI", "美國", "美国", "紐約", "纽约", "華盛頓", "华盛顿", "美聯儲", "美联储"] },
@@ -405,7 +406,7 @@ class GlobeRenderer {
     this.controls.minPolarAngle = 0.55;
     this.controls.maxPolarAngle = 2.55;
     this.controls.autoRotate = !this.reduceMotion;
-    this.controls.autoRotateSpeed = 0.54;
+    this.controls.autoRotateSpeed = IDLE_AUTO_ROTATE_SPEED;
 
     this.globeGroup = new THREE.Group();
     this.globeGroup.rotation.y = -2.95;
@@ -746,6 +747,7 @@ class GlobeRenderer {
     if (this.focusResumeAtTs && !this.focusAnimation && ts >= this.focusResumeAtTs) {
       this.focusResumeAtTs = 0;
       if (!this.reduceMotion) {
+        this.controls.autoRotateSpeed = IDLE_AUTO_ROTATE_SPEED;
         this.controls.autoRotate = true;
       }
     }
