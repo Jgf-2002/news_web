@@ -4,6 +4,7 @@ import {
   setData,
   setFilter,
   setSelectedId,
+  getState,
   getFilteredItems,
   getSelectedItem,
 } from "./state-store.js";
