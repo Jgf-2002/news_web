@@ -71,7 +71,7 @@ a {
   grid-template-columns: minmax(200px, 280px) 1fr auto;
   gap: 12px;
   align-items: center;
-  padding: 12px;
+  padding: 12px 124px 12px 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: linear-gradient(180deg, rgba(10, 10, 16, 0.96), rgba(10, 10, 16, 0.84));
@@ -191,10 +191,14 @@ a {
   align-items: center;
   gap: 10px;
   min-width: 160px;
+  padding-right: 2px;
 }
 
 .lang-toggle {
-  position: relative;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
   width: 96px;
   height: 32px;
   border-radius: 999px;
@@ -755,6 +759,7 @@ a {
   .topbar {
     grid-template-columns: 1fr;
     gap: 10px;
+    padding-right: 112px;
   }
 
   .top-controls {
@@ -766,7 +771,7 @@ a {
   }
 
   .status-strip {
-    justify-self: start;
+    justify-self: end;
   }
 
   .layout-grid {
@@ -786,6 +791,15 @@ a {
   .app-shell {
     width: calc(100% - 16px);
     margin: 8px auto;
+  }
+
+  .topbar {
+    padding-top: 50px;
+    padding-right: 12px;
+  }
+
+  .status-strip {
+    padding-right: 0;
   }
 
   .top-controls {
@@ -813,6 +827,8 @@ a {
 
   .lang-toggle {
     width: 86px;
+    top: 10px;
+    right: 10px;
   }
 
   .lang-toggle[data-language="en"] .lang-toggle-thumb {
