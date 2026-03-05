@@ -27,9 +27,9 @@ const LEAD_MODAL_STORAGE_KEY = "news_web_lead_modal_last_seen";
 
 const UI_TEXT = {
   en: {
+    brandTitle: "Global News — Chinese No.1 Flash Report",
     source: "Source",
     priority: "Priority",
-    language: "Language",
     search: "Search",
     searchPlaceholder: "keyword, symbol",
     refresh: "Refresh",
@@ -45,15 +45,17 @@ const UI_TEXT = {
     selectedFromGlobe: "Signal selected from globe",
     focusedRegion: "Focused on selected region",
     regionFilterOn: (label) => `Region filter: ${label}`,
+    regionHint: (label) => `REGION LOCK: ${label}`,
     leadTitle: "Need deeper market context?",
-    leadText: "Open ParisTrader Terminal for full workflow, deeper analytics and faster decision support.",
-    leadOpen: "Open Terminal",
+    leadText: "Jump to the ParisTrader webpage for full workflow, deeper analytics and faster decision support.",
+    leadOpen: "Go To Webpage",
     leadLater: "Later",
+    toggleText: "EN",
   },
   zh: {
+    brandTitle: "\u5bf0\u7403\u65b0\u805e\u30fb\u83ef\u8a9e\u7b2c\u4e00\u901f\u5831",
     source: "\u6765\u6e90",
     priority: "\u4f18\u5148\u7ea7",
-    language: "\u8bed\u8a00",
     search: "\u641c\u7d22",
     searchPlaceholder: "\u5173\u952e\u8bcd\u3001\u4ee3\u7801",
     refresh: "\u5237\u65b0",
@@ -69,17 +71,21 @@ const UI_TEXT = {
     selectedFromGlobe: "\u5df2\u4ece\u5730\u56fe\u9009\u4e2d\u65b0\u95fb",
     focusedRegion: "\u5df2\u5b9a\u4f4d\u5230\u5bf9\u5e94\u533a\u57df",
     regionFilterOn: (label) => `\u5df2\u5207\u6362\u5230 ${label} \u533a\u57df\u65b0\u95fb`,
+    regionHint: (label) => `\u76ee\u524d\u5340\u57df\uff1a${label}`,
     leadTitle: "\u9700\u8981\u66f4\u6df1\u5c42\u7684\u5e02\u573a\u4e0a\u4e0b\u6587\uff1f",
-    leadText: "\u6253\u5f00 ParisTrader Terminal\uff0c\u83b7\u53d6\u66f4\u5b8c\u6574\u6d41\u7a0b\u3001\u66f4\u6df1\u5206\u6790\u4e0e\u66f4\u5feb\u51b3\u7b56\u652f\u6301\u3002",
-    leadOpen: "\u6253\u5f00\u7ec8\u7aef",
+    leadText: "\u8df3\u8f49\u5230 ParisTrader \u7db2\u9801\uff0c\u7372\u53d6\u66f4\u5b8c\u6574\u6d41\u7a0b\u3001\u66f4\u6df1\u5206\u6790\u8207\u66f4\u5feb\u6c7a\u7b56\u652f\u63f4\u3002",
+    leadOpen: "\u8df3\u8f49\u7db2\u9801",
     leadLater: "\u7a0d\u540e",
+    toggleText: "\u4e2d\u6587",
   },
 };
 
 const elements = {
+  brandTitle: document.getElementById("brand-title"),
   sourceFilter: document.getElementById("source-filter"),
   priorityFilter: document.getElementById("priority-filter"),
-  languageFilter: document.getElementById("language-filter"),
+  languageToggle: document.getElementById("language-toggle"),
+  languageToggleText: document.getElementById("language-toggle-text"),
   searchInput: document.getElementById("search-input"),
   refreshButton: document.getElementById("refresh-btn"),
   contactButton: document.getElementById("contact-btn"),
@@ -94,12 +100,12 @@ const elements = {
   liveIndicator: document.getElementById("live-indicator"),
   globeCanvas: document.getElementById("globe-canvas"),
   globeSummary: document.getElementById("globe-summary"),
+  regionHint: document.getElementById("region-hint"),
   drawer: document.getElementById("mobile-detail-drawer"),
   drawerCloseButton: document.getElementById("mobile-close-detail"),
   toast: document.getElementById("toast"),
   labelSource: document.getElementById("label-source"),
   labelPriority: document.getElementById("label-priority"),
-  labelLanguage: document.getElementById("label-language"),
   labelSearch: document.getElementById("label-search"),
   leadModal: document.getElementById("lead-modal"),
   leadModalBackdrop: document.getElementById("lead-modal-backdrop"),
@@ -113,6 +119,7 @@ const elements = {
 let activeRegionName = null;
 let toastTimer = null;
 let leadModalTimer = null;
+let regionHintTimer = null;
 let lastRenderedSelectedId = null;
 let pendingForceFocusId = null;
 
@@ -143,6 +150,7 @@ const globe = createGlobeRenderer(elements.globeCanvas, elements.globeSummary, {
     if (selection?.regionName) {
       activeRegionName = selection.regionName;
       showToast(getText("regionFilterOn", getRegionLabel(activeRegionName)));
+      showRegionHint(activeRegionName);
     } else {
       showToast(getText("selectedFromGlobe"));
     }
@@ -183,6 +191,37 @@ function showToast(message) {
   toastTimer = window.setTimeout(() => {
     elements.toast.classList.remove("visible");
   }, 1800);
+}
+
+function showRegionHint(regionName) {
+  if (!elements.regionHint || !regionName) {
+    return;
+  }
+
+  const label = getRegionLabel(regionName);
+  elements.regionHint.textContent = getText("regionHint", label);
+  elements.regionHint.hidden = false;
+  elements.regionHint.classList.add("blink");
+
+  if (regionHintTimer) {
+    window.clearTimeout(regionHintTimer);
+  }
+
+  regionHintTimer = window.setTimeout(() => {
+    elements.regionHint.classList.remove("blink");
+  }, 4800);
+}
+
+function hideRegionHint() {
+  if (!elements.regionHint) {
+    return;
+  }
+  if (regionHintTimer) {
+    window.clearTimeout(regionHintTimer);
+    regionHintTimer = null;
+  }
+  elements.regionHint.hidden = true;
+  elements.regionHint.classList.remove("blink");
 }
 
 function readLeadModalLastSeen() {
@@ -249,14 +288,14 @@ function setOptionText(select, value, label) {
 function applyLanguageUi(language) {
   const copy = UI_TEXT[language];
 
+  if (elements.brandTitle) {
+    elements.brandTitle.textContent = copy.brandTitle;
+  }
   if (elements.labelSource) {
     elements.labelSource.textContent = copy.source;
   }
   if (elements.labelPriority) {
     elements.labelPriority.textContent = copy.priority;
-  }
-  if (elements.labelLanguage) {
-    elements.labelLanguage.textContent = copy.language;
   }
   if (elements.labelSearch) {
     elements.labelSearch.textContent = copy.search;
@@ -295,9 +334,12 @@ function applyLanguageUi(language) {
   if (elements.leadModalClose) {
     elements.leadModalClose.textContent = copy.leadLater;
   }
-
-  if (elements.languageFilter && elements.languageFilter.value !== language) {
-    elements.languageFilter.value = language;
+  if (elements.languageToggleText) {
+    elements.languageToggleText.textContent = copy.toggleText;
+  }
+  if (elements.languageToggle) {
+    elements.languageToggle.dataset.language = language;
+    elements.languageToggle.setAttribute("aria-pressed", language === "en" ? "true" : "false");
   }
 }
 
@@ -384,8 +426,10 @@ function syncView() {
   }
 
   if (activeRegionName) {
+    showRegionHint(activeRegionName);
     elements.feedCount.textContent = getText("feedCountRegion", visibleItems.length, getRegionLabel(activeRegionName, language));
   } else {
+    hideRegionHint();
     elements.feedCount.textContent = getText("feedCount", visibleItems.length);
   }
 
@@ -417,8 +461,9 @@ function bindEvents() {
     setFilter("priority", event.target.value);
   });
 
-  elements.languageFilter.addEventListener("change", (event) => {
-    setFilter("language", event.target.value === "en" ? "en" : "zh");
+  elements.languageToggle?.addEventListener("click", () => {
+    const nextLanguage = getLanguage() === "en" ? "zh" : "en";
+    setFilter("language", nextLanguage);
   });
 
   elements.searchInput.addEventListener("input", (event) => {
@@ -431,6 +476,7 @@ function bindEvents() {
 
   elements.clearRegionButton?.addEventListener("click", () => {
     activeRegionName = null;
+    hideRegionHint();
     showToast(getText("clearRegion"));
     setSelectedId(getState().selectedId);
   });
@@ -493,9 +539,6 @@ function init() {
   const defaultLanguage = navigator.language?.toLowerCase().startsWith("zh") ? "zh" : "en";
   setFilter("language", defaultLanguage);
   applyLanguageUi(defaultLanguage);
-  if (elements.languageFilter) {
-    elements.languageFilter.value = defaultLanguage;
-  }
 
   subscribe(syncView);
   bindEvents();
