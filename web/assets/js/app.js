@@ -120,6 +120,8 @@ let leadModalTimer = null;
 let regionHintTimer = null;
 let lastRenderedSelectedId = null;
 let pendingForceFocusId = null;
+let autoRefreshTimer = null;
+let isLoadingFeed = false;
 
 function getLanguage() {
   return getState().filters.language === "en" ? "en" : "zh";
@@ -432,6 +434,11 @@ function syncView() {
 }
 
 async function loadAndRender({ silent = false } = {}) {
+  if (isLoadingFeed) {
+    return;
+  }
+  isLoadingFeed = true;
+
   try {
     const payload = await fetchFeedPayload();
     setData(payload.items, payload.generatedAt);
@@ -443,7 +450,21 @@ async function loadAndRender({ silent = false } = {}) {
     if (!silent) {
       showToast(getText("loadFailed"));
     }
+  } finally {
+    isLoadingFeed = false;
   }
+}
+
+function startAutoRefresh() {
+  if (autoRefreshTimer) {
+    window.clearInterval(autoRefreshTimer);
+  }
+
+  autoRefreshTimer = window.setInterval(() => {
+    if (!document.hidden) {
+      loadAndRender({ silent: true });
+    }
+  }, REFRESH_INTERVAL_MS);
 }
 
 function bindEvents() {
@@ -522,6 +543,10 @@ function bindEvents() {
 
   window.addEventListener("beforeunload", () => {
     globe.destroy();
+    if (autoRefreshTimer) {
+      window.clearInterval(autoRefreshTimer);
+      autoRefreshTimer = null;
+    }
   });
 }
 
@@ -535,7 +560,7 @@ function init() {
   globe.start();
   scheduleLeadModal();
   loadAndRender();
-  window.setInterval(() => loadAndRender({ silent: true }), REFRESH_INTERVAL_MS);
+  startAutoRefresh();
 }
 
 init();
