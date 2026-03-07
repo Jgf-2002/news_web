@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-07T20:09:14Z",
+  "generated_at": "2026-03-07T20:11:41Z",
   "schema_version": "1.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -16,14 +16,14 @@
       "WTI"
     ],
     "laggards": [
-      "BTC",
+      "SPX",
       "NDX"
     ],
     "live_count": 8,
     "stale_count": 0,
     "series_count": 8,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-07T20:09:14Z"
+    "generated_at": "2026-03-07T20:11:41Z"
   },
   "series": [
     {
@@ -1539,14 +1539,14 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 67200.0,
+      "last": 67253.0,
       "previous_close": 68124.0,
-      "change": -924.0,
-      "change_pct": -1.36,
+      "change": -871.0,
+      "change_pct": -1.28,
       "day_low": 67029.0,
       "day_high": 68514.0,
-      "as_of": "2026-03-07T20:06:00Z",
-      "as_of_label": "20:06 UTC",
+      "as_of": "2026-03-07T20:08:00Z",
+      "as_of_label": "20:08 UTC",
       "exchange_timezone": "UTC",
       "market_state": "down",
       "points": [
@@ -1739,8 +1739,8 @@
           67227.41
         ],
         [
-          "2026-03-07T20:06:00Z",
-          67199.52
+          "2026-03-07T20:08:00Z",
+          67253.01
         ]
       ],
       "source_status": "live",
