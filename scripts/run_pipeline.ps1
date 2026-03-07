@@ -10,6 +10,8 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProjectRoot = Resolve-Path (Join-Path $ScriptDir "..")
 $RawDir = Join-Path $ProjectRoot "data\raw"
 $OutputFile = Join-Path $ProjectRoot "data\normalized\feed.json"
+$MarketOutputFile = Join-Path $ProjectRoot "data\normalized\market-data.json"
+$MarketCacheFile = Join-Path $ProjectRoot ".runtime\market-data-cache.json"
 
 Write-Host "[pipeline] project_root=$ProjectRoot"
 Write-Host "[pipeline] source_dir=$SourceDir"
@@ -33,5 +35,14 @@ if ($LASTEXITCODE -ne 0) {
     throw "normalize_feed.py failed with exit code $LASTEXITCODE"
 }
 
+& py (Join-Path $ScriptDir "fetch_market_data.py") `
+    --output-file $MarketOutputFile `
+    --cache-file $MarketCacheFile
+
+if ($LASTEXITCODE -ne 0) {
+    throw "fetch_market_data.py failed with exit code $LASTEXITCODE"
+}
+
 Write-Host "[pipeline] complete"
 Write-Host "[pipeline] feed=$OutputFile"
+Write-Host "[pipeline] market=$MarketOutputFile"

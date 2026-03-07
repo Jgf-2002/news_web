@@ -5,6 +5,7 @@ Terminal-style news web page built in `C:\Cloud_code\news_web`.
 ## What This Includes
 - Data bridge scripts that read source files from `C:\Cloud_code\newsai`
 - Feed normalization to unified JSON schema
+- Standalone market monitor pipeline with intraday cross-asset curves
 - Responsive terminal UI (`web/index.html`) with:
   - WebGL rotating globe (terrain texture + atmosphere + glowing trails)
   - Drag to rotate and click globe nodes to open matching news
@@ -12,6 +13,7 @@ Terminal-style news web page built in `C:\Cloud_code\news_web`.
   - Live feed list
   - Signal detail panel
   - Metrics panel
+  - Market data curve deck with cached fallback states
 - One-click pipeline script (`scripts/run_pipeline.ps1`)
 
 ## Constraints Enforced
@@ -35,6 +37,7 @@ Optional parameters:
 Output:
 - Raw snapshots: `data\raw\*.json`
 - Final feed: `data\normalized\feed.json`
+- Market monitor payload: `data\normalized\market-data.json`
 
 ## Run Web UI
 
@@ -73,10 +76,22 @@ Argument order:
 ## Files
 - `scripts/sync_from_newsai.py`: reads upstream files and creates raw snapshots
 - `scripts/normalize_feed.py`: converts raw snapshots into unified feed schema
+- `scripts/fetch_market_data.py`: generates standalone market monitor JSON from public chart endpoints
 - `scripts/run_pipeline.ps1`: serial pipeline runner
 - `web/index.html`: terminal page structure
 - `web/assets/css/terminal.css`: theme, layout, responsive styles
 - `web/assets/js/*.js`: data fetch, state store, render logic
+
+## Market Monitor Data
+
+- Source: Yahoo Finance chart endpoint, fetched by `scripts/fetch_market_data.py`
+- Refresh strategy: regenerated on every pipeline run, then polled by the web UI from local static JSON
+- Fallback order:
+  1. fresh remote chart data
+  2. last successful cached payload in `.runtime\market-data-cache.json`
+  3. deterministic default sample payload
+
+This keeps the GitHub Pages UI stable even when the external market source is temporarily unavailable.
 
 ## Feed Schema
 

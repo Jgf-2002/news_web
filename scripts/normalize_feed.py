@@ -350,6 +350,12 @@ def parse_args() -> argparse.Namespace:
         default=120,
         help="Maximum number of cache-tail records to convert.",
     )
+    parser.add_argument(
+        "--runnewsent-items",
+        type=int,
+        default=48,
+        help="Maximum number of run_newsent records kept in the final feed.",
+    )
     return parser.parse_args()
 
 
@@ -378,6 +384,10 @@ def main() -> int:
     if args.max_items > 0:
         runnewsent_items = [item for item in items if is_run_newsent_item(item)]
         other_items = [item for item in items if not is_run_newsent_item(item)]
+        if args.runnewsent_items > 0:
+            runnewsent_items = runnewsent_items[: args.runnewsent_items]
+        elif args.runnewsent_items == 0:
+            runnewsent_items = []
         other_items = other_items[: args.max_items]
         items = runnewsent_items + other_items
         items.sort(key=lambda item: parse_iso(str(item.get("published_at"))), reverse=True)

@@ -19,6 +19,7 @@ import {
   getHubDisplayInfo,
   inferPrimaryHub,
 } from "./globe-view.js";
+import { createMarketMonitor } from "./market-monitor.js";
 
 const REFRESH_INTERVAL_MS = 10_000;
 const LEAD_MODAL_DELAY_MS = 28_000;
@@ -50,6 +51,8 @@ const UI_TEXT = {
     leadText: "Jump to the ParisTrader webpage for full workflow, deeper analytics and faster decision support.",
     leadOpen: "Go To Webpage",
     leadLater: "Later",
+    marketMonitorTitle: "Market Data Curves",
+    marketMonitorSubtitle: "Cross-asset intraday monitor generated from standalone local data.",
     toggleText: "EN",
   },
   zh: {
@@ -76,6 +79,8 @@ const UI_TEXT = {
     leadText: "\u8df3\u8f49\u5230 ParisTrader \u7db2\u9801\uff0c\u7372\u53d6\u66f4\u5b8c\u6574\u6d41\u7a0b\u3001\u66f4\u6df1\u5206\u6790\u8207\u66f4\u5feb\u6c7a\u7b56\u652f\u63f4\u3002",
     leadOpen: "\u8df3\u8f49\u7db2\u9801",
     leadLater: "\u7a0d\u540e",
+    marketMonitorTitle: "\u5e02\u573a\u6570\u636e\u66f2\u7ebf",
+    marketMonitorSubtitle: "\u57fa\u4e8e\u672c\u5730\u72ec\u7acb\u6570\u636e\u7ba1\u7ebf\u751f\u6210\u7684\u8de8\u8d44\u4ea7\u5206\u65f6\u76d1\u63a7\u3002",
     toggleText: "\u4e2d\u6587",
   },
 };
@@ -112,6 +117,12 @@ const elements = {
   leadModalTitle: document.getElementById("lead-modal-title"),
   leadModalText: document.getElementById("lead-modal-text"),
   leadModalOpen: document.getElementById("lead-modal-open"),
+  marketMonitorTitle: document.getElementById("market-monitor-title"),
+  marketMonitorSubtitle: document.getElementById("market-monitor-subtitle"),
+  marketMonitorSummary: document.getElementById("market-monitor-summary"),
+  marketMonitorGrid: document.getElementById("market-monitor-grid"),
+  marketMonitorStatus: document.getElementById("market-monitor-status"),
+  marketMonitorUpdated: document.getElementById("market-monitor-updated"),
 };
 
 let activeRegionName = null;
@@ -160,6 +171,13 @@ const globe = createGlobeRenderer(elements.globeCanvas, elements.globeSummary, {
       focusGlobe: false,
     });
   },
+});
+
+const marketMonitor = createMarketMonitor({
+  summaryContainer: elements.marketMonitorSummary,
+  gridContainer: elements.marketMonitorGrid,
+  statusLabel: elements.marketMonitorStatus,
+  updatedLabel: elements.marketMonitorUpdated,
 });
 
 function isMobileViewport() {
@@ -330,6 +348,12 @@ function applyLanguageUi(language) {
   if (elements.leadModalClose) {
     elements.leadModalClose.textContent = copy.leadLater;
   }
+  if (elements.marketMonitorTitle) {
+    elements.marketMonitorTitle.textContent = copy.marketMonitorTitle;
+  }
+  if (elements.marketMonitorSubtitle) {
+    elements.marketMonitorSubtitle.textContent = copy.marketMonitorSubtitle;
+  }
   if (elements.languageToggleText) {
     elements.languageToggleText.textContent = copy.toggleText;
   }
@@ -369,6 +393,7 @@ function syncView() {
   const state = getState();
   const language = state.filters.language === "en" ? "en" : "zh";
   applyLanguageUi(language);
+  marketMonitor.setLanguage(language);
 
   const allItems = getFilteredItems();
   const visibleItems = resolveRegionScopedItems(allItems);
@@ -483,6 +508,7 @@ function bindEvents() {
 
   elements.refreshButton.addEventListener("click", () => {
     loadAndRender();
+    marketMonitor.load();
   });
 
   elements.clearRegionButton?.addEventListener("click", () => {
@@ -531,6 +557,7 @@ function bindEvents() {
     if (!document.hidden) {
       globe.start();
       loadAndRender({ silent: true });
+      marketMonitor.load();
       scheduleLeadModal();
     } else {
       globe.stop();
@@ -543,6 +570,7 @@ function bindEvents() {
 
   window.addEventListener("beforeunload", () => {
     globe.destroy();
+    marketMonitor.stopAutoRefresh();
     if (autoRefreshTimer) {
       window.clearInterval(autoRefreshTimer);
       autoRefreshTimer = null;
@@ -554,13 +582,16 @@ function init() {
   const defaultLanguage = navigator.language?.toLowerCase().startsWith("zh") ? "zh" : "en";
   setFilter("language", defaultLanguage);
   applyLanguageUi(defaultLanguage);
+  marketMonitor.setLanguage(defaultLanguage);
 
   subscribe(syncView);
   bindEvents();
   globe.start();
   scheduleLeadModal();
   loadAndRender();
+  marketMonitor.load();
   startAutoRefresh();
+  marketMonitor.startAutoRefresh();
 }
 
 init();

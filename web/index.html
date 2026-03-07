@@ -100,6 +100,21 @@
         <div id="metrics-grid" class="metrics-grid"></div>
       </aside>
     </main>
+
+    <section class="panel market-monitor-panel" aria-labelledby="market-monitor-title">
+      <div class="panel-head panel-head-market">
+        <div>
+          <h2 id="market-monitor-title">Market Data Curves</h2>
+          <p id="market-monitor-subtitle" class="market-monitor-subtitle">Cross-asset intraday monitor generated from standalone local data.</p>
+        </div>
+        <div class="market-monitor-head-meta">
+          <span id="market-monitor-status" class="market-status-pill" data-state="idle">SYNC PENDING</span>
+          <span id="market-monitor-updated" class="panel-meta">Waiting for market data</span>
+        </div>
+      </div>
+      <div id="market-monitor-summary" class="market-summary-grid" aria-live="polite"></div>
+      <div id="market-monitor-grid" class="market-monitor-grid"></div>
+    </section>
   </div>
 
   <div id="mobile-detail-drawer" class="mobile-drawer" aria-hidden="true">
