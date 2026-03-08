@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-08T00:56:14Z",
+  "generated_at": "2026-03-08T00:58:41Z",
   "schema_version": "1.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -9,8 +9,8 @@
   "stale": false,
   "errors": [],
   "summary": {
-    "regime": "balanced",
-    "headline": "Cross-asset positioning is mixed into the close.",
+    "regime": "risk-off",
+    "headline": "Defensive flows dominate and volatility is firm.",
     "leaders": [
       "VIX",
       "WTI"
@@ -23,7 +23,7 @@
     "stale_count": 0,
     "series_count": 8,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-08T00:56:14Z"
+    "generated_at": "2026-03-08T00:58:41Z"
   },
   "series": [
     {
@@ -1539,14 +1539,14 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 67202.0,
+      "last": 67192.0,
       "previous_close": 67250.0,
-      "change": -48.0,
-      "change_pct": -0.07,
-      "day_low": 67196.0,
+      "change": -58.0,
+      "change_pct": -0.09,
+      "day_low": 67179.0,
       "day_high": 67439.0,
-      "as_of": "2026-03-08T00:53:00Z",
-      "as_of_label": "00:53 UTC",
+      "as_of": "2026-03-08T00:55:00Z",
+      "as_of_label": "00:55 UTC",
       "exchange_timezone": "UTC",
       "market_state": "flat",
       "points": [
@@ -1592,11 +1592,11 @@
         ],
         [
           "2026-03-08T00:50:00Z",
-          67202.35
+          67178.55
         ],
         [
-          "2026-03-08T00:53:00Z",
-          67202.45
+          "2026-03-08T00:55:00Z",
+          67192.09
         ]
       ],
       "source_status": "live",
