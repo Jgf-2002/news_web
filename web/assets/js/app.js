@@ -123,6 +123,8 @@ const elements = {
   leadModalOpen: document.getElementById("lead-modal-open"),
   marketMonitorTitle: document.getElementById("market-monitor-title"),
   marketMonitorSubtitle: document.getElementById("market-monitor-subtitle"),
+  marketViewSwitcher: document.getElementById("market-view-switcher"),
+  marketMiniLegend: document.getElementById("market-mini-legend"),
   marketMonitorSummary: document.getElementById("market-monitor-summary"),
   marketBreadthBoard: document.getElementById("market-breadth-board"),
   marketHeatBoard: document.getElementById("market-heat-board"),
@@ -182,6 +184,8 @@ const globe = createGlobeRenderer(elements.globeCanvas, elements.globeSummary, {
 });
 
 const marketMonitor = createMarketMonitor({
+  switcherContainer: elements.marketViewSwitcher,
+  legendContainer: elements.marketMiniLegend,
   summaryContainer: elements.marketMonitorSummary,
   breadthBoard: elements.marketBreadthBoard,
   heatBoard: elements.marketHeatBoard,

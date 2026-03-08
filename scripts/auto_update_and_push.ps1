@@ -16,6 +16,7 @@ $TrackedOutputs = @(
 )
 $RuntimeDir = Join-Path $ProjectRoot ".runtime"
 $LastPushFile = Join-Path $RuntimeDir "last_push_utc.txt"
+$SyncMutexName = "Global\\NewsWebAutoSyncMutex"
 
 if (-not (Test-Path $GitExe)) {
     $gitCommand = Get-Command git -ErrorAction SilentlyContinue
@@ -126,8 +127,26 @@ function Get-AheadBehindCounts() {
     }
 }
 
+function Acquire-SyncMutex() {
+    param([string]$Name)
+    $createdNew = $false
+    $mutex = New-Object System.Threading.Mutex($false, $Name, [ref]$createdNew)
+    if (-not $mutex.WaitOne(0)) {
+        Write-Warning "[auto] another sync worker is already running; skip this iteration"
+        $mutex.Dispose()
+        return $null
+    }
+    return $mutex
+}
+
 Push-Location $ProjectRoot
+$syncMutex = $null
 try {
+    $syncMutex = Acquire-SyncMutex -Name $SyncMutexName
+    if (-not $syncMutex) {
+        exit 0
+    }
+
     Write-Host "[auto] project_root=$ProjectRoot"
 
     $currentBranch = (& $GitExe branch --show-current).Trim()
@@ -230,5 +249,9 @@ try {
     Write-Host "[auto] pushed normalized feed + market data"
 }
 finally {
+    if ($syncMutex) {
+        $syncMutex.ReleaseMutex()
+        $syncMutex.Dispose()
+    }
     Pop-Location
 }

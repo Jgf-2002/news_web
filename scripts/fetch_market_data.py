@@ -25,15 +25,20 @@ DEFAULT_MIN_REFRESH_SECONDS = 60
 
 # UUP / GLD / USO are used as stable proxy feeds for dollar, gold and oil so
 # the panel keeps producing intraday bars reliably across off-session hours.
+# 2800.HK / 3067.HK are used as stable Yahoo proxies for Hang Seng / Hang Seng
+# TECH so the HK view keeps working even when direct index feeds are patchy.
 SERIES_CONFIG: list[dict[str, Any]] = [
-    {"symbol": "^GSPC", "code": "SPX", "label": "S&P 500", "group": "US Equities", "color": "#5aa9ff", "precision": 2},
-    {"symbol": "^NDX", "code": "NDX", "label": "Nasdaq 100", "group": "Growth", "color": "#22c55e", "precision": 2},
-    {"symbol": "^VIX", "code": "VIX", "label": "CBOE Volatility", "group": "Risk Gauge", "color": "#f97316", "precision": 2, "inverse_for_regime": True},
-    {"symbol": "UUP", "code": "DXY", "label": "US Dollar Index", "group": "Macro", "color": "#facc15", "precision": 2, "inverse_for_regime": True},
-    {"symbol": "^TNX", "code": "US10Y", "label": "US 10Y Yield", "group": "Rates", "color": "#a78bfa", "precision": 3, "suffix": "%", "display_divisor": 10},
-    {"symbol": "GLD", "code": "GOLD", "label": "Gold", "group": "Commodities", "color": "#fbbf24", "precision": 2},
-    {"symbol": "USO", "code": "WTI", "label": "WTI Crude", "group": "Commodities", "color": "#fb7185", "precision": 2},
-    {"symbol": "BTC-USD", "code": "BTC", "label": "Bitcoin", "group": "Crypto", "color": "#22d3ee", "precision": 0},
+    {"symbol": "^GSPC", "code": "SPX", "label": "S&P 500", "group": "US Equities", "color": "#5aa9ff", "precision": 2, "views": ["us"]},
+    {"symbol": "^NDX", "code": "NDX", "label": "Nasdaq 100", "group": "Growth", "color": "#22c55e", "precision": 2, "views": ["us"]},
+    {"symbol": "^VIX", "code": "VIX", "label": "CBOE Volatility", "group": "Risk Gauge", "color": "#f97316", "precision": 2, "inverse_for_regime": True, "views": ["us"]},
+    {"symbol": "2800.HK", "code": "HSI", "label": "Hang Seng ETF", "group": "Hong Kong", "color": "#38bdf8", "precision": 2, "views": ["hk"]},
+    {"symbol": "3067.HK", "code": "HKTECH", "label": "Hang Seng TECH ETF", "group": "China Tech", "color": "#60a5fa", "precision": 2, "views": ["hk"]},
+    {"symbol": "USDCNH=X", "code": "CNH", "label": "USD/CNH", "group": "FX", "color": "#0ea5e9", "precision": 4, "inverse_for_regime": True, "views": ["hk", "macro"]},
+    {"symbol": "UUP", "code": "DXY", "label": "US Dollar Index", "group": "Macro", "color": "#facc15", "precision": 2, "inverse_for_regime": True, "views": ["macro"]},
+    {"symbol": "^TNX", "code": "US10Y", "label": "US 10Y Yield", "group": "Rates", "color": "#a78bfa", "precision": 3, "suffix": "%", "display_divisor": 10, "inverse_for_regime": True, "views": ["macro"]},
+    {"symbol": "GLD", "code": "GOLD", "label": "Gold", "group": "Commodities", "color": "#fbbf24", "precision": 2, "views": ["macro"]},
+    {"symbol": "USO", "code": "WTI", "label": "WTI Crude", "group": "Commodities", "color": "#fb7185", "precision": 2, "views": ["macro"]},
+    {"symbol": "BTC-USD", "code": "BTC", "label": "Bitcoin", "group": "Crypto", "color": "#22d3ee", "precision": 0, "views": ["macro"]},
 ]
 
 NQ_MEMBERS = [
@@ -77,15 +82,63 @@ SECTOR_MEMBERS = [
     {"symbol": "XLRE", "label": "Real Estate", "size": "sm"},
     {"symbol": "XLC", "label": "Comms", "size": "sm"},
 ]
+MACRO_MEMBERS = [
+    {"symbol": "BTC-USD", "label": "Bitcoin", "size": "lg"},
+    {"symbol": "USO", "label": "WTI", "size": "md"},
+    {"symbol": "GLD", "label": "Gold", "size": "md"},
+    {"symbol": "UUP", "label": "Dollar", "size": "lg", "invert": True},
+    {"symbol": "^TNX", "label": "US 10Y", "size": "md", "invert": True},
+    {"symbol": "USDCNH=X", "label": "USD/CNH", "size": "sm", "invert": True},
+]
 BREADTH_GROUPS = [
-    {"code": "NQ_BREADTH", "label": "Nasdaq Breadth", "description": "Inspired by the NDX breadth overlay workflow: index line + participation curve.", "color": "#22c55e", "benchmark_symbol": "^NDX", "benchmark_code": "NDX", "benchmark_label": "Nasdaq 100", "members": NQ_MEMBERS, "featured": True},
-    {"code": "HSI_BREADTH", "label": "HSI Breadth", "description": "Core Hang Seng leaders participating above previous close.", "color": "#5aa9ff", "benchmark_symbol": "^HSI", "benchmark_code": "HSI", "benchmark_label": "Hang Seng Index", "members": HSI_MEMBERS, "featured": False},
-    {"code": "SECTOR_BREADTH", "label": "Sector Breadth", "description": "US sector rotation breadth using the major SPDR complex.", "color": "#f97316", "benchmark_symbol": "^GSPC", "benchmark_code": "SPX", "benchmark_label": "S&P 500", "members": SECTOR_MEMBERS, "featured": False},
+    {"code": "NQ_BREADTH", "label": "Nasdaq Breadth", "description": "Inspired by the NDX breadth overlay workflow: index line + participation curve.", "color": "#22c55e", "benchmark_symbol": "^NDX", "benchmark_code": "NDX", "benchmark_label": "Nasdaq 100", "members": NQ_MEMBERS, "featured": True, "views": ["us"]},
+    {"code": "HSI_BREADTH", "label": "HSI Breadth", "description": "Core Hang Seng leaders participating above previous close.", "color": "#5aa9ff", "benchmark_symbol": "2800.HK", "benchmark_code": "HSI", "benchmark_label": "Hang Seng ETF", "members": HSI_MEMBERS, "featured": True, "views": ["hk"]},
+    {"code": "SECTOR_BREADTH", "label": "Sector Breadth", "description": "US sector rotation breadth using the major SPDR complex.", "color": "#f97316", "benchmark_symbol": "^GSPC", "benchmark_code": "SPX", "benchmark_label": "S&P 500", "members": SECTOR_MEMBERS, "featured": False, "views": ["us"]},
+    {"code": "MACRO_BREADTH", "label": "Macro Risk Breadth", "description": "Cross-asset breadth that normalizes inverse dollar and rates pressure.", "color": "#facc15", "benchmark_symbol": "UUP", "benchmark_code": "DXY", "benchmark_label": "Dollar Proxy", "members": MACRO_MEMBERS, "featured": False, "views": ["macro"]},
 ]
 HEAT_LAYERS = [
-    {"code": "NQ_HEAT", "label": "Nasdaq Leaders", "description": "High-beta leaders and mega-cap pressure map.", "members": NQ_MEMBERS},
-    {"code": "SECTOR_HEAT", "label": "Sector Rotation", "description": "ETF rotation layer for fast risk-on / risk-off reads.", "members": SECTOR_MEMBERS},
-    {"code": "HSI_HEAT", "label": "HSI Core", "description": "Large-cap Hong Kong and China internet heat layer.", "members": HSI_MEMBERS},
+    {"code": "NQ_HEAT", "label": "Nasdaq Leaders", "description": "High-beta leaders and mega-cap pressure map.", "members": NQ_MEMBERS, "views": ["us"]},
+    {"code": "SECTOR_HEAT", "label": "Sector Rotation", "description": "ETF rotation layer for fast risk-on / risk-off reads.", "members": SECTOR_MEMBERS, "views": ["us"]},
+    {"code": "HSI_HEAT", "label": "HSI Core", "description": "Large-cap Hong Kong and China internet heat layer.", "members": HSI_MEMBERS, "views": ["hk"]},
+    {"code": "MACRO_HEAT", "label": "Macro Crosswinds", "description": "Dollar, rates, energy and crypto move map.", "members": MACRO_MEMBERS, "views": ["macro"]},
+]
+VIEW_CONFIGS = [
+    {
+        "code": "us",
+        "label": "US",
+        "accent": "#5aa9ff",
+        "description": "Index breadth, sector rotation and volatility pressure for the U.S. session.",
+        "legend_note": "Breadth counts members above the previous close while the white line tracks benchmark return.",
+        "headlines": {
+            "risk-on": "US participation is broadening while volatility pressure cools.",
+            "risk-off": "US breadth is narrowing and defensives are taking the tape.",
+            "balanced": "US leadership is rotating with mixed breadth confirmation.",
+        },
+    },
+    {
+        "code": "hk",
+        "label": "HK",
+        "accent": "#38bdf8",
+        "description": "Hong Kong beta, China tech proxies and FX pressure in one dense board.",
+        "legend_note": "HK proxy series use liquid Yahoo-tracked ETFs so the local pipeline stays resilient when index feeds are patchy.",
+        "headlines": {
+            "risk-on": "Hong Kong participation is improving and tech beta is firming.",
+            "risk-off": "Hong Kong breadth is fading and large-cap pressure is spreading.",
+            "balanced": "Hong Kong participation is mixed with selective internet leadership.",
+        },
+    },
+    {
+        "code": "macro",
+        "label": "Macro",
+        "accent": "#facc15",
+        "description": "Dollar, rates, commodities, crypto and CNH cross-currents for macro risk reads.",
+        "legend_note": "Macro breadth normalizes inverse risk assets such as DXY, yields and USD/CNH before counting participation.",
+        "headlines": {
+            "risk-on": "Macro crosswinds are easing as risk assets outpace the dollar complex.",
+            "risk-off": "Macro pressure is building as the dollar complex tightens conditions.",
+            "balanced": "Macro signals are split with no clean cross-asset follow-through.",
+        },
+    },
 ]
 
 
@@ -264,6 +317,8 @@ def build_series_from_snapshot(config: dict[str, Any], snapshot: dict[str, Any],
         "exchange_timezone": snapshot["exchange_timezone"],
         "market_state": classify_direction(change_pct),
         "points": scaled_points,
+        "views": list(config.get("views") or []),
+        "inverse_for_regime": bool(config.get("inverse_for_regime")),
         "source_status": snapshot.get("source_status", "live"),
         "source_note": snapshot.get("source_note", "yahoo-finance-chart"),
     }
@@ -287,7 +342,19 @@ def build_default_series(config: dict[str, Any], reason: str, cached_series: dic
         fallback["market_state"] = classify_direction(float(fallback.get("change_pct") or 0.0))
         return fallback
 
-    base_value = {"SPX": 6735.0, "NDX": 21118.0, "VIX": 19.8, "DXY": 103.55, "US10Y": 4.23, "GOLD": 2912.0, "WTI": 67.1, "BTC": 89250.0}.get(config["code"], 100.0)
+    base_value = {
+        "SPX": 6735.0,
+        "NDX": 21118.0,
+        "VIX": 19.8,
+        "HSI": 25.9,
+        "HKTECH": 10.35,
+        "CNH": 6.903,
+        "DXY": 103.55,
+        "US10Y": 4.23,
+        "GOLD": 2912.0,
+        "WTI": 67.1,
+        "BTC": 89250.0,
+    }.get(config["code"], 100.0)
     precision = int(config.get("precision", 2))
     points = build_default_points(base_value, datetime.now(UTC), precision)
     last = safe_float(points[-1][1]) or base_value
@@ -313,6 +380,8 @@ def build_default_series(config: dict[str, Any], reason: str, cached_series: dic
         "exchange_timezone": "",
         "market_state": classify_direction(change_pct),
         "points": points,
+        "views": list(config.get("views") or []),
+        "inverse_for_regime": bool(config.get("inverse_for_regime")),
         "source_status": "default",
         "source_note": reason,
     }
@@ -346,6 +415,8 @@ def build_default_breadth_group(group: dict[str, Any], reason: str, cached_group
     benchmark_values = [-0.8, -0.55, -0.35, -0.18, 0.02, 0.12, 0.22, 0.18, 0.31, 0.38, 0.44, 0.36]
     start = datetime.now(UTC) - timedelta(minutes=5 * (len(breadth_values) - 1))
     points = [[(start + timedelta(minutes=index * 5)).replace(microsecond=0).isoformat().replace("+00:00", "Z"), breadth_value, benchmark_values[index]] for index, breadth_value in enumerate(breadth_values)]
+    leader_member = group["members"][0]
+    laggard_member = group["members"][-1]
     return {
         "code": group["code"],
         "label": group["label"],
@@ -363,8 +434,9 @@ def build_default_breadth_group(group: dict[str, Any], reason: str, cached_group
         "members_total": len(group["members"]),
         "live_members": 0,
         "points": points,
-        "leaders": [{"symbol": "NVDA", "label": "Leader", "change_pct": 1.45, "state": "hot"}],
-        "laggards": [{"symbol": "AAPL", "label": "Laggard", "change_pct": -0.84, "state": "cold"}],
+        "leaders": [{"symbol": leader_member["symbol"], "label": leader_member["label"], "change_pct": 1.45, "display_change_pct": 1.45, "normalized": False, "state": "hot"}],
+        "laggards": [{"symbol": laggard_member["symbol"], "label": laggard_member["label"], "change_pct": -0.84, "display_change_pct": -0.84, "normalized": False, "state": "cold"}],
+        "views": list(group.get("views") or []),
         "source_status": "default",
         "source_note": reason,
         "heat_state": "neutral",
@@ -388,6 +460,7 @@ def build_default_heat_layer(layer: dict[str, Any], reason: str, cached_layer: d
         "code": layer["code"],
         "label": layer["label"],
         "description": layer["description"],
+        "views": list(layer.get("views") or []),
         "source_status": "default",
         "source_note": reason,
         "tiles": tiles,
@@ -431,9 +504,10 @@ def build_breadth_group(group: dict[str, Any], snapshots: dict[str, dict[str, An
             active_members += 1
             previous_close = safe_float(state["snapshot"]["previous_close_raw"]) or current_value
             delta_pct = ((current_value - previous_close) / previous_close * 100) if previous_close else 0.0
-            if delta_pct > 0.05:
+            effective_delta_pct = -delta_pct if state["meta"].get("invert") else delta_pct
+            if effective_delta_pct > 0.05:
                 advancers += 1
-            elif delta_pct < -0.05:
+            elif effective_delta_pct < -0.05:
                 decliners += 1
             else:
                 unchanged += 1
@@ -452,10 +526,20 @@ def build_breadth_group(group: dict[str, Any], snapshots: dict[str, dict[str, An
         reason = f"{group['code']} no breadth curve points"
         return build_default_breadth_group(group, reason, cached_group), False, errors + [reason]
 
-    member_rows = [
-        {"symbol": member["symbol"], "label": member["label"], "change_pct": round_value(float(snapshot["change_pct"]), 2), "state": classify_heat_state(float(snapshot["change_pct"]))}
-        for member, snapshot in live_members
-    ]
+    member_rows = []
+    for member, snapshot in live_members:
+        raw_change_pct = float(snapshot["change_pct"])
+        effective_change_pct = -raw_change_pct if member.get("invert") else raw_change_pct
+        member_rows.append(
+            {
+                "symbol": member["symbol"],
+                "label": member["label"],
+                "change_pct": round_value(effective_change_pct, 2),
+                "display_change_pct": round_value(raw_change_pct, 2),
+                "normalized": bool(member.get("invert")),
+                "state": classify_heat_state(effective_change_pct),
+            }
+        )
     member_rows.sort(key=lambda item: item["change_pct"], reverse=True)
     latest_pct = float(breadth_points[-1][1])
     opening_pct = float(breadth_points[0][1])
@@ -480,6 +564,7 @@ def build_breadth_group(group: dict[str, Any], snapshots: dict[str, dict[str, An
         "points": breadth_points,
         "leaders": member_rows[:3],
         "laggards": member_rows[-3:][::-1],
+        "views": list(group.get("views") or []),
         "source_status": "live" if len(live_members) == len(group["members"]) else "partial",
         "source_note": "market-breadth-overlay",
         "heat_state": "hot" if latest_pct >= 62 else "cold" if latest_pct <= 38 else "neutral",
@@ -509,6 +594,7 @@ def build_heat_layer(layer: dict[str, Any], snapshots: dict[str, dict[str, Any]]
         "code": layer["code"],
         "label": layer["label"],
         "description": layer["description"],
+        "views": list(layer.get("views") or []),
         "source_status": "live" if len(tiles) == len(layer["members"]) else "partial",
         "source_note": "market-heat-layer",
         "tiles": tiles,
@@ -530,9 +616,9 @@ def build_summary(series: list[dict[str, Any]], breadth_groups: list[dict[str, A
     leaders = [item["code"] for item in ordered[:2]]
     laggards = [item["code"] for item in ordered[-2:]]
     regime_score = 0
-    for item, config in zip(series, SERIES_CONFIG):
+    for item in series:
         direction = sign_bucket(float(item.get("change_pct") or 0.0))
-        regime_score += -direction if config.get("inverse_for_regime") else direction
+        regime_score += -direction if item.get("inverse_for_regime") else direction
     regime_score += sum(1 for group in breadth_groups if float(group.get("latest_pct") or 0.0) >= 55)
     regime_score -= sum(1 for group in breadth_groups if float(group.get("latest_pct") or 0.0) <= 45)
 
@@ -561,14 +647,92 @@ def build_summary(series: list[dict[str, Any]], breadth_groups: list[dict[str, A
     }
 
 
+def build_collection_status(items: list[dict[str, Any]]) -> str:
+    statuses = [str(item.get("source_status") or "").lower() for item in items if item]
+    if not statuses:
+        return "fallback"
+    if all(status == "live" for status in statuses):
+        return "live"
+    if any(status in {"live", "partial"} for status in statuses):
+        return "degraded"
+    if any(status == "cached" for status in statuses):
+        return "stale"
+    return "fallback"
+
+
+def build_view_summary(view_config: dict[str, Any], series: list[dict[str, Any]], breadth_groups: list[dict[str, Any]], heat_layers: list[dict[str, Any]], generated_at: str, refresh_interval_seconds: int) -> dict[str, Any]:
+    ordered = sorted(series, key=lambda item: float(item.get("change_pct") or 0.0), reverse=True)
+    leaders = [item["code"] for item in ordered[:2]]
+    laggards = [item["code"] for item in ordered[-2:]]
+    regime_score = 0
+    for item in series:
+        direction = sign_bucket(float(item.get("change_pct") or 0.0))
+        regime_score += -direction if item.get("inverse_for_regime") else direction
+    regime_score += sum(1 for group in breadth_groups if float(group.get("latest_pct") or 0.0) >= 55)
+    regime_score -= sum(1 for group in breadth_groups if float(group.get("latest_pct") or 0.0) <= 45)
+
+    if regime_score >= 2:
+        regime = "risk-on"
+    elif regime_score <= -2:
+        regime = "risk-off"
+    else:
+        regime = "balanced"
+
+    live_series = sum(1 for item in series if item.get("source_status") == "live")
+    breadth_live = sum(1 for item in breadth_groups if item.get("source_status") in {"live", "partial"})
+    heat_live = sum(1 for item in heat_layers if item.get("source_status") in {"live", "partial"})
+    return {
+        "regime": regime,
+        "headline": str((view_config.get("headlines") or {}).get(regime) or ""),
+        "leaders": leaders,
+        "laggards": laggards,
+        "live_count": live_series,
+        "stale_count": max(len(series) - live_series, 0),
+        "breadth_live_count": breadth_live,
+        "heat_live_count": heat_live,
+        "series_count": len(series),
+        "breadth_count": len(breadth_groups),
+        "heat_count": len(heat_layers),
+        "refresh_interval_seconds": refresh_interval_seconds,
+        "generated_at": generated_at,
+        "status": build_collection_status(series + breadth_groups + heat_layers),
+    }
+
+
+def build_views_payload(series: list[dict[str, Any]], breadth_groups: list[dict[str, Any]], heat_layers: list[dict[str, Any]], generated_at: str, refresh_interval_seconds: int) -> dict[str, Any]:
+    items = []
+    for view_config in VIEW_CONFIGS:
+        view_code = view_config["code"]
+        view_series = [item for item in series if view_code in (item.get("views") or [])]
+        view_breadth = [item for item in breadth_groups if view_code in (item.get("views") or [])]
+        view_heat = [item for item in heat_layers if view_code in (item.get("views") or [])]
+        items.append(
+            {
+                "code": view_code,
+                "label": view_config["label"],
+                "accent": view_config["accent"],
+                "description": view_config["description"],
+                "legend_note": view_config["legend_note"],
+                "status": build_collection_status(view_series + view_breadth + view_heat),
+                "series_codes": [item["code"] for item in view_series],
+                "breadth_codes": [item["code"] for item in view_breadth],
+                "heat_codes": [item["code"] for item in view_heat],
+                "hero_breadth_code": view_breadth[0]["code"] if view_breadth else "",
+                "summary": build_view_summary(view_config, view_series, view_breadth, view_heat, generated_at, refresh_interval_seconds),
+            }
+        )
+    return {"default": VIEW_CONFIGS[0]["code"], "items": items}
+
+
 def build_default_payload(error_message: str) -> dict[str, Any]:
     generated_at = utc_now_iso()
     series = [build_default_series(config, error_message) for config in SERIES_CONFIG]
     breadth_groups = [build_default_breadth_group(group, error_message) for group in BREADTH_GROUPS]
     heat_layers = [build_default_heat_layer(layer, error_message) for layer in HEAT_LAYERS]
+    views = build_views_payload(series, breadth_groups, heat_layers, generated_at, DEFAULT_REFRESH_INTERVAL_SECONDS)
     return {
         "generated_at": generated_at,
-        "schema_version": "2.0.0",
+        "schema_version": "3.0.0",
         "source": {"provider": "Yahoo Finance chart endpoint", "transport": "Static JSON generated locally by scripts/fetch_market_data.py"},
         "status": "fallback",
         "stale": True,
@@ -576,6 +740,7 @@ def build_default_payload(error_message: str) -> dict[str, Any]:
         "summary": build_summary(series, breadth_groups, heat_layers, generated_at, DEFAULT_REFRESH_INTERVAL_SECONDS),
         "breadth": {"updated_at": generated_at, "groups": breadth_groups},
         "heat_layers": {"updated_at": generated_at, "legend": {"min_pct": -3.0, "max_pct": 3.0}, "layers": heat_layers},
+        "views": views,
         "series": series,
     }
 
@@ -676,9 +841,10 @@ def main() -> int:
         print("[market] status=fallback")
         return 0
 
+    views = build_views_payload(series, breadth_groups, heat_layers, generated_at, args.refresh_interval_seconds)
     payload = {
         "generated_at": generated_at,
-        "schema_version": "2.0.0",
+        "schema_version": "3.0.0",
         "source": {"provider": "Yahoo Finance chart endpoint", "transport": "Static JSON generated locally by scripts/fetch_market_data.py"},
         "status": status,
         "stale": stale,
@@ -686,6 +852,7 @@ def main() -> int:
         "summary": build_summary(series, breadth_groups, heat_layers, generated_at, args.refresh_interval_seconds),
         "breadth": {"updated_at": generated_at, "groups": breadth_groups},
         "heat_layers": {"updated_at": generated_at, "legend": {"min_pct": -3.0, "max_pct": 3.0}, "layers": heat_layers},
+        "views": views,
         "series": series,
     }
 
