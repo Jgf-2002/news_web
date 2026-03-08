@@ -1191,6 +1191,11 @@ a {
   padding: 12px;
 }
 
+.market-breadth-grid[data-card-count="1"] .breadth-card,
+.market-breadth-grid[data-card-count="2"] .breadth-card {
+  grid-column: 1 / -1;
+}
+
 .breadth-card {
   border: 1px solid rgba(71, 85, 105, 0.44);
   border-radius: 14px;
@@ -1270,6 +1275,7 @@ a {
 }
 
 .breadth-chart-wrap {
+  position: relative;
   margin-top: 12px;
   border: 1px solid rgba(51, 65, 85, 0.7);
   border-radius: 12px;
@@ -1303,6 +1309,84 @@ a {
   stroke-dasharray: 4 4;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.breadth-crosshair-line {
+  stroke: rgba(148, 163, 184, 0.66);
+  stroke-width: 1;
+  stroke-dasharray: 4 5;
+  opacity: 0;
+  transition: opacity 140ms ease;
+  pointer-events: none;
+}
+
+.breadth-crosshair-dot {
+  opacity: 0;
+  transition: opacity 140ms ease;
+  pointer-events: none;
+}
+
+.breadth-crosshair-dot-primary {
+  fill: var(--breadth-color, var(--market-view-accent));
+  stroke: rgba(15, 23, 42, 0.94);
+  stroke-width: 1.6;
+}
+
+.breadth-crosshair-dot-benchmark {
+  fill: rgba(226, 232, 240, 0.96);
+  stroke: rgba(15, 23, 42, 0.94);
+  stroke-width: 1.4;
+}
+
+.breadth-chart-wrap.is-hovering .breadth-crosshair-line,
+.breadth-chart-wrap.is-hovering .breadth-crosshair-dot {
+  opacity: 1;
+}
+
+.breadth-chart-tooltip {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  min-width: 148px;
+  max-width: min(220px, calc(100% - 20px));
+  padding: 8px 10px;
+  border: 1px solid rgba(71, 85, 105, 0.56);
+  border-radius: 10px;
+  background: rgba(3, 7, 18, 0.92);
+  box-shadow: 0 16px 32px rgba(2, 6, 23, 0.34);
+  color: #dbeafe;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  line-height: 1.5;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(0, 4px, 0);
+  transition: opacity 140ms ease, transform 140ms ease;
+  z-index: 2;
+}
+
+.breadth-chart-wrap.is-hovering .breadth-chart-tooltip {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.breadth-chart-tooltip-time,
+.breadth-chart-tooltip-values {
+  margin: 0;
+}
+
+.breadth-chart-tooltip-time {
+  color: #8ea0b8;
+}
+
+.breadth-chart-tooltip-values {
+  margin-top: 4px;
+  display: grid;
+  gap: 2px;
+}
+
+.breadth-chart-tooltip-values strong {
+  color: #f8fafc;
 }
 
 .breadth-chart-empty {

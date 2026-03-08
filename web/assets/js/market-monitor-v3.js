@@ -268,11 +268,83 @@ function buildBreadthChart(group, index) {
   const benchmarkSpan = Math.max(1.2, ...benchmarkValues.map((value) => Math.abs(value)));
   const benchmarkPath = buildLinePath(benchmarkValues, width, height, paddingX, paddingY, -benchmarkSpan, benchmarkSpan);
   const breadthFill = buildAreaPath(breadthPath, width, height, paddingX, paddingY);
-  return `<div class="breadth-chart-wrap"><svg class="breadth-chart" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="breadth-${index}"><title id="breadth-${index}">${escapeHtml(group?.label || "Breadth")}</title><defs><linearGradient id="breadth-fill-${index}" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="${escapeHtml(group?.color || "#38bdf8")}" stop-opacity="0.22"></stop><stop offset="100%" stop-color="${escapeHtml(group?.color || "#38bdf8")}" stop-opacity="0"></stop></linearGradient></defs><line class="breadth-grid-line" x1="0" y1="${height / 2}" x2="${width}" y2="${height / 2}"></line><line class="breadth-grid-line" x1="0" y1="${paddingY}" x2="${width}" y2="${paddingY}"></line><line class="breadth-grid-line" x1="0" y1="${height - paddingY}" x2="${width}" y2="${height - paddingY}"></line><path d="${breadthFill}" fill="url(#breadth-fill-${index})"></path><path d="${breadthPath}" class="breadth-primary-line" stroke="${escapeHtml(group?.color || "#38bdf8")}"></path><path d="${benchmarkPath}" class="breadth-benchmark-line"></path></svg></div>`;
+  return `<div class="breadth-chart-wrap" data-breadth-index="${escapeHtml(String(index))}" style="--breadth-color:${escapeHtml(group?.color || "#38bdf8")}"><svg class="breadth-chart" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="breadth-${index}"><title id="breadth-${index}">${escapeHtml(group?.label || "Breadth")}</title><defs><linearGradient id="breadth-fill-${index}" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="${escapeHtml(group?.color || "#38bdf8")}" stop-opacity="0.22"></stop><stop offset="100%" stop-color="${escapeHtml(group?.color || "#38bdf8")}" stop-opacity="0"></stop></linearGradient></defs><line class="breadth-grid-line" x1="0" y1="${height / 2}" x2="${width}" y2="${height / 2}"></line><line class="breadth-grid-line" x1="0" y1="${paddingY}" x2="${width}" y2="${paddingY}"></line><line class="breadth-grid-line" x1="0" y1="${height - paddingY}" x2="${width}" y2="${height - paddingY}"></line><path d="${breadthFill}" fill="url(#breadth-fill-${index})"></path><path d="${breadthPath}" class="breadth-primary-line" stroke="${escapeHtml(group?.color || "#38bdf8")}"></path><path d="${benchmarkPath}" class="breadth-benchmark-line"></path><line class="breadth-crosshair-line breadth-crosshair-line-vertical" x1="${paddingX}" y1="${paddingY}" x2="${paddingX}" y2="${height - paddingY}"></line><line class="breadth-crosshair-line breadth-crosshair-line-horizontal" x1="${paddingX}" y1="${height - paddingY}" x2="${width - paddingX}" y2="${height - paddingY}"></line><circle class="breadth-crosshair-dot breadth-crosshair-dot-primary" cx="${paddingX}" cy="${height - paddingY}" r="4"></circle><circle class="breadth-crosshair-dot breadth-crosshair-dot-benchmark" cx="${paddingX}" cy="${height - paddingY}" r="3.4"></circle></svg><div class="breadth-chart-tooltip" aria-hidden="true"><p class="breadth-chart-tooltip-time">--</p><div class="breadth-chart-tooltip-values"><p>--</p></div></div></div>`;
 }
 
 function tileIntensity(changePct) {
   return Math.min(Math.abs(Number(changePct || 0)) / 3.5, 1).toFixed(3);
+}
+
+function projectBreadthPoint(index, total, value, minValue, maxValue) {
+  const width = 520;
+  const height = 196;
+  const paddingX = 18;
+  const paddingY = 18;
+  const plotWidth = width - paddingX * 2;
+  const plotHeight = height - paddingY * 2;
+  const range = maxValue - minValue || 1;
+  return {
+    x: paddingX + (plotWidth * index) / Math.max(total - 1, 1),
+    y: paddingY + plotHeight - ((value - minValue) / range) * plotHeight,
+  };
+}
+
+function hideBreadthHover(chartWrap) {
+  if (!chartWrap) return;
+  chartWrap.classList.remove("is-hovering");
+}
+
+function attachBreadthInteractions(container, groups, language) {
+  const copy = getCopy(language);
+  const chartWraps = container.querySelectorAll(".breadth-chart-wrap[data-breadth-index]");
+  chartWraps.forEach((chartWrap) => {
+    const groupIndex = Number(chartWrap.getAttribute("data-breadth-index"));
+    const group = groups[groupIndex];
+    if (!group || !Array.isArray(group.points) || !group.points.length) return;
+
+    const crosshairVertical = chartWrap.querySelector(".breadth-crosshair-line-vertical");
+    const crosshairHorizontal = chartWrap.querySelector(".breadth-crosshair-line-horizontal");
+    const primaryDot = chartWrap.querySelector(".breadth-crosshair-dot-primary");
+    const benchmarkDot = chartWrap.querySelector(".breadth-crosshair-dot-benchmark");
+    const tooltip = chartWrap.querySelector(".breadth-chart-tooltip");
+    const breadthValues = group.points.map((point) => Number(point?.[1] || 0));
+    const benchmarkValues = group.points.map((point) => Number(point?.[2] || 0));
+    const benchmarkSpan = Math.max(1.2, ...benchmarkValues.map((value) => Math.abs(value)));
+
+    const updateHover = (clientX) => {
+      const rect = chartWrap.getBoundingClientRect();
+      if (!rect.width) return;
+      const relativeX = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const ratio = relativeX / rect.width;
+      const pointIndex = Math.min(group.points.length - 1, Math.max(0, Math.round(ratio * Math.max(group.points.length - 1, 1))));
+      const point = group.points[pointIndex];
+      if (!point) return;
+
+      const breadthPoint = projectBreadthPoint(pointIndex, group.points.length, Number(point[1] || 0), 0, 100);
+      const benchmarkPoint = projectBreadthPoint(pointIndex, group.points.length, Number(point[2] || 0), -benchmarkSpan, benchmarkSpan);
+      chartWrap.classList.add("is-hovering");
+      crosshairVertical?.setAttribute("x1", breadthPoint.x.toFixed(2));
+      crosshairVertical?.setAttribute("x2", breadthPoint.x.toFixed(2));
+      crosshairHorizontal?.setAttribute("y1", breadthPoint.y.toFixed(2));
+      crosshairHorizontal?.setAttribute("y2", breadthPoint.y.toFixed(2));
+      primaryDot?.setAttribute("cx", breadthPoint.x.toFixed(2));
+      primaryDot?.setAttribute("cy", breadthPoint.y.toFixed(2));
+      benchmarkDot?.setAttribute("cx", benchmarkPoint.x.toFixed(2));
+      benchmarkDot?.setAttribute("cy", benchmarkPoint.y.toFixed(2));
+
+      if (tooltip) {
+        tooltip.querySelector(".breadth-chart-tooltip-time").textContent = formatTimeLabel(point[0], language);
+        tooltip.querySelector(".breadth-chart-tooltip-values").innerHTML = `<p><strong>${escapeHtml(copy.breadth)}</strong> ${escapeHtml(formatNumber(point[1], 1, "%"))}</p><p><strong>${escapeHtml(copy.breadthBench)}</strong> ${escapeHtml(formatSigned(point[2], 2, "%"))}</p>`;
+        const tooltipWidth = Math.min(180, Math.max(rect.width - 16, 120));
+        const left = Math.min(rect.width - tooltipWidth - 8, Math.max(8, relativeX + 14));
+        tooltip.style.left = `${Math.max(8, left)}px`;
+      }
+    };
+
+    chartWrap.addEventListener("pointermove", (event) => updateHover(event.clientX));
+    chartWrap.addEventListener("pointerenter", (event) => updateHover(event.clientX));
+    chartWrap.addEventListener("pointerleave", () => hideBreadthHover(chartWrap));
+  });
 }
 
 function renderToolbar(switcherContainer, legendContainer, payload, viewData, language, onSelectView) {
@@ -311,7 +383,7 @@ function renderBreadthBoard(container, viewData, language) {
     return;
   }
 
-  container.innerHTML = `<div class="market-board-head market-board-head-enhanced"><div><p class="market-board-kicker">${escapeHtml(copy.breadthKicker)}</p><h3 class="market-board-title">${escapeHtml(viewData.view?.label || "")} · ${escapeHtml(copy.breadthTitle)}</h3></div><p class="market-board-legend">${escapeHtml(copy.breadthLegend)}</p></div><div class="market-breadth-grid">${viewData.breadthGroups
+  container.innerHTML = `<div class="market-board-head market-board-head-enhanced"><div><p class="market-board-kicker">${escapeHtml(copy.breadthKicker)}</p><h3 class="market-board-title">${escapeHtml(viewData.view?.label || "")} · ${escapeHtml(copy.breadthTitle)}</h3></div><p class="market-board-legend">${escapeHtml(copy.breadthLegend)}</p></div><div class="market-breadth-grid" data-card-count="${escapeHtml(String(viewData.breadthGroups.length))}">${viewData.breadthGroups
     .map((group, index) => `<article class="breadth-card ${group.featured || index === 0 ? "is-featured" : ""}" data-state="${escapeHtml(group.heat_state || "neutral")}"><div class="breadth-card-head"><div><p class="breadth-card-kicker">${escapeHtml(group.description || "")}</p><h4 class="breadth-card-title">${escapeHtml(group.label || "--")}</h4></div><div class="market-card-badges"><span class="market-series-status" data-state="${escapeHtml(group.source_status || "live")}">${escapeHtml(labelBySource(group.source_status, language))}</span><span class="market-trend-pill" data-trend="${group.heat_state === "hot" ? "up" : group.heat_state === "cold" ? "down" : "flat"}">${escapeHtml(copy.heat)}</span></div></div><div class="breadth-metrics"><div><p class="breadth-metric-label">${escapeHtml(copy.breadth)}</p><p class="breadth-metric-value breadth-metric-value-large">${escapeHtml(formatNumber(group.latest_pct, 1, "%"))}</p></div><div><p class="breadth-metric-label">${escapeHtml(copy.breadthDelta)}</p><p class="breadth-metric-value">${escapeHtml(formatSigned(group.session_delta_pct, 1, "%"))}</p></div><div><p class="breadth-metric-label">${escapeHtml(copy.breadthBench)}</p><p class="breadth-metric-value">${escapeHtml(formatSigned(group.benchmark_change_pct, 2, "%"))}</p></div></div>${buildBreadthChart(group, `${group.code}-${index}`)}<div class="breadth-footer"><span>${escapeHtml(copy.advancers)} ${escapeHtml(String(group.advancers || 0))}</span><span>${escapeHtml(copy.decliners)} ${escapeHtml(String(group.decliners || 0))}</span><span>${escapeHtml(copy.unchanged)} ${escapeHtml(String(group.unchanged || 0))}</span><span>${escapeHtml(`${group.live_members || 0}/${group.members_total || 0}`)}</span></div><div class="breadth-chip-section"><div class="breadth-chip-row"><span class="breadth-chip-label">${escapeHtml(copy.boardLeaders)}</span>${(group.leaders || [])
       .slice(0, 3)
       .map((item) => `<span class="breadth-chip" data-state="${escapeHtml(item.state || "neutral")}"><strong>${escapeHtml(item.symbol || "--")}</strong><span>${escapeHtml(formatSigned(item.display_change_pct ?? item.change_pct, 2, "%"))}</span>${item.normalized ? `<em>${escapeHtml(copy.normalized)}</em>` : ""}</span>`)
@@ -320,6 +392,7 @@ function renderBreadthBoard(container, viewData, language) {
       .map((item) => `<span class="breadth-chip" data-state="${escapeHtml(item.state || "neutral")}"><strong>${escapeHtml(item.symbol || "--")}</strong><span>${escapeHtml(formatSigned(item.display_change_pct ?? item.change_pct, 2, "%"))}</span>${item.normalized ? `<em>${escapeHtml(copy.normalized)}</em>` : ""}</span>`)
       .join("")}</div></div></article>`)
     .join("")}</div>`;
+  attachBreadthInteractions(container, viewData.breadthGroups, language);
 }
 
 function renderHeatBoard(container, viewData, language) {
