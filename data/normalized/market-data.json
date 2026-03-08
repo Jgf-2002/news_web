@@ -1,13 +1,15 @@
 {
-  "generated_at": "2026-03-07T23:59:07Z",
+  "generated_at": "2026-03-08T00:01:11Z",
   "schema_version": "1.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
     "transport": "Static JSON generated locally by scripts/fetch_market_data.py"
   },
-  "status": "live",
-  "stale": false,
-  "errors": [],
+  "status": "degraded",
+  "stale": true,
+  "errors": [
+    "BTC: fetch failed for BTC: no usable price points"
+  ],
   "summary": {
     "regime": "risk-off",
     "headline": "Defensive flows dominate and volatility is firm.",
@@ -19,11 +21,11 @@
       "SPX",
       "NDX"
     ],
-    "live_count": 8,
-    "stale_count": 0,
+    "live_count": 7,
+    "stale_count": 1,
     "series_count": 8,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-07T23:59:07Z"
+    "generated_at": "2026-03-08T00:01:11Z"
   },
   "series": [
     {
@@ -1539,14 +1541,14 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 67264.0,
+      "last": 67268.0,
       "previous_close": 68124.0,
-      "change": -860.0,
+      "change": -856.0,
       "change_pct": -1.26,
       "day_low": 67029.0,
       "day_high": 68514.0,
-      "as_of": "2026-03-07T23:55:00Z",
-      "as_of_label": "23:55 UTC",
+      "as_of": "2026-03-07T23:57:00Z",
+      "as_of_label": "23:57 UTC",
       "exchange_timezone": "UTC",
       "market_state": "down",
       "points": [
@@ -1740,11 +1742,11 @@
         ],
         [
           "2026-03-07T23:55:00Z",
-          67263.85
+          67274.64
         ]
       ],
-      "source_status": "live",
-      "source_note": "yahoo-finance-chart"
+      "source_status": "cached",
+      "source_note": "fetch failed for BTC: no usable price points"
     }
   ]
 }
