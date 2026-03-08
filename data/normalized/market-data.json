@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-08T05:00:47Z",
+  "generated_at": "2026-03-08T05:02:49Z",
   "schema_version": "1.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -9,8 +9,8 @@
   "stale": true,
   "errors": [
     "DXY: fetch failed for DXY: no usable price points",
-    "GOLD: fetch failed for GOLD: no usable price points",
-    "WTI: fetch failed for WTI: no usable price points"
+    "WTI: fetch failed for WTI: no usable price points",
+    "GOLD: fetch failed for GOLD: no usable price points"
   ],
   "summary": {
     "regime": "risk-off",
@@ -27,7 +27,7 @@
     "stale_count": 3,
     "series_count": 8,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-08T05:00:47Z"
+    "generated_at": "2026-03-08T05:02:49Z"
   },
   "series": [
     {
@@ -1543,14 +1543,14 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 66643.0,
+      "last": 66648.0,
       "previous_close": 67250.0,
-      "change": -607.0,
+      "change": -603.0,
       "change_pct": -0.9,
-      "day_low": 66613.0,
+      "day_low": 66643.0,
       "day_high": 67439.0,
-      "as_of": "2026-03-08T04:57:00Z",
-      "as_of_label": "04:57 UTC",
+      "as_of": "2026-03-08T04:59:00Z",
+      "as_of_label": "04:59 UTC",
       "exchange_timezone": "UTC",
       "market_state": "down",
       "points": [
@@ -1740,11 +1740,11 @@
         ],
         [
           "2026-03-08T04:55:00Z",
-          66612.98
+          66643.48
         ],
         [
-          "2026-03-08T04:57:00Z",
-          66643.48
+          "2026-03-08T04:59:00Z",
+          66647.52
         ]
       ],
       "source_status": "live",
