@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-08T05:31:04Z",
+  "generated_at": "2026-03-08T05:34:10Z",
   "schema_version": "2.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -25,10 +25,10 @@
     "heat_live_count": 3,
     "series_count": 8,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-08T05:31:04Z"
+    "generated_at": "2026-03-08T05:34:10Z"
   },
   "breadth": {
-    "updated_at": "2026-03-08T05:31:04Z",
+    "updated_at": "2026-03-08T05:34:10Z",
     "groups": [
       {
         "code": "NQ_BREADTH",
@@ -942,7 +942,7 @@
     ]
   },
   "heat_layers": {
-    "updated_at": "2026-03-08T05:31:04Z",
+    "updated_at": "2026-03-08T05:34:10Z",
     "legend": {
       "min_pct": -3.0,
       "max_pct": 3.0
@@ -2830,16 +2830,16 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 67178.0,
+      "last": 67139.0,
       "previous_close": 67250.0,
-      "change": -72.0,
-      "change_pct": -0.11,
+      "change": -111.0,
+      "change_pct": -0.16,
       "day_low": 66648.0,
       "day_high": 67439.0,
-      "as_of": "2026-03-08T05:27:00Z",
-      "as_of_label": "05:27 UTC",
+      "as_of": "2026-03-08T05:30:00Z",
+      "as_of_label": "05:30 UTC",
       "exchange_timezone": "UTC",
-      "market_state": "flat",
+      "market_state": "down",
       "points": [
         [
           "2026-03-08T00:00:00Z",
@@ -3027,11 +3027,11 @@
         ],
         [
           "2026-03-08T05:25:00Z",
-          67177.13
+          67167.7
         ],
         [
-          "2026-03-08T05:27:00Z",
-          67178.23
+          "2026-03-08T05:30:00Z",
+          67139.41
         ]
       ],
       "source_status": "live",
