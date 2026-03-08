@@ -16,7 +16,7 @@ $TrackedOutputs = @(
 )
 $RuntimeDir = Join-Path $ProjectRoot ".runtime"
 $LastPushFile = Join-Path $RuntimeDir "last_push_utc.txt"
-$SyncMutexName = "Global\\NewsWebAutoSyncMutex"
+$SyncMutexName = "Global\NewsWebAutoSyncMutex"
 
 if (-not (Test-Path $GitExe)) {
     $gitCommand = Get-Command git -ErrorAction SilentlyContinue
