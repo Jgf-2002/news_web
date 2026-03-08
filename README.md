@@ -14,6 +14,7 @@ Terminal-style news web page built in `C:\Cloud_code\news_web`.
   - Signal detail panel
   - Metrics panel
   - Market data curve deck with cached fallback states
+  - Market breadth overlays and heat-layer rotation board
 - One-click pipeline script (`scripts/run_pipeline.ps1`)
 
 ## Constraints Enforced
@@ -86,12 +87,19 @@ Argument order:
 
 - Source: Yahoo Finance chart endpoint, fetched by `scripts/fetch_market_data.py`
 - Refresh strategy: regenerated on every pipeline run, then polled by the web UI from local static JSON
+- Hot-cache strategy: the market generator reuses a fresh cache for short auto-sync loops so frequent pushes stay stable
 - Fallback order:
   1. fresh remote chart data
   2. last successful cached payload in `.runtime\market-data-cache.json`
   3. deterministic default sample payload
 
 This keeps the GitHub Pages UI stable even when the external market source is temporarily unavailable.
+
+### Version 2 Additions
+
+- Breadth overlays for Nasdaq leaders, HSI leaders, and US sector rotation
+- Heat layers grouped by leadership basket / sector rotation / HSI core
+- Cross-asset tape preserved below the breadth + heat stack for dense terminal-style scanning
 
 ## Feed Schema
 

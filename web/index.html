@@ -113,7 +113,19 @@
         </div>
       </div>
       <div id="market-monitor-summary" class="market-summary-grid" aria-live="polite"></div>
-      <div id="market-monitor-grid" class="market-monitor-grid"></div>
+      <div class="market-structure-grid">
+        <section id="market-breadth-board" class="market-board market-breadth-board" aria-label="Market breadth curves"></section>
+        <aside id="market-heat-board" class="market-board market-heat-board" aria-label="Market heat layers"></aside>
+      </div>
+      <section id="market-tape-board" class="market-board market-tape-board" aria-label="Cross asset tape">
+        <div class="market-board-head">
+          <div>
+            <p id="market-tape-kicker" class="market-board-kicker">Cross-Asset Tape</p>
+            <h3 id="market-tape-title" class="market-board-title">Fast monitor</h3>
+          </div>
+        </div>
+        <div id="market-monitor-grid" class="market-monitor-grid"></div>
+      </section>
     </section>
   </div>
 

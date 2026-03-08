@@ -53,6 +53,8 @@ const UI_TEXT = {
     leadLater: "Later",
     marketMonitorTitle: "Market Data Curves",
     marketMonitorSubtitle: "Cross-asset intraday monitor generated from standalone local data.",
+    marketTapeKicker: "Cross-Asset Tape",
+    marketTapeTitle: "Fast monitor",
     toggleText: "EN",
   },
   zh: {
@@ -81,6 +83,8 @@ const UI_TEXT = {
     leadLater: "\u7a0d\u540e",
     marketMonitorTitle: "\u5e02\u573a\u6570\u636e\u66f2\u7ebf",
     marketMonitorSubtitle: "\u57fa\u4e8e\u672c\u5730\u72ec\u7acb\u6570\u636e\u7ba1\u7ebf\u751f\u6210\u7684\u8de8\u8d44\u4ea7\u5206\u65f6\u76d1\u63a7\u3002",
+    marketTapeKicker: "\u8de8\u8d44\u4ea7\u901f\u89c8",
+    marketTapeTitle: "\u5feb\u901f\u76d1\u63a7",
     toggleText: "\u4e2d\u6587",
   },
 };
@@ -120,7 +124,11 @@ const elements = {
   marketMonitorTitle: document.getElementById("market-monitor-title"),
   marketMonitorSubtitle: document.getElementById("market-monitor-subtitle"),
   marketMonitorSummary: document.getElementById("market-monitor-summary"),
+  marketBreadthBoard: document.getElementById("market-breadth-board"),
+  marketHeatBoard: document.getElementById("market-heat-board"),
   marketMonitorGrid: document.getElementById("market-monitor-grid"),
+  marketTapeKicker: document.getElementById("market-tape-kicker"),
+  marketTapeTitle: document.getElementById("market-tape-title"),
   marketMonitorStatus: document.getElementById("market-monitor-status"),
   marketMonitorUpdated: document.getElementById("market-monitor-updated"),
 };
@@ -175,6 +183,8 @@ const globe = createGlobeRenderer(elements.globeCanvas, elements.globeSummary, {
 
 const marketMonitor = createMarketMonitor({
   summaryContainer: elements.marketMonitorSummary,
+  breadthBoard: elements.marketBreadthBoard,
+  heatBoard: elements.marketHeatBoard,
   gridContainer: elements.marketMonitorGrid,
   statusLabel: elements.marketMonitorStatus,
   updatedLabel: elements.marketMonitorUpdated,
@@ -353,6 +363,12 @@ function applyLanguageUi(language) {
   }
   if (elements.marketMonitorSubtitle) {
     elements.marketMonitorSubtitle.textContent = copy.marketMonitorSubtitle;
+  }
+  if (elements.marketTapeKicker) {
+    elements.marketTapeKicker.textContent = copy.marketTapeKicker;
+  }
+  if (elements.marketTapeTitle) {
+    elements.marketTapeTitle.textContent = copy.marketTapeTitle;
   }
   if (elements.languageToggleText) {
     elements.languageToggleText.textContent = copy.toggleText;
