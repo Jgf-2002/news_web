@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-10T15:02:08Z",
+  "generated_at": "2026-03-10T15:04:41Z",
   "schema_version": "3.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -25,10 +25,10 @@
     "heat_live_count": 4,
     "series_count": 11,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-10T15:02:08Z"
+    "generated_at": "2026-03-10T15:04:41Z"
   },
   "breadth": {
-    "updated_at": "2026-03-10T15:02:08Z",
+    "updated_at": "2026-03-10T15:04:41Z",
     "groups": [
       {
         "code": "NQ_BREADTH",
@@ -40,7 +40,7 @@
         "featured": true,
         "latest_pct": 66.7,
         "session_delta_pct": 25.0,
-        "benchmark_change_pct": 0.71,
+        "benchmark_change_pct": 0.69,
         "advancers": 8,
         "decliners": 4,
         "unchanged": 0,
@@ -140,36 +140,36 @@
           [
             "2026-03-10T15:00:00Z",
             66.67,
-            0.67
+            0.71
           ],
           [
-            "2026-03-10T15:01:15Z",
+            "2026-03-10T15:03:50Z",
             66.67,
-            0.71
+            0.69
           ]
         ],
         "leaders": [
           {
-            "symbol": "META",
-            "label": "Meta",
-            "change_pct": 1.73,
-            "display_change_pct": 1.73,
-            "normalized": false,
-            "state": "hot"
-          },
-          {
             "symbol": "TSLA",
             "label": "Tesla",
-            "change_pct": 1.67,
-            "display_change_pct": 1.67,
+            "change_pct": 1.72,
+            "display_change_pct": 1.72,
             "normalized": false,
             "state": "hot"
           },
           {
-            "symbol": "NVDA",
-            "label": "NVIDIA",
-            "change_pct": 1.62,
-            "display_change_pct": 1.62,
+            "symbol": "META",
+            "label": "Meta",
+            "change_pct": 1.69,
+            "display_change_pct": 1.69,
+            "normalized": false,
+            "state": "hot"
+          },
+          {
+            "symbol": "AMD",
+            "label": "AMD",
+            "change_pct": 1.67,
+            "display_change_pct": 1.67,
             "normalized": false,
             "state": "hot"
           }
@@ -178,24 +178,24 @@
           {
             "symbol": "PLTR",
             "label": "Palantir",
-            "change_pct": -2.9,
-            "display_change_pct": -2.9,
+            "change_pct": -3.0,
+            "display_change_pct": -3.0,
             "normalized": false,
             "state": "cold"
           },
           {
             "symbol": "NFLX",
             "label": "Netflix",
-            "change_pct": -0.9,
-            "display_change_pct": -0.9,
+            "change_pct": -0.87,
+            "display_change_pct": -0.87,
             "normalized": false,
             "state": "cold"
           },
           {
             "symbol": "MSFT",
             "label": "Microsoft",
-            "change_pct": -0.71,
-            "display_change_pct": -0.71,
+            "change_pct": -0.83,
+            "display_change_pct": -0.83,
             "normalized": false,
             "state": "cold"
           }
@@ -206,7 +206,7 @@
         "source_status": "live",
         "source_note": "market-breadth-overlay",
         "heat_state": "hot",
-        "as_of": "2026-03-10T15:01:15Z"
+        "as_of": "2026-03-10T15:03:50Z"
       },
       {
         "code": "HSI_BREADTH",
@@ -536,7 +536,7 @@
         "featured": false,
         "latest_pct": 81.8,
         "session_delta_pct": 72.7,
-        "benchmark_change_pct": 0.45,
+        "benchmark_change_pct": 0.43,
         "advancers": 9,
         "decliners": 2,
         "unchanged": 0,
@@ -636,36 +636,36 @@
           [
             "2026-03-10T15:00:00Z",
             81.82,
-            0.42
+            0.46
           ],
           [
-            "2026-03-10T15:01:18Z",
+            "2026-03-10T15:03:52Z",
             81.82,
-            0.45
+            0.43
           ]
         ],
         "leaders": [
           {
             "symbol": "XLK",
             "label": "Technology",
-            "change_pct": 0.83,
-            "display_change_pct": 0.83,
+            "change_pct": 0.84,
+            "display_change_pct": 0.84,
             "normalized": false,
             "state": "hot"
           },
           {
-            "symbol": "XLY",
-            "label": "Consumer",
-            "change_pct": 0.65,
-            "display_change_pct": 0.65,
+            "symbol": "XLB",
+            "label": "Materials",
+            "change_pct": 0.62,
+            "display_change_pct": 0.62,
             "normalized": false,
             "state": "neutral"
           },
           {
-            "symbol": "XLB",
-            "label": "Materials",
-            "change_pct": 0.58,
-            "display_change_pct": 0.58,
+            "symbol": "XLY",
+            "label": "Consumer",
+            "change_pct": 0.6,
+            "display_change_pct": 0.6,
             "normalized": false,
             "state": "neutral"
           }
@@ -674,24 +674,24 @@
           {
             "symbol": "XLU",
             "label": "Utilities",
-            "change_pct": -0.32,
-            "display_change_pct": -0.32,
+            "change_pct": -0.37,
+            "display_change_pct": -0.37,
             "normalized": false,
             "state": "neutral"
           },
           {
             "symbol": "XLV",
             "label": "Healthcare",
-            "change_pct": -0.26,
-            "display_change_pct": -0.26,
+            "change_pct": -0.21,
+            "display_change_pct": -0.21,
             "normalized": false,
             "state": "neutral"
           },
           {
-            "symbol": "XLP",
-            "label": "Staples",
-            "change_pct": 0.09,
-            "display_change_pct": 0.09,
+            "symbol": "XLF",
+            "label": "Financials",
+            "change_pct": 0.07,
+            "display_change_pct": 0.07,
             "normalized": false,
             "state": "neutral"
           }
@@ -702,7 +702,7 @@
         "source_status": "live",
         "source_note": "market-breadth-overlay",
         "heat_state": "hot",
-        "as_of": "2026-03-10T15:01:18Z"
+        "as_of": "2026-03-10T15:03:52Z"
       },
       {
         "code": "MACRO_BREADTH",
@@ -714,7 +714,7 @@
         "featured": false,
         "latest_pct": 83.3,
         "session_delta_pct": -16.7,
-        "benchmark_change_pct": -0.34,
+        "benchmark_change_pct": -0.31,
         "advancers": 5,
         "decliners": 1,
         "unchanged": 0,
@@ -957,33 +957,33 @@
             -0.31
           ],
           [
-            "2026-03-10T15:01:11Z",
+            "2026-03-10T15:03:50Z",
             83.33,
-            -0.34
+            -0.31
           ]
         ],
         "leaders": [
           {
             "symbol": "BTC-USD",
             "label": "Bitcoin",
-            "change_pct": 4.4,
-            "display_change_pct": 4.4,
+            "change_pct": 4.57,
+            "display_change_pct": 4.57,
             "normalized": false,
             "state": "hot"
           },
           {
             "symbol": "GLD",
             "label": "Gold",
-            "change_pct": 1.35,
-            "display_change_pct": 1.35,
+            "change_pct": 1.39,
+            "display_change_pct": 1.39,
             "normalized": false,
             "state": "hot"
           },
           {
             "symbol": "^TNX",
             "label": "US 10Y",
-            "change_pct": 0.51,
-            "display_change_pct": -0.51,
+            "change_pct": 0.46,
+            "display_change_pct": -0.46,
             "normalized": true,
             "state": "neutral"
           }
@@ -992,8 +992,8 @@
           {
             "symbol": "USO",
             "label": "WTI",
-            "change_pct": -2.25,
-            "display_change_pct": -2.25,
+            "change_pct": -1.67,
+            "display_change_pct": -1.67,
             "normalized": false,
             "state": "cold"
           },
@@ -1008,8 +1008,8 @@
           {
             "symbol": "UUP",
             "label": "Dollar",
-            "change_pct": 0.34,
-            "display_change_pct": -0.34,
+            "change_pct": 0.31,
+            "display_change_pct": -0.31,
             "normalized": true,
             "state": "neutral"
           }
@@ -1020,12 +1020,12 @@
         "source_status": "live",
         "source_note": "market-breadth-overlay",
         "heat_state": "hot",
-        "as_of": "2026-03-10T15:01:11Z"
+        "as_of": "2026-03-10T15:03:50Z"
       }
     ]
   },
   "heat_layers": {
-    "updated_at": "2026-03-10T15:02:08Z",
+    "updated_at": "2026-03-10T15:04:41Z",
     "legend": {
       "min_pct": -3.0,
       "max_pct": 3.0
@@ -1055,8 +1055,8 @@
             "code": "MSFT",
             "label": "Microsoft",
             "size": "lg",
-            "last": 406.5,
-            "change_pct": -0.71,
+            "last": 406.0,
+            "change_pct": -0.83,
             "state": "cold"
           },
           {
@@ -1064,8 +1064,8 @@
             "code": "AAPL",
             "label": "Apple",
             "size": "lg",
-            "last": 261.56,
-            "change_pct": 0.65,
+            "last": 261.44,
+            "change_pct": 0.6,
             "state": "neutral"
           },
           {
@@ -1073,8 +1073,8 @@
             "code": "AMZN",
             "label": "Amazon",
             "size": "lg",
-            "last": 215.59,
-            "change_pct": 0.98,
+            "last": 215.26,
+            "change_pct": 0.83,
             "state": "hot"
           },
           {
@@ -1082,8 +1082,8 @@
             "code": "META",
             "label": "Meta",
             "size": "md",
-            "last": 658.59,
-            "change_pct": 1.73,
+            "last": 658.31,
+            "change_pct": 1.69,
             "state": "hot"
           },
           {
@@ -1091,8 +1091,8 @@
             "code": "GOOG",
             "label": "Alphabet",
             "size": "md",
-            "last": 309.12,
-            "change_pct": 1.02,
+            "last": 308.62,
+            "change_pct": 0.85,
             "state": "hot"
           },
           {
@@ -1100,8 +1100,8 @@
             "code": "AVGO",
             "label": "Broadcom",
             "size": "md",
-            "last": 350.16,
-            "change_pct": 1.28,
+            "last": 350.37,
+            "change_pct": 1.34,
             "state": "hot"
           },
           {
@@ -1109,8 +1109,8 @@
             "code": "TSLA",
             "label": "Tesla",
             "size": "md",
-            "last": 405.32,
-            "change_pct": 1.67,
+            "last": 405.53,
+            "change_pct": 1.72,
             "state": "hot"
           },
           {
@@ -1118,8 +1118,8 @@
             "code": "AMD",
             "label": "AMD",
             "size": "sm",
-            "last": 205.11,
-            "change_pct": 1.2,
+            "last": 206.06,
+            "change_pct": 1.67,
             "state": "hot"
           },
           {
@@ -1127,8 +1127,8 @@
             "code": "NFLX",
             "label": "Netflix",
             "size": "sm",
-            "last": 97.44,
-            "change_pct": -0.9,
+            "last": 97.47,
+            "change_pct": -0.87,
             "state": "cold"
           },
           {
@@ -1136,8 +1136,8 @@
             "code": "COST",
             "label": "Costco",
             "size": "sm",
-            "last": 1002.48,
-            "change_pct": -0.28,
+            "last": 1002.59,
+            "change_pct": -0.27,
             "state": "neutral"
           },
           {
@@ -1145,18 +1145,18 @@
             "code": "PLTR",
             "label": "Palantir",
             "size": "sm",
-            "last": 151.89,
-            "change_pct": -2.9,
+            "last": 151.74,
+            "change_pct": -3.0,
             "state": "cold"
           }
         ],
         "hottest": {
-          "symbol": "META",
-          "change_pct": 1.73
+          "symbol": "TSLA",
+          "change_pct": 1.72
         },
         "coldest": {
           "symbol": "PLTR",
-          "change_pct": -2.9
+          "change_pct": -3.0
         }
       },
       {
@@ -1174,8 +1174,8 @@
             "code": "XLK",
             "label": "Technology",
             "size": "lg",
-            "last": 140.91,
-            "change_pct": 0.83,
+            "last": 140.93,
+            "change_pct": 0.84,
             "state": "hot"
           },
           {
@@ -1183,8 +1183,8 @@
             "code": "XLF",
             "label": "Financials",
             "size": "lg",
-            "last": 50.39,
-            "change_pct": 0.12,
+            "last": 50.37,
+            "change_pct": 0.07,
             "state": "neutral"
           },
           {
@@ -1193,7 +1193,7 @@
             "label": "Energy",
             "size": "lg",
             "last": 56.41,
-            "change_pct": 0.15,
+            "change_pct": 0.17,
             "state": "neutral"
           },
           {
@@ -1201,8 +1201,8 @@
             "code": "XLY",
             "label": "Consumer",
             "size": "md",
-            "last": 115.33,
-            "change_pct": 0.65,
+            "last": 115.28,
+            "change_pct": 0.6,
             "state": "neutral"
           },
           {
@@ -1210,8 +1210,8 @@
             "code": "XLV",
             "label": "Healthcare",
             "size": "md",
-            "last": 153.86,
-            "change_pct": -0.26,
+            "last": 153.94,
+            "change_pct": -0.21,
             "state": "neutral"
           },
           {
@@ -1219,8 +1219,8 @@
             "code": "XLI",
             "label": "Industrials",
             "size": "md",
-            "last": 171.5,
-            "change_pct": 0.33,
+            "last": 171.53,
+            "change_pct": 0.35,
             "state": "neutral"
           },
           {
@@ -1228,8 +1228,8 @@
             "code": "XLP",
             "label": "Staples",
             "size": "sm",
-            "last": 86.05,
-            "change_pct": 0.09,
+            "last": 86.08,
+            "change_pct": 0.13,
             "state": "neutral"
           },
           {
@@ -1237,8 +1237,8 @@
             "code": "XLU",
             "label": "Utilities",
             "size": "sm",
-            "last": 46.7,
-            "change_pct": -0.32,
+            "last": 46.67,
+            "change_pct": -0.37,
             "state": "neutral"
           },
           {
@@ -1246,8 +1246,8 @@
             "code": "XLB",
             "label": "Materials",
             "size": "sm",
-            "last": 50.28,
-            "change_pct": 0.58,
+            "last": 50.3,
+            "change_pct": 0.62,
             "state": "neutral"
           },
           {
@@ -1255,8 +1255,8 @@
             "code": "XLRE",
             "label": "Real Estate",
             "size": "sm",
-            "last": 43.08,
-            "change_pct": 0.23,
+            "last": 43.05,
+            "change_pct": 0.16,
             "state": "neutral"
           },
           {
@@ -1264,18 +1264,18 @@
             "code": "XLC",
             "label": "Comms",
             "size": "sm",
-            "last": 118.05,
-            "change_pct": 0.41,
+            "last": 117.96,
+            "change_pct": 0.34,
             "state": "neutral"
           }
         ],
         "hottest": {
           "symbol": "XLK",
-          "change_pct": 0.83
+          "change_pct": 0.84
         },
         "coldest": {
           "symbol": "XLU",
-          "change_pct": -0.32
+          "change_pct": -0.37
         }
       },
       {
@@ -1421,8 +1421,8 @@
             "code": "BTC-USD",
             "label": "Bitcoin",
             "size": "lg",
-            "last": 71453.23,
-            "change_pct": 4.4,
+            "last": 71568.41,
+            "change_pct": 4.57,
             "state": "hot"
           },
           {
@@ -1430,8 +1430,8 @@
             "code": "USO",
             "label": "WTI",
             "size": "md",
-            "last": 101.98,
-            "change_pct": -2.25,
+            "last": 102.59,
+            "change_pct": -1.67,
             "state": "cold"
           },
           {
@@ -1439,8 +1439,8 @@
             "code": "GLD",
             "label": "Gold",
             "size": "md",
-            "last": 478.91,
-            "change_pct": 1.35,
+            "last": 479.12,
+            "change_pct": 1.39,
             "state": "hot"
           },
           {
@@ -1448,8 +1448,8 @@
             "code": "UUP",
             "label": "Dollar",
             "size": "lg",
-            "last": 27.37,
-            "change_pct": -0.34,
+            "last": 27.38,
+            "change_pct": -0.31,
             "state": "neutral"
           },
           {
@@ -1458,7 +1458,7 @@
             "label": "US 10Y",
             "size": "md",
             "last": 4.12,
-            "change_pct": -0.51,
+            "change_pct": -0.46,
             "state": "neutral"
           },
           {
@@ -1473,11 +1473,11 @@
         ],
         "hottest": {
           "symbol": "BTC-USD",
-          "change_pct": 4.4
+          "change_pct": 4.57
         },
         "coldest": {
           "symbol": "USO",
-          "change_pct": -2.25
+          "change_pct": -1.67
         }
       }
     ]
@@ -1525,7 +1525,7 @@
           "breadth_count": 2,
           "heat_count": 2,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T15:02:08Z",
+          "generated_at": "2026-03-10T15:04:41Z",
           "status": "live"
         }
       },
@@ -1567,7 +1567,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T15:02:08Z",
+          "generated_at": "2026-03-10T15:04:41Z",
           "status": "live"
         }
       },
@@ -1612,7 +1612,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T15:02:08Z",
+          "generated_at": "2026-03-10T15:04:41Z",
           "status": "live"
         }
       }
@@ -1627,14 +1627,14 @@
       "color": "#5aa9ff",
       "precision": 2,
       "suffix": "",
-      "last": 6826.53,
+      "last": 6825.46,
       "previous_close": 6795.99,
-      "change": 30.54,
-      "change_pct": 0.45,
+      "change": 29.47,
+      "change_pct": 0.43,
       "day_low": 6760.7,
-      "day_high": 6826.53,
-      "as_of": "2026-03-10T15:01:18Z",
-      "as_of_label": "11:01 EDT",
+      "day_high": 6827.53,
+      "as_of": "2026-03-10T15:03:52Z",
+      "as_of_label": "11:03 EDT",
       "exchange_timezone": "America/New_York",
       "market_state": "up",
       "points": [
@@ -1712,11 +1712,11 @@
         ],
         [
           "2026-03-10T15:00:00Z",
-          6824.4502
+          6827.5298
         ],
         [
-          "2026-03-10T15:01:18Z",
-          6826.5298
+          "2026-03-10T15:03:52Z",
+          6825.46
         ]
       ],
       "views": [
@@ -1734,14 +1734,14 @@
       "color": "#22c55e",
       "precision": 2,
       "suffix": "",
-      "last": 25144.86,
+      "last": 25140.45,
       "previous_close": 24967.25,
-      "change": 177.61,
-      "change_pct": 0.71,
+      "change": 173.2,
+      "change_pct": 0.69,
       "day_low": 24873.38,
-      "day_high": 25144.86,
-      "as_of": "2026-03-10T15:01:15Z",
-      "as_of_label": "11:01 EDT",
+      "day_high": 25145.08,
+      "as_of": "2026-03-10T15:03:50Z",
+      "as_of_label": "11:03 EDT",
       "exchange_timezone": "America/New_York",
       "market_state": "up",
       "points": [
@@ -1819,11 +1819,11 @@
         ],
         [
           "2026-03-10T15:00:00Z",
-          25133.9219
+          25145.0781
         ],
         [
-          "2026-03-10T15:01:15Z",
-          25144.8574
+          "2026-03-10T15:03:50Z",
+          25140.4512
         ]
       ],
       "views": [
@@ -1841,14 +1841,14 @@
       "color": "#f97316",
       "precision": 2,
       "suffix": "",
-      "last": 23.06,
+      "last": 23.09,
       "previous_close": 25.5,
-      "change": -2.44,
-      "change_pct": -9.57,
+      "change": -2.41,
+      "change_pct": -9.45,
       "day_low": 23.0,
       "day_high": 25.93,
-      "as_of": "2026-03-10T14:46:16Z",
-      "as_of_label": "10:46 EDT",
+      "as_of": "2026-03-10T14:48:46Z",
+      "as_of_label": "10:48 EDT",
       "exchange_timezone": "America/New_York",
       "market_state": "down",
       "points": [
@@ -2041,8 +2041,8 @@
           23.05
         ],
         [
-          "2026-03-10T14:46:16Z",
-          23.06
+          "2026-03-10T14:48:46Z",
+          23.09
         ]
       ],
       "views": [
@@ -2498,14 +2498,14 @@
       "color": "#0ea5e9",
       "precision": 4,
       "suffix": "",
-      "last": 6.8654,
+      "last": 6.8652,
       "previous_close": 6.882,
-      "change": -0.0166,
+      "change": -0.0168,
       "change_pct": -0.24,
       "day_low": 6.8648,
       "day_high": 6.8951,
-      "as_of": "2026-03-10T15:01:18Z",
-      "as_of_label": "15:01 GMT",
+      "as_of": "2026-03-10T15:03:51Z",
+      "as_of_label": "15:03 GMT",
       "exchange_timezone": "Europe/London",
       "market_state": "down",
       "points": [
@@ -2698,8 +2698,8 @@
           6.8672
         ],
         [
-          "2026-03-10T15:01:18Z",
-          6.86545
+          "2026-03-10T15:03:51Z",
+          6.8652
         ]
       ],
       "views": [
@@ -2718,14 +2718,14 @@
       "color": "#facc15",
       "precision": 2,
       "suffix": "",
-      "last": 27.37,
+      "last": 27.38,
       "previous_close": 27.46,
       "change": -0.09,
-      "change_pct": -0.34,
+      "change_pct": -0.31,
       "day_low": 27.35,
       "day_high": 27.43,
-      "as_of": "2026-03-10T15:01:11Z",
-      "as_of_label": "11:01 EDT",
+      "as_of": "2026-03-10T15:03:50Z",
+      "as_of_label": "11:03 EDT",
       "exchange_timezone": "America/New_York",
       "market_state": "down",
       "points": [
@@ -2918,8 +2918,8 @@
           27.375
         ],
         [
-          "2026-03-10T15:01:11Z",
-          27.3663
+          "2026-03-10T15:03:50Z",
+          27.375
         ]
       ],
       "views": [
@@ -2940,11 +2940,11 @@
       "last": 0.412,
       "previous_close": 0.414,
       "change": -0.002,
-      "change_pct": -0.51,
+      "change_pct": -0.46,
       "day_low": 0.411,
       "day_high": 0.414,
-      "as_of": "2026-03-10T14:46:15Z",
-      "as_of_label": "09:46 CDT",
+      "as_of": "2026-03-10T14:48:45Z",
+      "as_of_label": "09:48 CDT",
       "exchange_timezone": "America/Chicago",
       "market_state": "down",
       "points": [
@@ -3066,11 +3066,11 @@
         ],
         [
           "2026-03-10T14:45:00Z",
-          0.4113
+          0.4115
         ],
         [
-          "2026-03-10T14:46:15Z",
-          0.4115
+          "2026-03-10T14:48:45Z",
+          0.4117
         ]
       ],
       "views": [
@@ -3088,14 +3088,14 @@
       "color": "#fbbf24",
       "precision": 2,
       "suffix": "",
-      "last": 478.91,
+      "last": 479.12,
       "previous_close": 472.53,
-      "change": 6.38,
-      "change_pct": 1.35,
+      "change": 6.59,
+      "change_pct": 1.39,
       "day_low": 473.78,
-      "day_high": 478.95,
-      "as_of": "2026-03-10T15:01:17Z",
-      "as_of_label": "11:01 EDT",
+      "day_high": 479.12,
+      "as_of": "2026-03-10T15:03:47Z",
+      "as_of_label": "11:03 EDT",
       "exchange_timezone": "America/New_York",
       "market_state": "up",
       "points": [
@@ -3288,8 +3288,8 @@
           478.43
         ],
         [
-          "2026-03-10T15:01:17Z",
-          478.91
+          "2026-03-10T15:03:47Z",
+          479.12
         ]
       ],
       "views": [
@@ -3307,14 +3307,14 @@
       "color": "#fb7185",
       "precision": 2,
       "suffix": "",
-      "last": 101.98,
+      "last": 102.59,
       "previous_close": 104.33,
-      "change": -2.35,
-      "change_pct": -2.25,
+      "change": -1.74,
+      "change_pct": -1.67,
       "day_low": 101.84,
       "day_high": 109.39,
-      "as_of": "2026-03-10T15:01:18Z",
-      "as_of_label": "11:01 EDT",
+      "as_of": "2026-03-10T15:03:50Z",
+      "as_of_label": "11:03 EDT",
       "exchange_timezone": "America/New_York",
       "market_state": "down",
       "points": [
@@ -3507,8 +3507,8 @@
           102.35
         ],
         [
-          "2026-03-10T15:01:18Z",
-          101.98
+          "2026-03-10T15:03:50Z",
+          102.59
         ]
       ],
       "views": [
@@ -3526,14 +3526,14 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 71453.0,
+      "last": 71568.0,
       "previous_close": 68443.0,
-      "change": 3010.0,
-      "change_pct": 4.4,
+      "change": 3125.0,
+      "change_pct": 4.57,
       "day_low": 68476.0,
-      "day_high": 71453.0,
-      "as_of": "2026-03-10T14:57:00Z",
-      "as_of_label": "14:57 UTC",
+      "day_high": 71568.0,
+      "as_of": "2026-03-10T15:02:00Z",
+      "as_of_label": "15:02 UTC",
       "exchange_timezone": "UTC",
       "market_state": "up",
       "points": [
@@ -3726,8 +3726,8 @@
           70441.49
         ],
         [
-          "2026-03-10T14:57:00Z",
-          71453.23
+          "2026-03-10T15:02:00Z",
+          71568.41
         ]
       ],
       "views": [
