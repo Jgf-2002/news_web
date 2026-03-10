@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-10T10:24:46Z",
+  "generated_at": "2026-03-10T10:26:17Z",
   "schema_version": "3.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -30,10 +30,10 @@
     "heat_live_count": 4,
     "series_count": 11,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-10T10:24:46Z"
+    "generated_at": "2026-03-10T10:26:17Z"
   },
   "breadth": {
-    "updated_at": "2026-03-10T10:24:46Z",
+    "updated_at": "2026-03-10T10:26:17Z",
     "groups": [
       {
         "code": "NQ_BREADTH",
@@ -1057,6 +1057,11 @@
             -0.25
           ],
           [
+            "2026-03-10T09:55:00Z",
+            66.67,
+            -0.25
+          ],
+          [
             "2026-03-10T09:59:05Z",
             66.67,
             -0.25
@@ -1066,16 +1071,16 @@
           {
             "symbol": "BTC-USD",
             "label": "Bitcoin",
-            "change_pct": 3.48,
-            "display_change_pct": 3.48,
+            "change_pct": 3.45,
+            "display_change_pct": 3.45,
             "normalized": false,
             "state": "hot"
           },
           {
             "symbol": "USDCNH=X",
             "label": "USD/CNH",
-            "change_pct": 0.1,
-            "display_change_pct": -0.1,
+            "change_pct": 0.11,
+            "display_change_pct": -0.11,
             "normalized": true,
             "state": "neutral"
           },
@@ -1125,7 +1130,7 @@
     ]
   },
   "heat_layers": {
-    "updated_at": "2026-03-10T10:24:46Z",
+    "updated_at": "2026-03-10T10:26:17Z",
     "legend": {
       "min_pct": -3.0,
       "max_pct": 3.0
@@ -1521,8 +1526,8 @@
             "code": "BTC-USD",
             "label": "Bitcoin",
             "size": "lg",
-            "last": 70827.21,
-            "change_pct": 3.48,
+            "last": 70806.02,
+            "change_pct": 3.45,
             "state": "hot"
           },
           {
@@ -1566,14 +1571,14 @@
             "code": "USDCNH=X",
             "label": "USD/CNH",
             "size": "sm",
-            "last": 6.88,
-            "change_pct": -0.1,
+            "last": 6.87,
+            "change_pct": -0.11,
             "state": "neutral"
           }
         ],
         "hottest": {
           "symbol": "BTC-USD",
-          "change_pct": 3.48
+          "change_pct": 3.45
         },
         "coldest": {
           "symbol": "USO",
@@ -1625,7 +1630,7 @@
           "breadth_count": 2,
           "heat_count": 2,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T10:24:46Z",
+          "generated_at": "2026-03-10T10:26:17Z",
           "status": "degraded"
         }
       },
@@ -1667,7 +1672,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T10:24:46Z",
+          "generated_at": "2026-03-10T10:26:17Z",
           "status": "live"
         }
       },
@@ -1712,7 +1717,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T10:24:46Z",
+          "generated_at": "2026-03-10T10:26:17Z",
           "status": "live"
         }
       }
@@ -2165,14 +2170,14 @@
       "color": "#f97316",
       "precision": 2,
       "suffix": "",
-      "last": 24.1,
+      "last": 24.02,
       "previous_close": 29.49,
-      "change": -5.39,
-      "change_pct": -18.28,
+      "change": -5.47,
+      "change_pct": -18.55,
       "day_low": 23.0,
-      "day_high": 23.91,
-      "as_of": "2026-03-10T10:08:46Z",
-      "as_of_label": "06:08 EDT",
+      "day_high": 24.03,
+      "as_of": "2026-03-10T10:10:16Z",
+      "as_of_label": "06:10 EDT",
       "exchange_timezone": "America/New_York",
       "market_state": "down",
       "points": [
@@ -2278,7 +2283,7 @@
         ],
         [
           "2026-03-10T10:05:00Z",
-          23.88
+          24.03
         ]
       ],
       "views": [
@@ -2734,14 +2739,14 @@
       "color": "#0ea5e9",
       "precision": 4,
       "suffix": "",
-      "last": 6.8753,
+      "last": 6.8741,
       "previous_close": 6.882,
-      "change": -0.0067,
-      "change_pct": -0.1,
+      "change": -0.0079,
+      "change_pct": -0.11,
       "day_low": 6.8722,
       "day_high": 6.8951,
-      "as_of": "2026-03-10T10:23:51Z",
-      "as_of_label": "10:23 GMT",
+      "as_of": "2026-03-10T10:25:24Z",
+      "as_of_label": "10:25 GMT",
       "exchange_timezone": "Europe/London",
       "market_state": "flat",
       "points": [
@@ -2934,8 +2939,8 @@
           6.87591
         ],
         [
-          "2026-03-10T10:23:51Z",
-          6.87534
+          "2026-03-10T10:25:24Z",
+          6.87411
         ]
       ],
       "views": [
@@ -3003,6 +3008,10 @@
         ],
         [
           "2026-03-10T09:40:00Z",
+          27.4
+        ],
+        [
+          "2026-03-10T09:55:00Z",
           27.4
         ],
         [
@@ -3357,7 +3366,7 @@
         ],
         [
           "2026-03-10T10:05:00Z",
-          476.08
+          476.07
         ],
         [
           "2026-03-10T10:10:00Z",
@@ -3365,11 +3374,11 @@
         ],
         [
           "2026-03-10T10:15:00Z",
-          476.1
+          475.59
         ],
         [
-          "2026-03-10T10:18:53Z",
-          475.59
+          "2026-03-10T10:24:32Z",
+          476.01
         ]
       ],
       "views": [
@@ -3500,7 +3509,7 @@
         ],
         [
           "2026-03-10T10:05:00Z",
-          106.49
+          106.38
         ],
         [
           "2026-03-10T10:10:00Z",
@@ -3512,11 +3521,11 @@
         ],
         [
           "2026-03-10T10:20:00Z",
-          106.72
+          106.34
         ],
         [
-          "2026-03-10T10:23:49Z",
-          106.46
+          "2026-03-10T10:25:06Z",
+          106.53
         ]
       ],
       "views": [
@@ -3534,14 +3543,14 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 70827.0,
+      "last": 70806.0,
       "previous_close": 68443.0,
-      "change": 2384.0,
-      "change_pct": 3.48,
+      "change": 2363.0,
+      "change_pct": 3.45,
       "day_low": 68476.0,
       "day_high": 71226.0,
-      "as_of": "2026-03-10T10:22:00Z",
-      "as_of_label": "10:22 UTC",
+      "as_of": "2026-03-10T10:23:00Z",
+      "as_of_label": "10:23 UTC",
       "exchange_timezone": "UTC",
       "market_state": "up",
       "points": [
@@ -3734,8 +3743,8 @@
           70873.45
         ],
         [
-          "2026-03-10T10:22:00Z",
-          70827.21
+          "2026-03-10T10:23:00Z",
+          70806.02
         ]
       ],
       "views": [
