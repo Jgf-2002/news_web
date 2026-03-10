@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-10T00:12:14Z",
+  "generated_at": "2026-03-10T00:14:42Z",
   "schema_version": "3.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -9,8 +9,8 @@
   "stale": false,
   "errors": [],
   "summary": {
-    "regime": "balanced",
-    "headline": "Cross-asset trend is mixed and breadth is rotating.",
+    "regime": "risk-off",
+    "headline": "Breadth narrows and defensive layers are gaining temperature.",
     "leaders": [
       "NDX",
       "SPX"
@@ -25,10 +25,10 @@
     "heat_live_count": 4,
     "series_count": 11,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-10T00:12:14Z"
+    "generated_at": "2026-03-10T00:14:42Z"
   },
   "breadth": {
-    "updated_at": "2026-03-10T00:12:14Z",
+    "updated_at": "2026-03-10T00:14:42Z",
     "groups": [
       {
         "code": "NQ_BREADTH",
@@ -1237,33 +1237,33 @@
             -0.62
           ],
           [
-            "2026-03-09T23:45:35Z",
+            "2026-03-09T23:56:51Z",
             0.0,
             0.51
           ]
         ],
         "leaders": [
           {
-            "symbol": "USDCNH=X",
-            "label": "USD/CNH",
-            "change_pct": 0.14,
-            "display_change_pct": -0.14,
+            "symbol": "UUP",
+            "label": "Dollar",
+            "change_pct": 0.04,
+            "display_change_pct": -0.04,
             "normalized": true,
             "state": "neutral"
           },
           {
             "symbol": "BTC-USD",
             "label": "Bitcoin",
-            "change_pct": 0.05,
-            "display_change_pct": 0.05,
+            "change_pct": 0.03,
+            "display_change_pct": 0.03,
             "normalized": false,
             "state": "neutral"
           },
           {
-            "symbol": "UUP",
-            "label": "Dollar",
-            "change_pct": 0.04,
-            "display_change_pct": -0.04,
+            "symbol": "^TNX",
+            "label": "US 10Y",
+            "change_pct": -0.07,
+            "display_change_pct": 0.07,
             "normalized": true,
             "state": "neutral"
           }
@@ -1286,10 +1286,10 @@
             "state": "neutral"
           },
           {
-            "symbol": "^TNX",
-            "label": "US 10Y",
-            "change_pct": -0.07,
-            "display_change_pct": 0.07,
+            "symbol": "USDCNH=X",
+            "label": "USD/CNH",
+            "change_pct": -0.17,
+            "display_change_pct": 0.17,
             "normalized": true,
             "state": "neutral"
           }
@@ -1305,7 +1305,7 @@
     ]
   },
   "heat_layers": {
-    "updated_at": "2026-03-10T00:12:14Z",
+    "updated_at": "2026-03-10T00:14:42Z",
     "legend": {
       "min_pct": -3.0,
       "max_pct": 3.0
@@ -1701,8 +1701,8 @@
             "code": "BTC-USD",
             "label": "Bitcoin",
             "size": "lg",
-            "last": 68475.77,
-            "change_pct": 0.05,
+            "last": 68461.63,
+            "change_pct": 0.03,
             "state": "neutral"
           },
           {
@@ -1747,13 +1747,13 @@
             "label": "USD/CNH",
             "size": "sm",
             "last": 6.89,
-            "change_pct": -0.14,
+            "change_pct": 0.17,
             "state": "neutral"
           }
         ],
         "hottest": {
-          "symbol": "^TNX",
-          "change_pct": 0.07
+          "symbol": "USDCNH=X",
+          "change_pct": 0.17
         },
         "coldest": {
           "symbol": "USO",
@@ -1805,7 +1805,7 @@
           "breadth_count": 2,
           "heat_count": 2,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T00:12:14Z",
+          "generated_at": "2026-03-10T00:14:42Z",
           "status": "live"
         }
       },
@@ -1847,7 +1847,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T00:12:14Z",
+          "generated_at": "2026-03-10T00:14:42Z",
           "status": "live"
         }
       },
@@ -1877,8 +1877,8 @@
           "regime": "risk-off",
           "headline": "Macro pressure is building as the dollar complex tightens conditions.",
           "leaders": [
-            "US10Y",
-            "BTC"
+            "CNH",
+            "US10Y"
           ],
           "laggards": [
             "GOLD",
@@ -1892,7 +1892,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T00:12:14Z",
+          "generated_at": "2026-03-10T00:14:42Z",
           "status": "live"
         }
       }
@@ -3002,16 +3002,16 @@
       "color": "#0ea5e9",
       "precision": 4,
       "suffix": "",
-      "last": 6.8931,
-      "previous_close": 6.9031,
-      "change": -0.01,
-      "change_pct": -0.14,
+      "last": 6.8935,
+      "previous_close": 6.882,
+      "change": 0.0115,
+      "change_pct": 0.17,
       "day_low": 6.8922,
-      "day_high": 6.8937,
-      "as_of": "2026-03-10T00:11:30Z",
-      "as_of_label": "00:11 GMT",
+      "day_high": 6.8941,
+      "as_of": "2026-03-10T00:13:58Z",
+      "as_of_label": "00:13 GMT",
       "exchange_timezone": "Europe/London",
-      "market_state": "flat",
+      "market_state": "up",
       "points": [
         [
           "2026-03-10T00:00:00Z",
@@ -3023,11 +3023,11 @@
         ],
         [
           "2026-03-10T00:10:00Z",
-          6.89339
+          6.89411
         ],
         [
-          "2026-03-10T00:11:30Z",
-          6.8931
+          "2026-03-10T00:13:58Z",
+          6.8935
         ]
       ],
       "views": [
@@ -3246,7 +3246,7 @@
           27.3
         ],
         [
-          "2026-03-09T23:45:35Z",
+          "2026-03-09T23:56:51Z",
           27.61
         ]
       ],
@@ -3922,14 +3922,14 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 68476.0,
+      "last": 68462.0,
       "previous_close": 68443.0,
-      "change": 33.0,
-      "change_pct": 0.05,
-      "day_low": 68438.0,
+      "change": 18.0,
+      "change_pct": 0.03,
+      "day_low": 68433.0,
       "day_high": 68486.0,
-      "as_of": "2026-03-10T00:09:00Z",
-      "as_of_label": "00:09 UTC",
+      "as_of": "2026-03-10T00:12:00Z",
+      "as_of_label": "00:12 UTC",
       "exchange_timezone": "UTC",
       "market_state": "flat",
       "points": [
@@ -3939,11 +3939,15 @@
         ],
         [
           "2026-03-10T00:05:00Z",
-          68437.96
+          68475.77
         ],
         [
-          "2026-03-10T00:09:00Z",
-          68475.77
+          "2026-03-10T00:10:00Z",
+          68432.81
+        ],
+        [
+          "2026-03-10T00:12:00Z",
+          68461.63
         ]
       ],
       "views": [
