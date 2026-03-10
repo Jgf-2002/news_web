@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-10T00:42:14Z",
+  "generated_at": "2026-03-10T00:45:08Z",
   "schema_version": "3.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -25,10 +25,10 @@
     "heat_live_count": 4,
     "series_count": 11,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-10T00:42:14Z"
+    "generated_at": "2026-03-10T00:45:08Z"
   },
   "breadth": {
-    "updated_at": "2026-03-10T00:42:14Z",
+    "updated_at": "2026-03-10T00:45:08Z",
     "groups": [
       {
         "code": "NQ_BREADTH",
@@ -1246,8 +1246,8 @@
           {
             "symbol": "BTC-USD",
             "label": "Bitcoin",
-            "change_pct": 1.01,
-            "display_change_pct": 1.01,
+            "change_pct": 1.04,
+            "display_change_pct": 1.04,
             "normalized": false,
             "state": "hot"
           },
@@ -1305,7 +1305,7 @@
     ]
   },
   "heat_layers": {
-    "updated_at": "2026-03-10T00:42:14Z",
+    "updated_at": "2026-03-10T00:45:08Z",
     "legend": {
       "min_pct": -3.0,
       "max_pct": 3.0
@@ -1701,8 +1701,8 @@
             "code": "BTC-USD",
             "label": "Bitcoin",
             "size": "lg",
-            "last": 69136.03,
-            "change_pct": 1.01,
+            "last": 69157.53,
+            "change_pct": 1.04,
             "state": "hot"
           },
           {
@@ -1753,7 +1753,7 @@
         ],
         "hottest": {
           "symbol": "BTC-USD",
-          "change_pct": 1.01
+          "change_pct": 1.04
         },
         "coldest": {
           "symbol": "USO",
@@ -1805,7 +1805,7 @@
           "breadth_count": 2,
           "heat_count": 2,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T00:42:14Z",
+          "generated_at": "2026-03-10T00:45:08Z",
           "status": "live"
         }
       },
@@ -1847,7 +1847,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T00:42:14Z",
+          "generated_at": "2026-03-10T00:45:08Z",
           "status": "live"
         }
       },
@@ -1892,7 +1892,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-10T00:42:14Z",
+          "generated_at": "2026-03-10T00:45:08Z",
           "status": "live"
         }
       }
@@ -3006,10 +3006,10 @@
       "previous_close": 6.882,
       "change": 0.0093,
       "change_pct": 0.14,
-      "day_low": 6.8909,
+      "day_low": 6.8906,
       "day_high": 6.8939,
-      "as_of": "2026-03-10T00:41:30Z",
-      "as_of_label": "00:41 GMT",
+      "as_of": "2026-03-10T00:44:23Z",
+      "as_of_label": "00:44 GMT",
       "exchange_timezone": "Europe/London",
       "market_state": "flat",
       "points": [
@@ -3047,11 +3047,11 @@
         ],
         [
           "2026-03-10T00:40:00Z",
-          6.89113
+          6.89056
         ],
         [
-          "2026-03-10T00:41:30Z",
-          6.89135
+          "2026-03-10T00:44:23Z",
+          6.8913
         ]
       ],
       "views": [
@@ -3946,14 +3946,14 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 69136.0,
+      "last": 69158.0,
       "previous_close": 68443.0,
-      "change": 693.0,
-      "change_pct": 1.01,
+      "change": 714.0,
+      "change_pct": 1.04,
       "day_low": 68476.0,
-      "day_high": 69136.0,
-      "as_of": "2026-03-10T00:38:00Z",
-      "as_of_label": "00:38 UTC",
+      "day_high": 69175.0,
+      "as_of": "2026-03-10T00:42:00Z",
+      "as_of_label": "00:42 UTC",
       "exchange_timezone": "UTC",
       "market_state": "up",
       "points": [
@@ -3987,11 +3987,15 @@
         ],
         [
           "2026-03-10T00:35:00Z",
-          69100.77
+          69136.03
         ],
         [
-          "2026-03-10T00:38:00Z",
-          69136.03
+          "2026-03-10T00:40:00Z",
+          69175.21
+        ],
+        [
+          "2026-03-10T00:42:00Z",
+          69157.53
         ]
       ],
       "views": [
