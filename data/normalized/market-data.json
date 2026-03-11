@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-11T00:45:08Z",
+  "generated_at": "2026-03-11T00:47:40Z",
   "schema_version": "3.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -25,10 +25,10 @@
     "heat_live_count": 4,
     "series_count": 11,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-11T00:45:08Z"
+    "generated_at": "2026-03-11T00:47:40Z"
   },
   "breadth": {
-    "updated_at": "2026-03-11T00:45:08Z",
+    "updated_at": "2026-03-11T00:47:40Z",
     "groups": [
       {
         "code": "NQ_BREADTH",
@@ -1272,8 +1272,8 @@
           {
             "symbol": "BTC-USD",
             "label": "Bitcoin",
-            "change_pct": -0.11,
-            "display_change_pct": -0.11,
+            "change_pct": -0.16,
+            "display_change_pct": -0.16,
             "normalized": false,
             "state": "neutral"
           },
@@ -1305,7 +1305,7 @@
     ]
   },
   "heat_layers": {
-    "updated_at": "2026-03-11T00:45:08Z",
+    "updated_at": "2026-03-11T00:47:40Z",
     "legend": {
       "min_pct": -3.0,
       "max_pct": 3.0
@@ -1701,8 +1701,8 @@
             "code": "BTC-USD",
             "label": "Bitcoin",
             "size": "lg",
-            "last": 69877.1,
-            "change_pct": -0.11,
+            "last": 69845.05,
+            "change_pct": -0.16,
             "state": "neutral"
           },
           {
@@ -1757,7 +1757,7 @@
         },
         "coldest": {
           "symbol": "BTC-USD",
-          "change_pct": -0.11
+          "change_pct": -0.16
         }
       }
     ]
@@ -1805,7 +1805,7 @@
           "breadth_count": 2,
           "heat_count": 2,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T00:45:08Z",
+          "generated_at": "2026-03-11T00:47:40Z",
           "status": "live"
         }
       },
@@ -1847,7 +1847,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T00:45:08Z",
+          "generated_at": "2026-03-11T00:47:40Z",
           "status": "live"
         }
       },
@@ -1892,7 +1892,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T00:45:08Z",
+          "generated_at": "2026-03-11T00:47:40Z",
           "status": "live"
         }
       }
@@ -3006,10 +3006,10 @@
       "previous_close": 6.8759,
       "change": -0.0042,
       "change_pct": -0.06,
-      "day_low": 6.8717,
+      "day_low": 6.8713,
       "day_high": 6.8772,
-      "as_of": "2026-03-11T00:44:14Z",
-      "as_of_label": "00:44 GMT",
+      "as_of": "2026-03-11T00:46:47Z",
+      "as_of_label": "00:46 GMT",
       "exchange_timezone": "Europe/London",
       "market_state": "flat",
       "points": [
@@ -3047,11 +3047,15 @@
         ],
         [
           "2026-03-11T00:40:00Z",
-          6.87174
+          6.87171
         ],
         [
-          "2026-03-11T00:44:14Z",
-          6.87174
+          "2026-03-11T00:45:00Z",
+          6.87127
+        ],
+        [
+          "2026-03-11T00:46:47Z",
+          6.87168
         ]
       ],
       "views": [
@@ -3946,16 +3950,16 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 69877.0,
+      "last": 69845.0,
       "previous_close": 69957.0,
-      "change": -80.0,
-      "change_pct": -0.11,
-      "day_low": 69862.0,
+      "change": -112.0,
+      "change_pct": -0.16,
+      "day_low": 69845.0,
       "day_high": 70128.0,
-      "as_of": "2026-03-11T00:42:00Z",
-      "as_of_label": "00:42 UTC",
+      "as_of": "2026-03-11T00:45:00Z",
+      "as_of_label": "00:45 UTC",
       "exchange_timezone": "UTC",
-      "market_state": "flat",
+      "market_state": "down",
       "points": [
         [
           "2026-03-11T00:00:00Z",
@@ -3991,11 +3995,11 @@
         ],
         [
           "2026-03-11T00:40:00Z",
-          69890.27
+          69857.41
         ],
         [
-          "2026-03-11T00:42:00Z",
-          69877.1
+          "2026-03-11T00:45:00Z",
+          69845.05
         ]
       ],
       "views": [
