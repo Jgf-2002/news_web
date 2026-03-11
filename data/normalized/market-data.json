@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-11T08:44:07Z",
+  "generated_at": "2026-03-11T08:45:13Z",
   "schema_version": "3.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -34,10 +34,10 @@
     "heat_live_count": 4,
     "series_count": 11,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-11T08:44:07Z"
+    "generated_at": "2026-03-11T08:45:13Z"
   },
   "breadth": {
-    "updated_at": "2026-03-11T08:44:07Z",
+    "updated_at": "2026-03-11T08:45:13Z",
     "groups": [
       {
         "code": "NQ_BREADTH",
@@ -1072,8 +1072,8 @@
           {
             "symbol": "USDCNH=X",
             "label": "USD/CNH",
-            "change_pct": 0.04,
-            "display_change_pct": -0.04,
+            "change_pct": 0.03,
+            "display_change_pct": -0.03,
             "normalized": true,
             "state": "neutral"
           }
@@ -1089,7 +1089,7 @@
     ]
   },
   "heat_layers": {
-    "updated_at": "2026-03-11T08:44:07Z",
+    "updated_at": "2026-03-11T08:45:13Z",
     "legend": {
       "min_pct": -3.0,
       "max_pct": 3.0
@@ -1513,7 +1513,7 @@
             "label": "USD/CNH",
             "size": "sm",
             "last": 6.87,
-            "change_pct": -0.04,
+            "change_pct": -0.03,
             "state": "neutral"
           }
         ],
@@ -1571,7 +1571,7 @@
           "breadth_count": 2,
           "heat_count": 2,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T08:44:07Z",
+          "generated_at": "2026-03-11T08:45:13Z",
           "status": "degraded"
         }
       },
@@ -1613,7 +1613,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T08:44:07Z",
+          "generated_at": "2026-03-11T08:45:13Z",
           "status": "live"
         }
       },
@@ -1658,7 +1658,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T08:44:07Z",
+          "generated_at": "2026-03-11T08:45:13Z",
           "status": "live"
         }
       }
@@ -2111,14 +2111,14 @@
       "color": "#f97316",
       "precision": 2,
       "suffix": "",
-      "last": 25.15,
+      "last": 25.25,
       "previous_close": 25.5,
-      "change": -0.35,
-      "change_pct": -1.37,
+      "change": -0.25,
+      "change_pct": -0.98,
       "day_low": 25.03,
-      "day_high": 25.15,
-      "as_of": "2026-03-11T08:28:46Z",
-      "as_of_label": "04:28 EDT",
+      "day_high": 25.13,
+      "as_of": "2026-03-11T08:30:01Z",
+      "as_of_label": "04:30 EDT",
       "exchange_timezone": "America/New_York",
       "market_state": "down",
       "points": [
@@ -2144,7 +2144,7 @@
         ],
         [
           "2026-03-11T08:25:00Z",
-          25.15
+          25.13
         ]
       ],
       "views": [
@@ -2600,14 +2600,14 @@
       "color": "#0ea5e9",
       "precision": 4,
       "suffix": "",
-      "last": 6.8729,
+      "last": 6.8735,
       "previous_close": 6.8759,
-      "change": -0.003,
-      "change_pct": -0.04,
+      "change": -0.0024,
+      "change_pct": -0.03,
       "day_low": 6.8605,
       "day_high": 6.8772,
-      "as_of": "2026-03-11T08:44:02Z",
-      "as_of_label": "08:44 GMT",
+      "as_of": "2026-03-11T08:45:08Z",
+      "as_of_label": "08:45 GMT",
       "exchange_timezone": "Europe/London",
       "market_state": "flat",
       "points": [
@@ -2800,8 +2800,8 @@
           6.87313
         ],
         [
-          "2026-03-11T08:44:02Z",
-          6.8729
+          "2026-03-11T08:45:08Z",
+          6.87354
         ]
       ],
       "views": [
@@ -3111,7 +3111,7 @@
         ],
         [
           "2026-03-11T08:25:00Z",
-          476.2
+          476.46
         ],
         [
           "2026-03-11T08:30:00Z",
@@ -3186,11 +3186,11 @@
         ],
         [
           "2026-03-11T08:40:00Z",
-          104.29
+          104.09
         ],
         [
-          "2026-03-11T08:43:22Z",
-          104.09
+          "2026-03-11T08:44:20Z",
+          104.36
         ]
       ],
       "views": [
