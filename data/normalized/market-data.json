@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-11T00:10:08Z",
+  "generated_at": "2026-03-11T00:12:39Z",
   "schema_version": "3.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -25,10 +25,10 @@
     "heat_live_count": 4,
     "series_count": 11,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-11T00:10:08Z"
+    "generated_at": "2026-03-11T00:12:39Z"
   },
   "breadth": {
-    "updated_at": "2026-03-11T00:10:08Z",
+    "updated_at": "2026-03-11T00:12:39Z",
     "groups": [
       {
         "code": "NQ_BREADTH",
@@ -1244,14 +1244,6 @@
         ],
         "leaders": [
           {
-            "symbol": "BTC-USD",
-            "label": "Bitcoin",
-            "change_pct": 2.13,
-            "display_change_pct": 2.13,
-            "normalized": false,
-            "state": "hot"
-          },
-          {
             "symbol": "USO",
             "label": "WTI",
             "change_pct": 1.47,
@@ -1266,6 +1258,14 @@
             "display_change_pct": 1.13,
             "normalized": false,
             "state": "hot"
+          },
+          {
+            "symbol": "USDCNH=X",
+            "label": "USD/CNH",
+            "change_pct": 0.1,
+            "display_change_pct": -0.1,
+            "normalized": true,
+            "state": "neutral"
           }
         ],
         "laggards": [
@@ -1286,11 +1286,11 @@
             "state": "neutral"
           },
           {
-            "symbol": "USDCNH=X",
-            "label": "USD/CNH",
-            "change_pct": 0.08,
-            "display_change_pct": -0.08,
-            "normalized": true,
+            "symbol": "BTC-USD",
+            "label": "Bitcoin",
+            "change_pct": 0.05,
+            "display_change_pct": 0.05,
+            "normalized": false,
             "state": "neutral"
           }
         ],
@@ -1305,7 +1305,7 @@
     ]
   },
   "heat_layers": {
-    "updated_at": "2026-03-11T00:10:08Z",
+    "updated_at": "2026-03-11T00:12:39Z",
     "legend": {
       "min_pct": -3.0,
       "max_pct": 3.0
@@ -1701,9 +1701,9 @@
             "code": "BTC-USD",
             "label": "Bitcoin",
             "size": "lg",
-            "last": 69898.95,
-            "change_pct": 2.13,
-            "state": "hot"
+            "last": 69989.06,
+            "change_pct": 0.05,
+            "state": "neutral"
           },
           {
             "symbol": "USO",
@@ -1747,17 +1747,17 @@
             "label": "USD/CNH",
             "size": "sm",
             "last": 6.88,
-            "change_pct": -0.08,
+            "change_pct": -0.1,
             "state": "neutral"
           }
         ],
         "hottest": {
-          "symbol": "BTC-USD",
-          "change_pct": 2.13
+          "symbol": "USO",
+          "change_pct": 1.47
         },
         "coldest": {
           "symbol": "USDCNH=X",
-          "change_pct": -0.08
+          "change_pct": -0.1
         }
       }
     ]
@@ -1805,7 +1805,7 @@
           "breadth_count": 2,
           "heat_count": 2,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T00:10:08Z",
+          "generated_at": "2026-03-11T00:12:39Z",
           "status": "live"
         }
       },
@@ -1847,7 +1847,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T00:10:08Z",
+          "generated_at": "2026-03-11T00:12:39Z",
           "status": "live"
         }
       },
@@ -1877,8 +1877,8 @@
           "regime": "risk-on",
           "headline": "Macro crosswinds are easing as risk assets outpace the dollar complex.",
           "leaders": [
-            "BTC",
-            "WTI"
+            "WTI",
+            "GOLD"
           ],
           "laggards": [
             "DXY",
@@ -1892,7 +1892,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T00:10:08Z",
+          "generated_at": "2026-03-11T00:12:39Z",
           "status": "live"
         }
       }
@@ -3002,14 +3002,14 @@
       "color": "#0ea5e9",
       "precision": 4,
       "suffix": "",
-      "last": 6.8765,
+      "last": 6.8751,
       "previous_close": 6.882,
-      "change": -0.0055,
-      "change_pct": -0.08,
-      "day_low": 6.8765,
+      "change": -0.0069,
+      "change_pct": -0.1,
+      "day_low": 6.875,
       "day_high": 6.8772,
-      "as_of": "2026-03-11T00:09:14Z",
-      "as_of_label": "00:09 GMT",
+      "as_of": "2026-03-11T00:11:47Z",
+      "as_of_label": "00:11 GMT",
       "exchange_timezone": "Europe/London",
       "market_state": "flat",
       "points": [
@@ -3019,11 +3019,15 @@
         ],
         [
           "2026-03-11T00:05:00Z",
-          6.8767
+          6.87498
         ],
         [
-          "2026-03-11T00:09:14Z",
-          6.87652
+          "2026-03-11T00:10:00Z",
+          6.87541
+        ],
+        [
+          "2026-03-11T00:11:47Z",
+          6.8751
         ]
       ],
       "views": [
@@ -3918,16 +3922,16 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 69899.0,
-      "previous_close": 68443.0,
-      "change": 1456.0,
-      "change_pct": 2.13,
-      "day_low": 69807.0,
-      "day_high": 69899.0,
-      "as_of": "2026-03-11T00:07:00Z",
-      "as_of_label": "00:07 UTC",
+      "last": 69989.0,
+      "previous_close": 69957.0,
+      "change": 32.0,
+      "change_pct": 0.05,
+      "day_low": 69862.0,
+      "day_high": 69989.0,
+      "as_of": "2026-03-11T00:10:00Z",
+      "as_of_label": "00:10 UTC",
       "exchange_timezone": "UTC",
-      "market_state": "up",
+      "market_state": "flat",
       "points": [
         [
           "2026-03-11T00:00:00Z",
@@ -3935,11 +3939,11 @@
         ],
         [
           "2026-03-11T00:05:00Z",
-          69807.38
+          69929.66
         ],
         [
-          "2026-03-11T00:07:00Z",
-          69898.95
+          "2026-03-11T00:10:00Z",
+          69989.06
         ]
       ],
       "views": [
