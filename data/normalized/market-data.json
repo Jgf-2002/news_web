@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-11T08:27:07Z",
+  "generated_at": "2026-03-11T08:28:13Z",
   "schema_version": "3.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -8,17 +8,15 @@
   "status": "degraded",
   "stale": true,
   "errors": [
-    "XLC: XLC no usable price points",
     "XLB: XLB no usable price points",
-    "XLRE: XLRE no usable price points",
+    "XLC: XLC no usable price points",
     "^GSPC: ^GSPC no usable price points",
-    "XLY: XLY no usable price points",
     "^NDX: ^NDX no usable price points",
+    "XLY: XLY no usable price points",
     "NQ_BREADTH benchmark missing",
     "SECTOR_BREADTH benchmark missing",
     "SECTOR_HEAT member missing: XLY",
     "SECTOR_HEAT member missing: XLB",
-    "SECTOR_HEAT member missing: XLRE",
     "SECTOR_HEAT member missing: XLC"
   ],
   "summary": {
@@ -38,10 +36,10 @@
     "heat_live_count": 4,
     "series_count": 11,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-11T08:27:07Z"
+    "generated_at": "2026-03-11T08:28:13Z"
   },
   "breadth": {
-    "updated_at": "2026-03-11T08:27:07Z",
+    "updated_at": "2026-03-11T08:28:13Z",
     "groups": [
       {
         "code": "NQ_BREADTH",
@@ -1045,8 +1043,8 @@
           {
             "symbol": "USDCNH=X",
             "label": "USD/CNH",
-            "change_pct": 0.06,
-            "display_change_pct": -0.06,
+            "change_pct": 0.05,
+            "display_change_pct": -0.05,
             "normalized": true,
             "state": "neutral"
           }
@@ -1088,7 +1086,7 @@
     ]
   },
   "heat_layers": {
-    "updated_at": "2026-03-11T08:27:07Z",
+    "updated_at": "2026-03-11T08:28:13Z",
     "legend": {
       "min_pct": -3.0,
       "max_pct": 3.0
@@ -1294,6 +1292,15 @@
             "last": 46.56,
             "change_pct": -0.62,
             "state": "neutral"
+          },
+          {
+            "symbol": "XLRE",
+            "code": "XLRE",
+            "label": "Real Estate",
+            "size": "sm",
+            "last": 42.92,
+            "change_pct": -0.14,
+            "state": "neutral"
           }
         ],
         "hottest": {
@@ -1494,7 +1501,7 @@
             "label": "USD/CNH",
             "size": "sm",
             "last": 6.87,
-            "change_pct": -0.06,
+            "change_pct": -0.05,
             "state": "neutral"
           }
         ],
@@ -1552,7 +1559,7 @@
           "breadth_count": 2,
           "heat_count": 2,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T08:27:07Z",
+          "generated_at": "2026-03-11T08:28:13Z",
           "status": "degraded"
         }
       },
@@ -1594,7 +1601,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T08:27:07Z",
+          "generated_at": "2026-03-11T08:28:13Z",
           "status": "live"
         }
       },
@@ -1639,7 +1646,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-11T08:27:07Z",
+          "generated_at": "2026-03-11T08:28:13Z",
           "status": "live"
         }
       }
@@ -2092,14 +2099,14 @@
       "color": "#f97316",
       "precision": 2,
       "suffix": "",
-      "last": 25.16,
+      "last": 25.1,
       "previous_close": 25.5,
-      "change": -0.34,
-      "change_pct": -1.33,
+      "change": -0.4,
+      "change_pct": -1.57,
       "day_low": 25.12,
       "day_high": 25.17,
-      "as_of": "2026-03-11T08:12:01Z",
-      "as_of_label": "04:12 EDT",
+      "as_of": "2026-03-11T08:13:01Z",
+      "as_of_label": "04:13 EDT",
       "exchange_timezone": "America/New_York",
       "market_state": "down",
       "points": [
@@ -2569,14 +2576,14 @@
       "color": "#0ea5e9",
       "precision": 4,
       "suffix": "",
-      "last": 6.8721,
+      "last": 6.8724,
       "previous_close": 6.8759,
-      "change": -0.0038,
-      "change_pct": -0.06,
+      "change": -0.0035,
+      "change_pct": -0.05,
       "day_low": 6.8605,
       "day_high": 6.8772,
-      "as_of": "2026-03-11T08:27:02Z",
-      "as_of_label": "08:27 GMT",
+      "as_of": "2026-03-11T08:28:08Z",
+      "as_of_label": "08:28 GMT",
       "exchange_timezone": "Europe/London",
       "market_state": "flat",
       "points": [
@@ -2769,8 +2776,8 @@
           6.87048
         ],
         [
-          "2026-03-11T08:27:02Z",
-          6.87208
+          "2026-03-11T08:28:08Z",
+          6.87236
         ]
       ],
       "views": [
@@ -3047,7 +3054,7 @@
       "previous_close": 472.53,
       "change": 5.33,
       "change_pct": 1.13,
-      "day_low": 476.23,
+      "day_low": 476.2,
       "day_high": 477.48,
       "as_of": "2026-03-10T20:00:00Z",
       "as_of_label": "16:00 EDT",
@@ -3076,11 +3083,11 @@
         ],
         [
           "2026-03-11T08:25:00Z",
-          476.5
+          476.23
         ],
         [
-          "2026-03-11T08:26:25Z",
-          476.23
+          "2026-03-11T08:27:45Z",
+          476.2
         ]
       ],
       "views": [
@@ -3131,11 +3138,11 @@
         ],
         [
           "2026-03-11T08:25:00Z",
-          104.9
+          105.01
         ],
         [
-          "2026-03-11T08:26:47Z",
-          105.01
+          "2026-03-11T08:27:42Z",
+          104.9
         ]
       ],
       "views": [
