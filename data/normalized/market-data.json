@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-12T09:27:07Z",
+  "generated_at": "2026-03-12T09:28:14Z",
   "schema_version": "3.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
@@ -8,9 +8,9 @@
   "status": "degraded",
   "stale": true,
   "errors": [
-    "^GSPC: ^GSPC no usable price points",
     "XLY: XLY no usable price points",
     "^NDX: ^NDX no usable price points",
+    "^GSPC: ^GSPC no usable price points",
     "NQ_BREADTH benchmark missing",
     "SECTOR_BREADTH benchmark missing",
     "SECTOR_HEAT member missing: XLY"
@@ -19,8 +19,8 @@
     "regime": "risk-off",
     "headline": "Breadth narrows and defensive layers are gaining temperature.",
     "leaders": [
-      "WTI",
-      "US10Y"
+      "VIX",
+      "WTI"
     ],
     "laggards": [
       "HKTECH",
@@ -32,10 +32,10 @@
     "heat_live_count": 4,
     "series_count": 11,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-12T09:27:07Z"
+    "generated_at": "2026-03-12T09:28:14Z"
   },
   "breadth": {
-    "updated_at": "2026-03-12T09:27:07Z",
+    "updated_at": "2026-03-12T09:28:14Z",
     "groups": [
       {
         "code": "NQ_BREADTH",
@@ -1031,8 +1031,8 @@
           {
             "symbol": "USDCNH=X",
             "label": "USD/CNH",
-            "change_pct": -0.02,
-            "display_change_pct": 0.02,
+            "change_pct": -0.01,
+            "display_change_pct": 0.01,
             "normalized": true,
             "state": "neutral"
           },
@@ -1057,8 +1057,8 @@
           {
             "symbol": "BTC-USD",
             "label": "Bitcoin",
-            "change_pct": -0.79,
-            "display_change_pct": -0.79,
+            "change_pct": -0.76,
+            "display_change_pct": -0.76,
             "normalized": false,
             "state": "cold"
           },
@@ -1082,7 +1082,7 @@
     ]
   },
   "heat_layers": {
-    "updated_at": "2026-03-12T09:27:07Z",
+    "updated_at": "2026-03-12T09:28:14Z",
     "legend": {
       "min_pct": -3.0,
       "max_pct": 3.0
@@ -1469,8 +1469,8 @@
             "code": "BTC-USD",
             "label": "Bitcoin",
             "size": "lg",
-            "last": 69647.68,
-            "change_pct": -0.79,
+            "last": 69666.12,
+            "change_pct": -0.76,
             "state": "cold"
           },
           {
@@ -1514,8 +1514,8 @@
             "code": "USDCNH=X",
             "label": "USD/CNH",
             "size": "sm",
-            "last": 6.88,
-            "change_pct": 0.02,
+            "last": 6.87,
+            "change_pct": 0.01,
             "state": "neutral"
           }
         ],
@@ -1525,7 +1525,7 @@
         },
         "coldest": {
           "symbol": "BTC-USD",
-          "change_pct": -0.79
+          "change_pct": -0.76
         }
       }
     ]
@@ -1573,7 +1573,7 @@
           "breadth_count": 2,
           "heat_count": 2,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-12T09:27:07Z",
+          "generated_at": "2026-03-12T09:28:14Z",
           "status": "degraded"
         }
       },
@@ -1615,7 +1615,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-12T09:27:07Z",
+          "generated_at": "2026-03-12T09:28:14Z",
           "status": "live"
         }
       },
@@ -1660,7 +1660,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-12T09:27:07Z",
+          "generated_at": "2026-03-12T09:28:14Z",
           "status": "live"
         }
       }
@@ -2113,14 +2113,14 @@
       "color": "#f97316",
       "precision": 2,
       "suffix": "",
-      "last": 25.35,
+      "last": 25.45,
       "previous_close": 24.93,
-      "change": 0.42,
-      "change_pct": 1.68,
+      "change": 0.52,
+      "change_pct": 2.09,
       "day_low": 24.79,
-      "day_high": 25.39,
-      "as_of": "2026-03-12T09:12:01Z",
-      "as_of_label": "05:12 EDT",
+      "day_high": 25.41,
+      "as_of": "2026-03-12T09:13:01Z",
+      "as_of_label": "05:13 EDT",
       "exchange_timezone": "America/New_York",
       "market_state": "up",
       "points": [
@@ -2182,7 +2182,7 @@
         ],
         [
           "2026-03-12T09:10:00Z",
-          25.37
+          25.41
         ]
       ],
       "views": [
@@ -2638,14 +2638,14 @@
       "color": "#0ea5e9",
       "precision": 4,
       "suffix": "",
-      "last": 6.875,
+      "last": 6.8744,
       "previous_close": 6.8734,
-      "change": 0.0016,
-      "change_pct": 0.02,
+      "change": 0.001,
+      "change_pct": 0.01,
       "day_low": 6.8735,
       "day_high": 6.8849,
-      "as_of": "2026-03-12T09:27:02Z",
-      "as_of_label": "09:27 GMT",
+      "as_of": "2026-03-12T09:28:08Z",
+      "as_of_label": "09:28 GMT",
       "exchange_timezone": "Europe/London",
       "market_state": "flat",
       "points": [
@@ -2838,8 +2838,8 @@
           6.87544
         ],
         [
-          "2026-03-12T09:27:02Z",
-          6.87499
+          "2026-03-12T09:28:08Z",
+          6.87436
         ]
       ],
       "views": [
@@ -3292,11 +3292,11 @@
         ],
         [
           "2026-03-12T09:25:00Z",
-          113.77
+          113.8
         ],
         [
-          "2026-03-12T09:26:20Z",
-          113.8
+          "2026-03-12T09:27:38Z",
+          114.02
         ]
       ],
       "views": [
@@ -3314,14 +3314,14 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 69648.0,
+      "last": 69666.0,
       "previous_close": 70203.0,
-      "change": -555.0,
-      "change_pct": -0.79,
+      "change": -537.0,
+      "change_pct": -0.76,
       "day_low": 69242.0,
       "day_high": 70322.0,
-      "as_of": "2026-03-12T09:24:00Z",
-      "as_of_label": "09:24 UTC",
+      "as_of": "2026-03-12T09:25:00Z",
+      "as_of_label": "09:25 UTC",
       "exchange_timezone": "UTC",
       "market_state": "down",
       "points": [
@@ -3514,8 +3514,8 @@
           69661.31
         ],
         [
-          "2026-03-12T09:24:00Z",
-          69647.68
+          "2026-03-12T09:25:00Z",
+          69666.12
         ]
       ],
       "views": [
