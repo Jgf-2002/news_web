@@ -1,13 +1,42 @@
 {
-  "generated_at": "2026-03-12T00:58:35Z",
+  "generated_at": "2026-03-12T01:00:45Z",
   "schema_version": "3.0.0",
   "source": {
     "provider": "Yahoo Finance chart endpoint",
     "transport": "Static JSON generated locally by scripts/fetch_market_data.py"
   },
-  "status": "live",
-  "stale": false,
-  "errors": [],
+  "status": "degraded",
+  "stale": true,
+  "errors": [
+    "1810.HK: 1810.HK no usable price points",
+    "1299.HK: 1299.HK no usable price points",
+    "3067.HK: 3067.HK no usable price points",
+    "0939.HK: 0939.HK no usable price points",
+    "0700.HK: 0700.HK no usable price points",
+    "2800.HK: 2800.HK no usable price points",
+    "2318.HK: 2318.HK no usable price points",
+    "0388.HK: 0388.HK no usable price points",
+    "9888.HK: 9888.HK no usable price points",
+    "9988.HK: 9988.HK no usable price points",
+    "3690.HK: 3690.HK no usable price points",
+    "9618.HK: 9618.HK no usable price points",
+    "9999.HK: 9999.HK no usable price points",
+    "3968.HK: 3968.HK no usable price points",
+    "HSI_BREADTH benchmark missing",
+    "HSI_HEAT member missing: 0700.HK",
+    "HSI_HEAT member missing: 9988.HK",
+    "HSI_HEAT member missing: 3690.HK",
+    "HSI_HEAT member missing: 9618.HK",
+    "HSI_HEAT member missing: 1810.HK",
+    "HSI_HEAT member missing: 1299.HK",
+    "HSI_HEAT member missing: 2318.HK",
+    "HSI_HEAT member missing: 0939.HK",
+    "HSI_HEAT member missing: 3968.HK",
+    "HSI_HEAT member missing: 0388.HK",
+    "HSI_HEAT member missing: 9888.HK",
+    "HSI_HEAT member missing: 9999.HK",
+    "HSI_HEAT insufficient tiles"
+  ],
   "summary": {
     "regime": "risk-off",
     "headline": "Breadth narrows and defensive layers are gaining temperature.",
@@ -19,16 +48,16 @@
       "GOLD",
       "VIX"
     ],
-    "live_count": 11,
-    "stale_count": 0,
-    "breadth_live_count": 4,
-    "heat_live_count": 4,
+    "live_count": 9,
+    "stale_count": 2,
+    "breadth_live_count": 3,
+    "heat_live_count": 3,
     "series_count": 11,
     "refresh_interval_seconds": 60,
-    "generated_at": "2026-03-12T00:58:35Z"
+    "generated_at": "2026-03-12T01:00:45Z"
   },
   "breadth": {
-    "updated_at": "2026-03-12T00:58:35Z",
+    "updated_at": "2026-03-12T01:00:45Z",
     "groups": [
       {
         "code": "NQ_BREADTH",
@@ -661,8 +690,8 @@
         "views": [
           "hk"
         ],
-        "source_status": "live",
-        "source_note": "market-breadth-overlay",
+        "source_status": "cached",
+        "source_note": "HSI_BREADTH benchmark missing",
         "heat_state": "neutral",
         "as_of": "2026-03-11T08:08:14Z"
       },
@@ -1254,16 +1283,16 @@
           {
             "symbol": "BTC-USD",
             "label": "Bitcoin",
-            "change_pct": 0.02,
-            "display_change_pct": 0.02,
+            "change_pct": 0.03,
+            "display_change_pct": 0.03,
             "normalized": false,
             "state": "neutral"
           },
           {
             "symbol": "USDCNH=X",
             "label": "USD/CNH",
-            "change_pct": -0.09,
-            "display_change_pct": 0.09,
+            "change_pct": -0.1,
+            "display_change_pct": 0.1,
             "normalized": true,
             "state": "neutral"
           }
@@ -1305,7 +1334,7 @@
     ]
   },
   "heat_layers": {
-    "updated_at": "2026-03-12T00:58:35Z",
+    "updated_at": "2026-03-12T01:00:45Z",
     "legend": {
       "min_pct": -3.0,
       "max_pct": 3.0
@@ -1565,8 +1594,8 @@
         "views": [
           "hk"
         ],
-        "source_status": "live",
-        "source_note": "market-heat-layer",
+        "source_status": "cached",
+        "source_note": "HSI_HEAT insufficient tiles",
         "tiles": [
           {
             "symbol": "0700.HK",
@@ -1701,8 +1730,8 @@
             "code": "BTC-USD",
             "label": "Bitcoin",
             "size": "lg",
-            "last": 70215.13,
-            "change_pct": 0.02,
+            "last": 70225.74,
+            "change_pct": 0.03,
             "state": "neutral"
           },
           {
@@ -1747,7 +1776,7 @@
             "label": "USD/CNH",
             "size": "sm",
             "last": 6.88,
-            "change_pct": 0.09,
+            "change_pct": 0.1,
             "state": "neutral"
           }
         ],
@@ -1805,7 +1834,7 @@
           "breadth_count": 2,
           "heat_count": 2,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-12T00:58:35Z",
+          "generated_at": "2026-03-12T01:00:45Z",
           "status": "live"
         }
       },
@@ -1815,7 +1844,7 @@
         "accent": "#38bdf8",
         "description": "Hong Kong beta, China tech proxies and FX pressure in one dense board.",
         "legend_note": "HK proxy series use liquid Yahoo-tracked ETFs so the local pipeline stays resilient when index feeds are patchy.",
-        "status": "live",
+        "status": "degraded",
         "series_codes": [
           "HSI",
           "HKTECH",
@@ -1839,16 +1868,16 @@
             "HKTECH",
             "HSI"
           ],
-          "live_count": 3,
-          "stale_count": 0,
-          "breadth_live_count": 1,
-          "heat_live_count": 1,
+          "live_count": 1,
+          "stale_count": 2,
+          "breadth_live_count": 0,
+          "heat_live_count": 0,
           "series_count": 3,
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-12T00:58:35Z",
-          "status": "live"
+          "generated_at": "2026-03-12T01:00:45Z",
+          "status": "degraded"
         }
       },
       {
@@ -1892,7 +1921,7 @@
           "breadth_count": 1,
           "heat_count": 1,
           "refresh_interval_seconds": 60,
-          "generated_at": "2026-03-12T00:58:35Z",
+          "generated_at": "2026-03-12T01:00:45Z",
           "status": "live"
         }
       }
@@ -2772,8 +2801,8 @@
         "hk"
       ],
       "inverse_for_regime": false,
-      "source_status": "live",
-      "source_note": "yahoo-finance-chart"
+      "source_status": "cached",
+      "source_note": "2800.HK unavailable"
     },
     {
       "symbol": "3067.HK",
@@ -2991,8 +3020,8 @@
         "hk"
       ],
       "inverse_for_regime": false,
-      "source_status": "live",
-      "source_note": "yahoo-finance-chart"
+      "source_status": "cached",
+      "source_note": "3067.HK unavailable"
     },
     {
       "symbol": "USDCNH=X",
@@ -3002,14 +3031,14 @@
       "color": "#0ea5e9",
       "precision": 4,
       "suffix": "",
-      "last": 6.8798,
+      "last": 6.8801,
       "previous_close": 6.8734,
-      "change": 0.0064,
-      "change_pct": 0.09,
+      "change": 0.0067,
+      "change_pct": 0.1,
       "day_low": 6.8797,
       "day_high": 6.8849,
-      "as_of": "2026-03-12T00:58:32Z",
-      "as_of_label": "00:58 GMT",
+      "as_of": "2026-03-12T01:00:40Z",
+      "as_of_label": "01:00 GMT",
       "exchange_timezone": "Europe/London",
       "market_state": "flat",
       "points": [
@@ -3059,11 +3088,11 @@
         ],
         [
           "2026-03-12T00:55:00Z",
-          6.87978
+          6.87976
         ],
         [
-          "2026-03-12T00:58:32Z",
-          6.87984
+          "2026-03-12T01:00:40Z",
+          6.88015
         ]
       ],
       "views": [
@@ -3958,14 +3987,14 @@
       "color": "#22d3ee",
       "precision": 0,
       "suffix": "",
-      "last": 70215.0,
+      "last": 70226.0,
       "previous_close": 70203.0,
-      "change": 12.0,
-      "change_pct": 0.02,
+      "change": 23.0,
+      "change_pct": 0.03,
       "day_low": 70213.0,
       "day_high": 70322.0,
-      "as_of": "2026-03-12T00:56:00Z",
-      "as_of_label": "00:56 UTC",
+      "as_of": "2026-03-12T00:58:00Z",
+      "as_of_label": "00:58 UTC",
       "exchange_timezone": "UTC",
       "market_state": "flat",
       "points": [
@@ -4014,8 +4043,12 @@
           70245.24
         ],
         [
-          "2026-03-12T00:56:00Z",
-          70215.13
+          "2026-03-12T00:55:00Z",
+          70247.49
+        ],
+        [
+          "2026-03-12T00:58:00Z",
+          70225.74
         ]
       ],
       "views": [
